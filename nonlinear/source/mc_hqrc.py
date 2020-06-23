@@ -20,18 +20,19 @@ from loginit import get_module_logger
 import utils
 from utils import *
 
-def memory_compute(taskname, qparams, nqrc, alpha,\
+def memory_compute(taskname, qparams, nqrc, alpha, sparsity, sigma_input,\
         train_len, val_len, buffer, dlist, ranseed, pid, send_end):
     btime = int(time.time() * 1000.0)
     rsarr = hqrc.memory_function(taskname, qparams, train_len=train_len, val_len=val_len, buffer=buffer, \
-        dlist=dlist, nqrc=nqrc, alpha=alpha, ranseed=ranseed)
+        dlist=dlist, nqrc=nqrc, alpha=alpha, sparsity=sparsity, sigma_input=sigma_input, ranseed=ranseed)
     C = np.sum(rsarr[:, 1])
     etime = int(time.time() * 1000.0)
     now = datetime.datetime.now()
     datestr = now.strftime('{0:%Y-%m-%d-%H-%M-%S}'.format(now))
-    print('{} Finished process {} in {} s with J={}, taudelta={}, V={}, layers={}, strength={}, dmin={}, dmax={}, capacity={}'.format(\
-        datestr, pid, etime-btime, \
-        qparams.max_energy, qparams.tau, qparams.virtual_nodes, nqrc, alpha, dlist[0], dlist[-1], C))
+    print('{} Finished process {} in {} s with nqrc={}, alpha={}, sparsity={}, sigma_input={}, \
+            J={}, g={}, V={}, tau={}, dmin={}, dmax={}, C={}'.format(\
+        datestr, pid, etime-btime, nqrc, alpha, sparsity, sigma_input,\
+        qparams.max_energy, qparams.non_diag, qparams.virtual_nodes, qparams.tau, dlist[0], dlist[-1], C))
     send_end.send('{}'.format(C))
 
 if __name__  == '__main__':
@@ -55,9 +56,12 @@ if __name__  == '__main__':
     parser.add_argument('--ntrials', type=int, default=1)
 
     parser.add_argument('--couplings', type=str, default='1.0', help='Maximum coupling energy')
+    parser.add_argument('--nondiags', type=str, default='1.0', help='Nonlinear term (non-diagonal term)')
     parser.add_argument('--taudeltas', type=str, default='-4,-3,-2,-1,0,1,2,3,4,5,6,7')
     parser.add_argument('--layers', type=str, default='5')
     parser.add_argument('--strengths', type=str, default='0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9')
+    parser.add_argument('--sparsity', type=float, default=1.0, help='The connecting sparsity')
+    parser.add_argument('--sigma_input', type=float, default=1.0, help='The input strength')
     parser.add_argument('--virtuals', type=str, default='1')
 
     parser.add_argument('--taskname', type=str, default='qrc_stm') # Use _stm or _pc
@@ -68,7 +72,7 @@ if __name__  == '__main__':
     n_units, beta = args.units, args.beta
     train_len, val_len, buffer = args.trainlen, args.vallen, args.buffer
     nproc, init_rho, solver = args.nproc, args.rho, args.solver
-
+    sparsity, sigma_input  = args.sparsity, args.sigma_input
     minD, maxD, interval, Ntrials = args.mind, args.maxd, args.interval, args.ntrials
     dlist = list(range(minD, maxD + 1, interval))
     nproc = min(nproc, len(dlist))
@@ -83,6 +87,7 @@ if __name__  == '__main__':
     taudeltas = [2**x for x in taudeltas]
     
     couplings = [float(x) for x in args.couplings.split(',')]
+    non_diags = [float(x) for x in args.nondiags.split(',')]
     layers = [int(x) for x in args.layers.split(',')]
     strengths = [float(x) for x in args.strengths.split(',')]
     virtuals = [int(x) for x in args.virtuals.split(',')]
@@ -91,9 +96,10 @@ if __name__  == '__main__':
     timestamp = int(time.time() * 1000.0)
     now = datetime.datetime.now()
     datestr = now.strftime('{0:%Y-%m-%d-%H-%M-%S}'.format(now))
-    outbase = os.path.join(savedir, '{}_{}_{}_J_{}_strength_{}_V_{}_layers_{}_capa_ntrials_{}'.format(\
+    outbase = os.path.join(savedir, '{}_{}_{}_J_{}_g_{}_strength_{}_V_{}_layers_{}_capa_ntrials_{}'.format(\
         taskname, solver, datestr, \
         '_'.join([str(o) for o in couplings]), \
+        '_'.join([str(o) for o in non_diags]), \
         '_'.join([str(o) for o in strengths]), \
         '_'.join([str(o) for o in virtuals]), \
         '_'.join([str(o) for o in layers]), Ntrials))
@@ -104,46 +110,47 @@ if __name__  == '__main__':
 
     global_rs = []
     for max_energy in couplings:
-        for tau in taudeltas:
-            for V in virtuals:
-                qparams = QRCParams(n_units=n_units, max_energy=max_energy,\
-                    beta=beta, virtual_nodes=V, tau=tau, init_rho=init_rho, solver=solver)
-                for alpha in strengths:
-                    for nqrc in layers:
-                        local_sum = []
-                        for n in range(Ntrials):
-                            # Multi process
-                            lst = np.array_split(dlist, nproc)
-                            jobs, pipels = [], []
-                            for proc_id in range(nproc):
-                                dsmall = lst[proc_id]
-                                if dsmall.size == 0:
-                                    continue
-                                print('dlist: ', dsmall)
-                                recv_end, send_end = multiprocessing.Pipe(False)
-                                p = multiprocessing.Process(target=memory_compute, \
-                                    args=(taskname, qparams, nqrc, alpha, train_len, val_len, buffer, dsmall, n, proc_id, send_end))
-                                jobs.append(p)
-                                pipels.append(recv_end)
-                    
-                            # Start the process
-                            for p in jobs:
-                                p.start()
-                    
-                            # Ensure all processes have finiished execution
-                            for p in jobs:
-                                p.join()
+        for g in non_diags:
+            for tau in taudeltas:
+                for V in virtuals:
+                    qparams = QRCParams(n_units=n_units, max_energy=max_energy, non_diag = g,\
+                        beta=beta, virtual_nodes=V, tau=tau, init_rho=init_rho, solver=solver)
+                    for alpha in strengths:
+                        for nqrc in layers:
+                            local_sum = []
+                            for n in range(Ntrials):
+                                # Multi process
+                                lst = np.array_split(dlist, nproc)
+                                jobs, pipels = [], []
+                                for proc_id in range(nproc):
+                                    dsmall = lst[proc_id]
+                                    if dsmall.size == 0:
+                                        continue
+                                    print('dlist: ', dsmall)
+                                    recv_end, send_end = multiprocessing.Pipe(False)
+                                    p = multiprocessing.Process(target=memory_compute, \
+                                        args=(taskname, qparams, nqrc, alpha, sparsity, sigma_input, train_len, val_len, buffer, dsmall, n, proc_id, send_end))
+                                    jobs.append(p)
+                                    pipels.append(recv_end)
+                        
+                                # Start the process
+                                for p in jobs:
+                                    p.start()
+                        
+                                # Ensure all processes have finiished execution
+                                for p in jobs:
+                                    p.join()
 
-                            # Sleep 5s
-                            time.sleep(5)
+                                # Sleep 5s
+                                time.sleep(5)
 
-                            # Get the result
-                            local_rsarr = [float(x.recv()) for x in pipels]
-                            local_sum.append(np.sum(local_rsarr))
-                        local_avg, local_std = np.mean(local_sum), np.std(local_sum)
-                        global_rs.append([nqrc, alpha, V, tau, max_energy, local_avg, local_std])
-                        logger.debug('J={},tau={},V={},alpha={},layers={},capa_avg={},capa_std={}'.format(\
-                            max_energy, tau, V, alpha, nqrc, local_avg, local_std))
+                                # Get the result
+                                local_rsarr = [float(x.recv()) for x in pipels]
+                                local_sum.append(np.sum(local_rsarr))
+                            local_avg, local_std = np.mean(local_sum), np.std(local_sum)
+                            global_rs.append([nqrc, alpha, V, tau, max_energy, g, local_avg, local_std])
+                            logger.debug('J={},g={},tau={},V={},alpha={},layers={},capa_avg={},capa_std={}'.format(\
+                                max_energy, g, tau, V, alpha, nqrc, local_avg, local_std))
     rsarr = np.array(global_rs)
     np.savetxt('{}_capacity.txt'.format(outbase), rsarr, delimiter=' ')
     
@@ -151,7 +158,7 @@ if __name__  == '__main__':
     with open('{}_setting.txt'.format(outbase), 'w') as sfile:
         sfile.write('solver={}, train_len={}, val_len={}, buffer={}\n'.format(\
             solver, train_len, val_len, buffer))
-        sfile.write('beta={}, Ntrials={}\n'.format(beta, Ntrials))
+        sfile.write('beta={}, sparsity={}, sigma_input={}, Ntrials={}\n'.format(beta, sparsity, sigma_input, Ntrials))
         sfile.write('n_units={}\n'.format(n_units))
         sfile.write('max_energy={}\n'.format(' '.join([str(v) for v in couplings])))
         sfile.write('taudeltas={}\n'.format(' '.join([str(v) for v in taudeltas])))
