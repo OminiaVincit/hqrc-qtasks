@@ -18,9 +18,10 @@ RIDGE_SPARSE = 'sparse_cg'
 RIDGE_SAG = 'sag'
 
 class QRCParams():
-    def __init__(self, n_units, max_energy, beta, virtual_nodes, tau, init_rho, solver=LINEAR_PINV):
+    def __init__(self, n_units, max_energy, non_diag, beta, virtual_nodes, tau, init_rho, solver=LINEAR_PINV):
         self.n_units = n_units
         self.max_energy = max_energy
+        self.non_diag = non_diag
         self.beta = beta
         self.virtual_nodes = virtual_nodes
         self.tau = tau
@@ -28,8 +29,8 @@ class QRCParams():
         self.solver = solver
 
     def info(self):
-        print('units={},Jdelta={},V={},taudelta={},init_rho={}'.format(\
-            self.n_units, self.max_energy,
+        print('units={},J={},non_diag={},V={},t={},init_rho={}'.format(\
+            self.n_units, self.max_energy, self.non_diag,
             self.virtual_nodes, self.tau, self.init_rho))
 
 def solfmax_layer(states):
@@ -50,8 +51,9 @@ def linear_combine(u, states, coeffs):
     total += np.dot(np.array(states).flatten(), np.array(coeffs).flatten())
     return total
 
-def scale_linear_combine(u, states, coeffs, bias):
-    states = (states + bias) / (2.0 * bias)
+def scale_linear_combine(u, states, coeffs, bias=0):
+    if bias != 0:
+        states = (states + bias) / (2.0 * bias)
     return linear_combine(u, states, coeffs)
 
 def make_data_for_narma(length, orders):
@@ -76,6 +78,15 @@ def make_data_for_narma(length, orders):
         Y[:,j] = y
     return xs, Y
 
+
+# Generate sparse matrix with row norm <= gamma
+# sparse matrix with elements between [-1, 1]
+def gen_sparse_mat(sizex, sizey, sparsity, rseed=1):
+    W = sparse.random(sizex, sizey, density = sparsity, random_state=rseed)
+    W *= 2.0
+    W -= 1.0
+    return W
+    
 
 # Reference from
 # https://qiskit.org/documentation/_modules/qiskit/quantum_info/random/utils.html
