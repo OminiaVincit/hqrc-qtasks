@@ -17,8 +17,13 @@ RIDGE_LSQR = 'lsqr'
 RIDGE_SPARSE = 'sparse_cg'
 RIDGE_SAG = 'sag'
 
+DYNAMIC_FULL_RANDOM = 'full_random'
+DYNAMIC_FULL_CONST_TRANS = 'full_const_trans'
+DYNAMIC_FULL_CONST_COEFF = 'full_const_coeff'
+
 class QRCParams():
-    def __init__(self, n_units, max_energy, non_diag, beta, virtual_nodes, tau, init_rho, solver=LINEAR_PINV):
+    def __init__(self, n_units, max_energy, non_diag, beta, virtual_nodes, tau, init_rho, \
+        solver=LINEAR_PINV, dynamic=DYNAMIC_FULL_CONST_TRANS):
         self.n_units = n_units
         self.max_energy = max_energy
         self.non_diag = non_diag
@@ -27,6 +32,7 @@ class QRCParams():
         self.tau = tau
         self.init_rho = init_rho
         self.solver = solver
+        self.dynamic = dynamic
 
     def info(self):
         print('units={},J={},non_diag={},V={},t={},init_rho={}'.format(\

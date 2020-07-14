@@ -27,7 +27,7 @@ INIT_RHO=0
 V=1
 INTERVAL=0.05
 
-def dumpstates_job(savedir, basename, input_seq, nqrc, layer_strength, J, xs, idx, send_end):
+def dumpstates_job(savedir, basename, input_seq, nqrc, layer_strength, J, g, dynamic, xs, idx, send_end):
     """
     Dump raw data of states
     """
@@ -35,15 +35,15 @@ def dumpstates_job(savedir, basename, input_seq, nqrc, layer_strength, J, xs, id
     results = dict()
     for x in xs:
         tau = 2**x
-        Jtau = J / tau
-        qparams = QRCParams(n_units=UNITS, max_energy=Jtau,\
-            beta=BETA, virtual_nodes=V, tau=tau, init_rho=INIT_RHO)
-        model = hqrc.HQRC(nqrc, layer_strength)
+        Jtau = J
+        qparams = QRCParams(n_units=UNITS, max_energy=Jtau, non_diag = g,\
+            beta=BETA, virtual_nodes=V, tau=tau, init_rho=INIT_RHO, dynamic=dynamic)
+        model = hqrc.HQRC(nqrc, layer_strength, sparsity=1.0, sigma_input=1.0)
         state_list = model.init_forward(qparams, input_seq, init_rs = True, ranseed = 0)
         results[x] = state_list
     
-    outbase = os.path.join(savedir, '{}_layers_{}_V_{}_J_{}_strength_{}'.format(basename, \
-        nqrc, V, J, layer_strength))
+    outbase = os.path.join(savedir, '{}_layers_{}_V_{}_J_{}_g_{}_strength_{}'.format(basename, \
+        nqrc, V, J, g, layer_strength))
     filename = '{}_states_id_{}.binaryfile'.format(outbase, idx)
     with open(filename, 'wb') as wrs:
         pickle.dump(results, wrs)
@@ -60,20 +60,22 @@ if __name__  == '__main__':
     parser.add_argument('--nqrc', type=int, default=5, help='Number of reservoirs')
     parser.add_argument('--strength', type=float, default=0.5, help='The connection strength')
     parser.add_argument('--coupling', type=float, default=1.0, help='The coupling magnitude')
+    parser.add_argument('--nondiag', type=float, default=1.0, help='Nonlinear term (non-diagonal term)')
     parser.add_argument('--nproc', type=int, default=50)
 
     parser.add_argument('--interval', type=float, default=INTERVAL, help='tau-interval')
     parser.add_argument('--basename', type=str, default='qrc_dyn')
-    parser.add_argument('--savedir', type=str, default='res_states')
+    parser.add_argument('--dynamic', type=str, default='full_const_trans')
+    parser.add_argument('--savedir', type=str, default='res_states_spar_1.0')
     args = parser.parse_args()
     print(args)
 
     length, nqrc, nproc = args.length, args.nqrc, args.nproc
     bg, ed = args.bg, args.ed
-    layer_strength, J = args.strength, args.coupling
-    const_input = args.const
+    layer_strength, J, g = args.strength, args.coupling, args.nondiag
+    const_input, dynamic = args.const, args.dynamic
 
-    basename = '{}_const_input_{}'.format(args.basename, args.const)
+    basename = '{}_const_input_{}_{}'.format(args.basename, args.const, dynamic)
     savedir = args.savedir
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
         os.mkdir(savedir)
@@ -98,7 +100,7 @@ if __name__  == '__main__':
             xs = lst[pid]
             recv_end, send_end = multiprocessing.Pipe(False)
             p = multiprocessing.Process(target=dumpstates_job, args=(savedir, basename, input_seq, \
-                nqrc, layer_strength, J, xs, pid, send_end))
+                nqrc, layer_strength, J, g, dynamic, xs, pid, send_end))
             jobs.append(p)
             pipels.append(recv_end)
         # Start the process

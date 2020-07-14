@@ -1,2 +1,2 @@
-sudo apt-get install libcairo2-dev
-pip install cairocffi
+pip install cython
+pip install qutip

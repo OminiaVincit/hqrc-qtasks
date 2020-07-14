@@ -43,6 +43,7 @@ class HQRC(object):
         self.P1op = [1]
         
         nqrc = self.nqrc
+        dynamic = qparams.dynamic
 
         # generate feedback matrix
         n_nodes = self.__get_comput_nodes()
@@ -90,11 +91,18 @@ class HQRC(object):
 
             # include input qubit for computation
             for qindex in range(self.n_qubits):
-                coef = self.non_diag * self.max_energy
+                if dynamic == DYNAMIC_FULL_RANDOM:
+                    coef = (np.random.rand()-0.5) * 2 * self.max_energy
+                else:
+                    coef = self.non_diag * self.max_energy
                 hamiltonian += coef * self.Zop[qindex]
+
             for qindex1 in range(self.n_qubits):
                 for qindex2 in range(qindex1+1, self.n_qubits):
-                    coef = (np.random.rand()-0.5) * 2 * self.max_energy
+                    if dynamic == DYNAMIC_FULL_CONST_COEFF:
+                        coef = self.max_energy
+                    else:
+                        coef = (np.random.rand()-0.5) * 2 * self.max_energy
                     hamiltonian += coef * self.Xop[qindex1] @ self.Xop[qindex2]
                     
             ratio = float(self.tau) / float(self.virtual_nodes)        
