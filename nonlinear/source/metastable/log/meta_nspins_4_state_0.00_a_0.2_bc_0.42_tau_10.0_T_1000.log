@@ -1,6 +1,0 @@
-2020-07-14 17:24:20,641 - __main__ - INFO - metastable/log/meta_nspins_4_state_0.00_a_0.2_bc_0.42_tau_10.0_T_1000.log
-2020-07-14 17:24:20,641 - __main__ - INFO - Nspins=4,pstate=0,alpha=0.2,bcoef=0.42,tau=10.0,Tsteps=1000
-2020-07-14 17:25:11,660 - __main__ - INFO - metastable/log/meta_nspins_4_state_0.00_a_0.2_bc_0.42_tau_10.0_T_1000.log
-2020-07-14 17:25:11,661 - __main__ - INFO - Nspins=4,pstate=0,alpha=0.2,bcoef=0.42,tau=10.0,Tsteps=1000
-2020-07-14 17:25:36,731 - __main__ - INFO - metastable/log/meta_nspins_4_state_0.00_a_0.2_bc_0.42_tau_10.0_T_1000.log
-2020-07-14 17:25:36,732 - __main__ - INFO - Nspins=4,pstate=0,alpha=0.2,bcoef=0.42,tau=10.0,Tsteps=1000
