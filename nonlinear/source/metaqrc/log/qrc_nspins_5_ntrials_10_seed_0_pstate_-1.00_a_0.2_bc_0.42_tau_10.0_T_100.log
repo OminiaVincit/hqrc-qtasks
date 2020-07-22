@@ -1,0 +1,8 @@
+2020-07-22 01:27:48,309 - __main__ - INFO - metaqrc/log/qrc_nspins_5_ntrials_10_seed_0_pstate_-1.00_a_0.2_bc_0.42_tau_10.0_T_100.log
+2020-07-22 01:27:48,309 - __main__ - INFO - Nspins=5,pstate=-1.0,alpha=0.2,bcoef=0.42,tau=10.0,Tsteps=100,Ntrials=10,seed=0
+2020-07-22 01:29:44,551 - __main__ - INFO - metaqrc/log/qrc_nspins_5_ntrials_10_seed_0_pstate_-1.00_a_0.2_bc_0.42_tau_10.0_T_100.log
+2020-07-22 01:29:44,551 - __main__ - INFO - Nspins=5,pstate=-1.0,alpha=0.2,bcoef=0.42,tau=10.0,Tsteps=100,Ntrials=10,seed=0
+2020-07-22 09:12:04,355 - __main__ - INFO - metaqrc/log/qrc_nspins_5_ntrials_10_seed_0_pstate_-1.00_a_0.2_bc_0.42_tau_10.0_T_100.log
+2020-07-22 09:12:04,356 - __main__ - INFO - Nspins=5,pstate=-1.0,alpha=0.2,bcoef=0.42,tau=10.0,Tsteps=100,Ntrials=10,seed=0
+2020-07-22 09:12:55,077 - __main__ - INFO - metaqrc/log/qrc_nspins_5_ntrials_10_seed_0_pstate_-1.00_a_0.2_bc_0.42_tau_10.0_T_100.log
+2020-07-22 09:12:55,077 - __main__ - INFO - Nspins=5,pstate=-1.0,alpha=0.2,bcoef=0.42,tau=10.0,Tsteps=100,Ntrials=10,seed=0

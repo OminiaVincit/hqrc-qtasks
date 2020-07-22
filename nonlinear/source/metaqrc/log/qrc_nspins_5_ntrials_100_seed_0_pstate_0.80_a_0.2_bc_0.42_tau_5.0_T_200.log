@@ -1,0 +1,2 @@
+2020-07-22 09:27:42,113 - __main__ - INFO - metaqrc/log/qrc_nspins_5_ntrials_100_seed_0_pstate_0.80_a_0.2_bc_0.42_tau_5.0_T_200.log
+2020-07-22 09:27:42,113 - __main__ - INFO - Nspins=5,pstate=0.8,alpha=0.2,bcoef=0.42,tau=5.0,Tsteps=200,Ntrials=100,seed=0
