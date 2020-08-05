@@ -1,0 +1,2 @@
+2020-07-24 01:16:02,504 - __main__ - INFO - metaqrc/log/qrc_spins_5_trials_100_seed_0_strength_1.0_pstate_-1.00_a_0.2_bc_0.42_tau_39.0_T_100_bin_0.log
+2020-07-24 01:16:02,504 - __main__ - INFO - Nspins=5,pstate=-1.0,binary=0,strength=1.0,alpha=0.2,bcoef=0.42,tau=39.0,Tsteps=100,Ntrials=100,seed=0
