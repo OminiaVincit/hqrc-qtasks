@@ -43,6 +43,7 @@ class HQRC(object):
         self.P1op = [1]
         
         nqrc = self.nqrc
+        Nspins = self.n_qubits
         dynamic = qparams.dynamic
 
         # generate feedback matrix
@@ -89,18 +90,33 @@ class HQRC(object):
             # generate hamiltonian
             hamiltonian = np.zeros( (self.dim,self.dim) )
 
+            # create coupling strength for ion trap
+            a = 0.2
+            bc = self.non_diag # bc = 0.42
+            J = 0
+            for qindex1 in range(Nspins):
+                for qindex2 in range(qindex1+1, Nspins):
+                    Jij = np.abs(qindex2-qindex1)**(-a)
+                    J += Jij / (Nspins-1)
+            B = J/bc # Magnetic field
+
             # include input qubit for computation
-            for qindex in range(self.n_qubits):
+            for qindex in range(Nspins):
                 if dynamic == DYNAMIC_FULL_RANDOM:
                     coef = (np.random.rand()-0.5) * 2 * self.max_energy
+                elif dynamic == DYNAMIC_ION_TRAP:
+                    coef = - B * self.max_energy
                 else:
                     coef = self.non_diag * self.max_energy
                 hamiltonian += coef * self.Zop[qindex]
 
-            for qindex1 in range(self.n_qubits):
-                for qindex2 in range(qindex1+1, self.n_qubits):
+            for qindex1 in range(Nspins):
+                for qindex2 in range(qindex1+1, Nspins):
                     if dynamic == DYNAMIC_FULL_CONST_COEFF:
                         coef = self.max_energy
+                    elif dynamic == DYNAMIC_ION_TRAP:
+                        coef =  - np.abs(qindex2 - qindex1)**(-a) / J
+                        coef = 2 * self.max_energy * coef
                     else:
                         coef = (np.random.rand()-0.5) * 2 * self.max_energy
                     hamiltonian += coef * self.Xop[qindex1] @ self.Xop[qindex2]
@@ -158,7 +174,7 @@ class HQRC(object):
             for v in range(self.virtual_nodes):
                 # Time evolution of density matrix
                 rho = Uop @ rho @ Uop.T.conj()
-                for qindex in range(0, self.n_qubits):
+                for qindex in range(1, self.n_qubits):
                     expectation_value = np.real(np.trace(self.Zop[qindex] @ rho))
                     current_state.append(expectation_value)
             # Size of current_state is Nqubits x Nvirtuals)

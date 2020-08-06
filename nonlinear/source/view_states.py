@@ -25,7 +25,9 @@ UNITS=5
 BETA=1e-14
 INIT_RHO=0
 V=1
-INTERVAL=0.05
+
+# KEEP CONSTANT interval = 0.02
+INTERVAL=0.02
 
 def dumpstates_job(savedir, basename, input_seq, nqrc, layer_strength, J, g, dynamic, xs, idx, send_end):
     """
@@ -80,8 +82,9 @@ if __name__  == '__main__':
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
         os.mkdir(savedir)
     
-    # KEEP CONSTANT interval = 0.05
     tx = list(np.arange(-7, 7.1, args.interval))
+    #tx = list(np.arange(0, 14.1, args.interval))
+    
     nproc = min(len(tx), nproc)
     lst = np.array_split(tx, nproc)
 
@@ -148,8 +151,9 @@ if __name__  == '__main__':
     
     #ax.plot(ts, rs, ls="", marker=",")
 
-    fig = plt.figure(figsize=(8, 6), dpi=600)
-    ax1 = plt.subplot2grid((4,3), (0,0), colspan=2, rowspan=2)
+    fig = plt.figure(figsize=(12, 6), dpi=600)
+    ax1 = plt.subplot2grid((3,4), (0,0), colspan=4, rowspan=2)
+    plt.subplots_adjust(left=0.12, bottom=0.08, right=0.85, top=0.92, wspace=0.2, hspace=0.5)
 
     if False:
         # Very slow to run density plot
@@ -161,20 +165,23 @@ if __name__  == '__main__':
     
     ax1.set_title('{}'.format(os.path.basename(filename)))
     ax1.set_xscale("log", basex=2)
-    ax1.set_yscale("symlog", basey=10, linthreshy=1e-5)
+    #ax1.set_yscale("symlog", basey=10, linthreshy=1e-5)
     ax1.grid(alpha=0.8,axis='x')
     ax1.set_xticks([2**x for x in np.arange(-7,7.1,1.0)])
+    #ax1.set_xticks([2**x for x in np.arange(0, 14.1, 1.0)])
+    
     ax1.minorticks_on()
     ax1.tick_params('both', length=6, width=1, which='major')
     ax1.tick_params('both', length=3, width=1, which='minor')
-    #ax1.set_xlim([2**(-2), 2**(0)])
-    ids = [20, 60, 80, 180]
+    #ax1.set_xlim([2**(0), 2**(7)])
+
+    ids = np.array([20, 60, 80, 180]) * (0.05 / args.interval)
     for i in range(len(ids)):
-        ax2 = plt.subplot2grid((4,3), (i,2))
-        x = tx[ids[i]]
+        ax2 = plt.subplot2grid((3,4), (2,i))
+        x = tx[int(ids[i])]
         state_list = z[x]
         for j in range(1, UNITS):
-            ys = state_list[bg:ed, j].ravel()
+            ys = state_list[bg:ed, j-1].ravel()
             ax2.plot(ys)
         ax2.set_title('2^{:.1f}'.format(x))
         ax2.set_yticklabels([])

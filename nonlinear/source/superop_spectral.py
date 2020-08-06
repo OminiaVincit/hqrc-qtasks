@@ -109,6 +109,9 @@ if __name__  == '__main__':
         s_prep = pstate * sprepost(q0, q0.dag()) + (1.0-pstate) * sprepost(q1, q1.dag())
 
         tauls = list(np.linspace(0.0, tmax, ntaus))
+        #tx = list(np.arange(-7, 14.1, 0.05))
+        #tauls = [2**x for x in tx]
+
         nproc = min(len(tauls), args.nproc)
         lst = np.array_split(tauls, nproc)
 

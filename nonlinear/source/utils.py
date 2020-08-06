@@ -20,6 +20,7 @@ RIDGE_SAG = 'sag'
 DYNAMIC_FULL_RANDOM = 'full_random'
 DYNAMIC_FULL_CONST_TRANS = 'full_const_trans'
 DYNAMIC_FULL_CONST_COEFF = 'full_const_coeff'
+DYNAMIC_ION_TRAP = 'ion_trap'
 
 class QRCParams():
     def __init__(self, n_units, max_energy, non_diag, beta, virtual_nodes, tau, init_rho, \

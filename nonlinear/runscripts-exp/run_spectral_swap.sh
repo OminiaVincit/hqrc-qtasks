@@ -4,11 +4,13 @@ export OMP_NUM_THREADS=1
 
 BIN=../source/superop_spectral.py
 NSPINS=5
-TMAX=50.0
-NTAUS=501
+TMAX=0.0
+NTAUS=0
 NPROC=101
+SAVE=../spectral2
+vals=$(seq 0.00 0.01 1.00)
 
-for p in 0.51 0.52 0.53 0.54 0.56 0.57 0.58 0.59
+for p in $vals
 do
-python $BIN --nspins $NSPINS --tmax $TMAX --ntaus $NTAUS --nproc $NPROC --pstate $p 
+python $BIN --savedir $SAVE --nspins $NSPINS --tmax $TMAX --ntaus $NTAUS --nproc $NPROC --pstate $p 
 done
