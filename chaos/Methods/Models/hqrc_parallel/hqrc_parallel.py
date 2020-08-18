@@ -118,7 +118,7 @@ class hqrc_parallel(object):
         self.nqrc = params["nqrc"]
         self.alpha = params["alpha"]
         self.max_energy = params["max_energy"]
-        self.fix_coupling = params["fix_coupling"]
+        self.dyn_type = params["dyn_type"]
         self.virtual_nodes = params["virtual_nodes"]
         self.tau = params["tau"]
         self.one_input = params["one_input"]
@@ -167,9 +167,10 @@ class hqrc_parallel(object):
         self.P0op = [1]
         self.P1op = [1]
         self.alpha = self.alpha
+        Nspins = self.qubit_count
 
-        for cursor_index in range(self.qubit_count):
-            for qubit_index in range(self.qubit_count):
+        for cursor_index in range(self.Nspins):
+            for qubit_index in range(self.Nspins):
                 if cursor_index == qubit_index:
                     self.Xop[qubit_index] = np.kron(self.Xop[qubit_index],X)
                     self.Zop[qubit_index] = np.kron(self.Zop[qubit_index],Z)
@@ -219,22 +220,41 @@ class hqrc_parallel(object):
         self.current_states  = [None] * nqrc
 
         # Intialize evolution operators
+        # create coupling strength for ion trap
+        a = 0.2
+        bc = self.non_diag # bc = 0.42
+        J = 0
+        for qindex1 in range(Nspins):
+            for qindex2 in range(qindex1+1, Nspins):
+                Jij = np.abs(qindex2-qindex1)**(-a)
+                J += Jij / (Nspins-1)
+        B = J/bc # Magnetic field
+
         tmp_uops = []
         for i in range(nqrc):
             # generate hamiltonian
             hamiltonian = np.zeros( (self.dim,self.dim), dtype=np.float64 )
 
-            # include input qubit for computation
-            for qubit_index in range(self.qubit_count):
-                if self.fix_coupling > 0:
-                    coef = 2 * self.max_energy
+            for qindex in range(Nspins):
+                if dynamic == DYNAMIC_FULL_RANDOM:
+                    coef = (np.ran
+                    dom.rand()-0.5) * 2 * self.max_energy
+                elif dynamic == DYNAMIC_ION_TRAP:
+                    coef = - B * self.max_energy
                 else:
-                    coef = (np.random.rand()-0.5) * 2 * self.max_energy
-                hamiltonian += coef * self.Zop[qubit_index]
-            for qubit_index1 in range(self.qubit_count):
-                for qubit_index2 in range(qubit_index1+1, self.qubit_count):
-                    coef = (np.random.rand()-0.5) * 2 * self.max_energy
-                    hamiltonian += coef * self.Xop[qubit_index1] @ self.Xop[qubit_index2]
+                    coef = - 2 * self.max_energy
+                hamiltonian += coef * self.Zop[qindex]
+
+            for qindex1 in range(Nspins):
+                for qindex2 in range(qindex1+1, Nspins):
+                    if dynamic == DYNAMIC_FULL_CONST_COEFF:
+                        coef =  - self.max_energy
+                    elif dynamic == DYNAMIC_ION_TRAP:
+                        coef =  - np.abs(qindex2 - qindex1)**(-a) / J
+                        coef = 2 * self.max_energy * coef
+                    else:
+                        coef = (np.random.rand()-0.5) * 2 * self.max_energy
+                    hamiltonian += coef * self.Xop[qindex1] @ self.Xop[qindex2]
                     
             ratio = float(self.tau) / float(self.virtual_nodes)        
             Uop = sp.linalg.expm(-1.j * hamiltonian * ratio)
@@ -262,7 +282,7 @@ class hqrc_parallel(object):
         #'scale_input':'sI',
         #'trans_input':'tI',
         'max_energy':'J',
-        'fix_coupling':'fJ',
+        'dyn_type':'fJ',
         'virtual_nodes':'V',
         'tau':'T',
         #'n_units':'UNIT',

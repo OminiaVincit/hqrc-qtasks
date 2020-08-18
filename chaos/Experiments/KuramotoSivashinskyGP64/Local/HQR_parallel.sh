@@ -8,7 +8,7 @@
     # --nqrc 5 \ # Number of QRs
     # --alpha $ALPHA \ # Connection strength
     # --max_energy 2.0 \ # Max coupling energy
-    # --fix_coupling 1 \ # Use special type of the Ising model g=1.0, h_ij in [-0.5, 0.5]
+    # --dyn_type 1 \ # Use special type of the Ising model g=1.0, h_ij in [-0.5, 0.5]
     # --virtual_nodes $V \ # Number of virtual nodes
     # --tau 4.0 \ # Interval between inputs
     # --n_units 6 \ # Number of hidden units =qubits in our setting
@@ -46,7 +46,7 @@ mpiexec -n $NR python3 RUN.py hqrc_parallel \
 --scaler MinMaxZeroOne \
 --alpha $ALPHA \
 --max_energy 2.0 \
---fix_coupling 1 \
+--dyn_type 1 \
 --virtual_nodes $V \
 --tau 4.0 \
 --n_units 6 \

@@ -106,7 +106,6 @@ if __name__  == '__main__':
                 vmin = min(vmin, targets[label].min())
                 vmax = max(vmax, targets[label].max())
                 vmax_error = max(vmax_error, targets[label].max())
-
         else:
             print('Not found {}'.format(fname))
     

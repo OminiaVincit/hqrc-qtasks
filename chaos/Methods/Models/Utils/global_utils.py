@@ -18,6 +18,10 @@ import pickle
 import io
 import os
 
+DYNAMIC_FULL_RANDOM = 'full_random'
+DYNAMIC_FULL_CONST_TRANS = 'full_const_trans'
+DYNAMIC_FULL_CONST_COEFF = 'full_const_coeff'
+DYNAMIC_ION_TRAP = 'ion_trap'
 
 def getNamesInterestingVars():
 	# THE MODEL SHOULD OUTPUT THE FOLLOWING VARIABLES:
@@ -32,6 +36,8 @@ def getNamesInterestingVars():
 		'freq_true',
 		'sp_true',
 		'sp_pred',
+		'pre_Mx_augment_all',
+		'pre_Mz_augment_all'
 	]
 	return var_names
 
@@ -343,7 +349,8 @@ def getHQRCParser(parser):
 	parser.add_argument("--nqrc", help="number of reservoirs", type=int, required=True)
 	parser.add_argument("--alpha", help="alpha", type=float, required=True)
 	parser.add_argument("--max_energy", help="max_energy", type=float, required=True)
-	parser.add_argument("--fix_coupling", help="fix_coupling", type=int, default=0)
+	parser.add_argument("--dyn_type", help="dyn_type", type=str, default='ion_trap')
+	parser.add_argument("--record_mag", help="record average magnetization", type=int, default=0)
 	parser.add_argument("--virtual_nodes", help="virtual_nodes", type=int, required=True)
 	parser.add_argument("--tau", help="tau", type=float, required=True)
 	parser.add_argument("--one_input", help="one_input", type=int, default=0)
@@ -569,3 +576,30 @@ class Circ(list):
 	def __getitem__(self, idx):
 		return super(Circ, self).__getitem__(idx % len(self))
 
+def partial_trace(rho, keep, dims, optimize=False):
+    """
+    Calculate the partial trace.
+    Consider a joint state ρ on the Hilbert space :math:`H_a \otimes H_b`. We wish to trace out
+    :math:`H_b`
+    .. math::
+        ρ_a = Tr_b(ρ)
+    :param rho: 2D array, the matrix to trace.
+    :param keep: An array of indices of the spaces to keep after being traced. For instance,
+                 if the space is A x B x C x D and we want to trace out B and D, keep = [0, 2].
+    :param dims: An array of the dimensions of each space. For example, if the space is
+                 A x B x C x D, dims = [dim_A, dim_B, dim_C, dim_D].
+    :param optimize: optimize argument in einsum
+    :return:  ρ_a, a 2D array i.e. the traced matrix
+    """
+    # Code from
+    # https://scicomp.stackexchange.com/questions/30052/calculate-partial-trace-of-an-outer-product-in-python
+    keep = np.asarray(keep)
+    dims = np.asarray(dims)
+    Ndim = dims.size
+    Nkeep = np.prod(dims[keep])
+
+    idx1 = [i for i in range(Ndim)]
+    idx2 = [Ndim + i if i in keep else i for i in range(Ndim)]
+    rho_a = rho.reshape(np.tile(dims, 2))
+    rho_a = np.einsum(rho_a, idx1 + idx2, optimize=optimize)
+    return rho_a.reshape(Nkeep, Nkeep)

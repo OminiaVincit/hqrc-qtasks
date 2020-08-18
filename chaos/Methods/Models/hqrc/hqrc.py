@@ -86,9 +86,11 @@ class hqrc(object):
         self.nqrc = params["nqrc"]
         self.alpha = params["alpha"]
         self.max_energy = params["max_energy"]
-        self.fix_coupling = params["fix_coupling"]
+        self.dyn_type = params["dyn_type"]
+        self.record_mag = params["record_mag"]
         self.virtual_nodes = params["virtual_nodes"]
         self.tau = params["tau"]
+
         self.one_input = params["one_input"]
         self.scale_input = params["scale_input"]
         self.trans_input = params["trans_input"]
@@ -97,6 +99,8 @@ class hqrc(object):
         self.n_units = params["n_units"]
         self.qubit_count = self.n_units
         self.dim = 2**self.qubit_count
+        self.tensor_dims = [2]*self.qubit_count
+        self.keep_partial = range(1, self.qubit_count)
         # Finish
 
         self.dynamics_length = params["dynamics_length"]
@@ -135,6 +139,7 @@ class hqrc(object):
         os.makedirs(self.saving_path + self.fig_dir + self.model_name, exist_ok=True)
         os.makedirs(self.saving_path + self.results_dir + self.model_name, exist_ok=True)
         os.makedirs(self.saving_path + self.logfile_dir + self.model_name, exist_ok=True)
+        print('Initialize model')
 
     def __init_reservoir(self):
         I = [[1,0],[0,1]]
@@ -148,9 +153,10 @@ class hqrc(object):
         self.P0op = [1]
         self.P1op = [1]
         self.alpha = self.alpha
+        Nspins = self.qubit_count
 
-        for cursor_index in range(self.qubit_count):
-            for qubit_index in range(self.qubit_count):
+        for cursor_index in range(Nspins):
+            for qubit_index in range(Nspins):
                 if cursor_index == qubit_index:
                     self.Xop[qubit_index] = np.kron(self.Xop[qubit_index],X)
                     self.Zop[qubit_index] = np.kron(self.Zop[qubit_index],Z)
@@ -198,34 +204,83 @@ class hqrc(object):
         # initialize current states
         self.previous_states = [None] * nqrc
         self.current_states  = [None] * nqrc
-
+        self.Mxs = [None] * nqrc
+        self.Mzs = [None] * nqrc
         # Intialize evolution operators
+            
+        # create coupling strength for ion trap
+        a = 0.2
+        bc = 0.42
+        J = 0
+        for qindex1 in range(Nspins):
+            for qindex2 in range(qindex1+1, Nspins):
+                Jij = np.abs(qindex2-qindex1)**(-a)
+                J += Jij / (Nspins-1)
+        B = J/bc # Magnetic field
+
         tmp_uops = []
+        dynamic = self.dyn_type
         for i in range(nqrc):
             # generate hamiltonian
             hamiltonian = np.zeros( (self.dim,self.dim), dtype=np.float64 )
-
-            # include input qubit for computation
-            for qubit_index in range(self.qubit_count):
-                if self.fix_coupling > 0:
-                    coef = 2 * self.max_energy
+            
+            for qindex in range(Nspins):
+                if dynamic == DYNAMIC_FULL_RANDOM:
+                    coef = (np.random.rand()-0.5) * 2 * self.max_energy
+                elif dynamic == DYNAMIC_ION_TRAP:
+                    coef = - B * self.max_energy
                 else:
-                    coef = (np.random.rand()-0.5) * 2 * self.max_energy
-                hamiltonian += coef * self.Zop[qubit_index]
-            for qubit_index1 in range(self.qubit_count):
-                for qubit_index2 in range(qubit_index1+1, self.qubit_count):
-                    coef = (np.random.rand()-0.5) * 2 * self.max_energy
-                    hamiltonian += coef * self.Xop[qubit_index1] @ self.Xop[qubit_index2]
-                    
+                    coef = - 2 * self.max_energy
+                hamiltonian += coef * self.Zop[qindex]
+
+            for qindex1 in range(Nspins):
+                for qindex2 in range(qindex1+1, Nspins):
+                    if dynamic == DYNAMIC_FULL_CONST_COEFF:
+                        coef =  - self.max_energy
+                    elif dynamic == DYNAMIC_ION_TRAP:
+                        coef =  - np.abs(qindex2 - qindex1)**(-a) / J
+                        coef = 2 * self.max_energy * coef
+                    else:
+                        coef = (np.random.rand()-0.5) * 2 * self.max_energy
+                    hamiltonian += coef * self.Xop[qindex1] @ self.Xop[qindex2]
+
             ratio = float(self.tau) / float(self.virtual_nodes)        
             Uop = sp.linalg.expm(-1.j * hamiltonian * ratio)
             tmp_uops.append(Uop)
         
         self.Uops = tmp_uops.copy()
 
+        # Create Mx, Mz operator
+        self.Mxop, self.Mzop = None, None
+        if self.record_mag > 0:
+            nobs = Nspins - 1
+            Pxs = [1]*nobs
+            Pzs = [1]*nobs
+
+            for i in range(nobs):
+                for j in range(nobs):
+                    if i == j:
+                        Pxs[j] = np.kron(Pxs[j],X)
+                        Pzs[j] = np.kron(Pzs[j],Z)
+                    else:
+                        Pxs[j] = np.kron(Pxs[j],I)
+                        Pzs[j] = np.kron(Pzs[j],I)
+            
+            Mx = Pxs[0]
+            Mz = Pzs[0]
+            for i in range(1, nobs):
+                Mx += Pxs[i]
+                Mz += Pzs[i]
+            self.Mxop = Mx / nobs
+            self.Mzop = Mz / nobs
+        print('Init reservoir')
+
+
     def __reset_states(self):
         self.previous_states = [None] * self.nqrc
         self.current_states  = [None] * self.nqrc
+        self.Mxs = [None] * self.nqrc
+        self.Mzs = [None] * self.nqrc
 
     def getKeysInModelName(self):
         keys = {
@@ -233,14 +288,14 @@ class hqrc(object):
         'N_used':'N_used', 
         'dynamics_length':'DL',
         'nqrc':'Nqr',
-        'alpha':'A',
+        #'alpha':'A',
         #'trans':'sT',
         #'ratio':'sR',
         #'scale_input':'sI',
         'max_energy':'J',
-        'fix_coupling':'fJ',
+        'dyn_type':'fJ',
         'virtual_nodes':'V',
-        #'tau':'TAU',
+        'tau':'TAU',
         #'n_units':'UNIT',
         #'bias':'B',
         'noise_level':'NL',
@@ -294,16 +349,27 @@ class hqrc(object):
             #    print('prev states', prev_states)
             rho = (1 - value) * rho + value * self.Xop[0] @ rho @ self.Xop[0]
             current_state = []
+            mxs, mzs = [], []
             for v in range(self.virtual_nodes):
                 # Time evolution of density matrix
                 rho = Uop @ rho @ Uop.T.conj()
+                # get expectation of the observables
                 for qubit_index in range(0, self.qubit_count):
                     expectation_value = np.real(np.trace(self.Zop[qubit_index] @ rho))
                     current_state.append(expectation_value)
+                # get average magnetization
+                if self.record_mag > 0:
+                    prho = partial_trace(rho, self.keep_partial, self.tensor_dims)
+                    mxs.append(np.real(np.trace(self.Mxop @ prho)))
+                    mzs.append(np.real(np.trace(self.Mzop @ prho)))
+                    
             # Size of current_state is Nqubits x Nvirtuals
             tmp = np.array(current_state, dtype=np.float64)
             local_prev_states.append(tmp)
             self.current_states[i] = tmp.copy()
+            if self.record_mag > 0:
+                self.Mxs[i] = np.array(mxs, dtype=np.float64)
+                self.Mzs[i] = np.array(mzs, dtype=np.float64)
             local_rhos[i] = rho
         # update previous states
         if any(x is None for x in local_prev_states) == False:
@@ -325,14 +391,22 @@ class hqrc(object):
             local_rhos = generate_list_rho(self.dim, self.nqrc)
         
         state_list = []
+        Mx_list, Mz_list = [], []
         for time_step in range(0, input_length):
             input_val = input_sequence[time_step]
             local_rhos = self.__step_forward(local_rhos, input_val)
 
             state = np.array(self.current_states.copy(), dtype=np.float64)
             state_list.append(state.flatten())
+            if self.record_mag > 0:
+                Mx_list.append( np.array(self.Mxs.copy(), dtype=np.float64).flatten() )
+                Mz_list.append( np.array(self.Mzs.copy(), dtype=np.float64).flatten() )
 
         state_list = np.array(state_list, dtype=np.float64)
+        if self.record_mag > 0:
+            Mx_list = np.array(Mx_list, dtype=np.float64)
+            Mz_list = np.array(Mz_list, dtype=np.float64)
+            
         self.last_rhos = local_rhos.copy()
 
         if predict:
@@ -346,7 +420,7 @@ class hqrc(object):
             #print('stacked state {}; Wout {}'.format(stacked_state.shape, self.W_out.shape))
             predict_sequence = stacked_state @ self.W_out
         
-        return predict_sequence, state_list
+        return predict_sequence, state_list, Mx_list, Mz_list
 
     def __train(self, input_sequence, output_sequence):
         print('Training input, output shape', input_sequence.shape, output_sequence.shape)
@@ -355,7 +429,7 @@ class hqrc(object):
         self.W_out = np.random.rand(self.getReservoirSize() + 1, Nout)
 
         # After washing out, use last density matrix to update
-        _, state_list = self.__feed_forward(input_sequence, predict=False, use_lastrho=True)
+        _, state_list, _, _ = self.__feed_forward(input_sequence, predict=False, use_lastrho=True)
 
         state_list = np.array(state_list, dtype=np.float64)
         print('State list shape', state_list.shape)
@@ -521,12 +595,13 @@ class hqrc(object):
         rep_train_input_seq = np.tile(input_sequence, (1, K))
 
         self.__reset_states()
-        prediction_warm_up, state_list = \
+        prediction_warm_up, state_list, Mx_list_warm_up, Mz_list_warm_up = \
             self.__feed_forward(rep_train_input_seq[:dynamics_length], predict=True, use_lastrho=False)
         print("\n")
 
         target = input_sequence[dynamics_length:]
         prediction = []
+        pre_Mx_list, pre_Mz_list = [], []
 
         if True:
             print('Closed loop to generate chaotic signals')
@@ -552,13 +627,17 @@ class hqrc(object):
                 else:
                     input_val = np.tile(out, (1, K))[0]
                 local_rhos = self.__step_forward(local_rhos, input_val)
+                if self.record_mag > 0:
+                    pre_Mx_list.append( np.array(self.Mxs.copy(), dtype=np.float64).flatten() )
+                    pre_Mz_list.append( np.array(self.Mzs.copy(), dtype=np.float64).flatten() )
+
             self.last_rhos = local_rhos.copy()
         else:
             # Because restart_alpha is set to 1.0
             # It means that, not need input signals
             print('Restart layer strength from {} to 1.0'.format(self.alpha))
             self.alpha = 1.0
-            prediction, _ = \
+            prediction, _, _, _ = \
                 self.__feed_forward(rep_train_input_seq[dynamics_length:], predict=True, use_lastrho=True)
         print("\n")
         prediction = np.array(prediction, dtype=np.float64).reshape((it_pred_length,-1))
@@ -567,7 +646,15 @@ class hqrc(object):
         print('shape prediction and warm_up', prediction.shape, prediction_warm_up.shape)
         target_augment = input_sequence
         prediction_augment = np.concatenate((prediction_warm_up, prediction), axis=0)
-        return prediction, target, prediction_augment, target_augment
+
+        pre_Mx_augment, pre_Mz_augment = None, None
+        if self.record_mag > 0:
+            pre_Mx_list = np.array(pre_Mx_list, dtype=np.float64).reshape((it_pred_length,-1))
+            pre_Mz_list = np.array(pre_Mz_list, dtype=np.float64).reshape((it_pred_length,-1))
+            pre_Mx_augment = np.concatenate((Mx_list_warm_up, pre_Mx_list), axis=0)
+            pre_Mz_augment = np.concatenate((Mz_list_warm_up, pre_Mz_list), axis=0)
+
+        return prediction, target, prediction_augment, target_augment, pre_Mx_augment, pre_Mz_augment
 
     def testing(self):
         if self.loadModel() ==  0:
@@ -589,7 +676,9 @@ class hqrc(object):
             train_input_sequence = data["train_input_sequence"][:, :self.input_dim]
             del data
             
-        rmnse_avg, num_accurate_pred_005_avg, num_accurate_pred_050_avg, error_freq, predictions_all, truths_all, freq_pred, freq_true, sp_true, sp_pred = self.predictIndexes(train_input_sequence, testing_ic_indexes, dt, "TRAIN")
+        rmnse_avg, num_accurate_pred_005_avg, num_accurate_pred_050_avg, error_freq, \
+            predictions_all, truths_all, freq_pred, freq_true, sp_true, sp_pred, pre_Mx_augment_all, pre_Mz_augment_all \
+            = self.predictIndexes(train_input_sequence, testing_ic_indexes, dt, "TRAIN")
         
         for var_name in getNamesInterestingVars():
             exec("self.{:s}_TRAIN = {:s}".format(var_name, var_name))
@@ -604,7 +693,8 @@ class hqrc(object):
             dt = data["dt"]
             del data
             
-        rmnse_avg, num_accurate_pred_005_avg, num_accurate_pred_050_avg, error_freq, predictions_all, truths_all, freq_pred, freq_true, sp_true, sp_pred = self.predictIndexes(test_input_sequence, testing_ic_indexes, dt, "TEST")
+        rmnse_avg, num_accurate_pred_005_avg, num_accurate_pred_050_avg, error_freq, predictions_all, truths_all, freq_pred, freq_true, sp_true, sp_pred, pre_Mx_augment_all, pre_Mz_augment_all \
+            = self.predictIndexes(test_input_sequence, testing_ic_indexes, dt, "TEST")
         
         for var_name in getNamesInterestingVars():
             exec("self.{:s}_TEST = {:s}".format(var_name, var_name))
@@ -619,12 +709,14 @@ class hqrc(object):
         rmnse_all = []
         num_accurate_pred_005_all = []
         num_accurate_pred_050_all = []
+        pre_Mx_augment_all = []
+        pre_Mz_augment_all = []
         for ic_num in range(n_tests):
             if self.display_output == True:
                 print("IC {:}/{:}, {:2.3f}%".format(ic_num, n_tests, ic_num/n_tests*100))
             ic_idx = ic_indexes[ic_num]
             input_sequence_ic = input_sequence[ic_idx-self.dynamics_length:ic_idx+self.it_pred_length]
-            prediction, target, prediction_augment, target_augment = self.predictSequence(input_sequence_ic)
+            prediction, target, prediction_augment, target_augment, pre_Mx_augment, pre_Mz_augment = self.predictSequence(input_sequence_ic)
             prediction = self.scaler.descaleData(prediction)
             target = self.scaler.descaleData(target)
             rmse, rmnse, num_accurate_pred_005, num_accurate_pred_050, abserror = computeErrors(target, prediction, self.scaler.data_std)
@@ -634,6 +726,9 @@ class hqrc(object):
             rmnse_all.append(rmnse)
             num_accurate_pred_005_all.append(num_accurate_pred_005)
             num_accurate_pred_050_all.append(num_accurate_pred_050)
+            pre_Mx_augment_all.append(pre_Mx_augment)
+            pre_Mz_augment_all.append(pre_Mz_augment)
+            
             # PLOTTING ONLY THE FIRST THREE PREDICTIONS
             if ic_num < 3: plotIterativePrediction(self, set_name, target, prediction, rmse, rmnse, ic_idx, dt, target_augment, prediction_augment, self.dynamics_length)
 
@@ -657,7 +752,7 @@ class hqrc(object):
         print("FREQUENCY ERROR: {:}".format(error_freq))
 
         plotSpectrum(self, sp_true, sp_pred, freq_true, freq_pred, set_name)
-        return rmnse_avg, num_accurate_pred_005_avg, num_accurate_pred_050_avg, error_freq, predictions_all, truths_all, freq_pred, freq_true, sp_true, sp_pred
+        return rmnse_avg, num_accurate_pred_005_avg, num_accurate_pred_050_avg, error_freq, predictions_all, truths_all, freq_pred, freq_true, sp_true, sp_pred, pre_Mx_augment_all, pre_Mz_augment_all
 
     def saveResults(self):
 
@@ -690,6 +785,8 @@ class hqrc(object):
                 self.P1op = data["P1op"]
                 self.coeffs = data["coeffs"]
                 self.Uops = data["Uops"]
+                self.Mxop = data["Mxop"]
+                self.Mzop = data["Mzop"]
                 self.scaler = data["scaler"]
                 del data
             return 0
@@ -725,6 +822,8 @@ class hqrc(object):
             "P1op":self.P1op,
             "coeffs":self.coeffs,
             "Uops":self.Uops,
+            'Mxop':self.Mxop,
+            'Mzop':self.Mzop,
             "scaler":self.scaler,
         }
         data_path = self.saving_path + self.model_dir + self.model_name + "/data.pickle"

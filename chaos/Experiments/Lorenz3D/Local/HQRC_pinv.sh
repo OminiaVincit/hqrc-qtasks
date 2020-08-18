@@ -20,13 +20,15 @@
 # End of the script to emulate chaos by using hqrc
 # 
 cd ../../../Methods
-export OMP_NUM_THREADS=12
+export OMP_NUM_THREADS=48
 
-for V in 10 15 20
+for V in 15
 do
-for ALPHA in 0.0 0.1
+for ALPHA in 0.0
 do
 for BETA in 1e-7
+do
+for TAU in 32.0 16.0 8.0 2.0 1.0 0.25 0.125
 do
 python3 RUN.py hqrc \
     --mode all \
@@ -34,22 +36,24 @@ python3 RUN.py hqrc \
     --system_name Lorenz3D \
     --write_to_log 1 \
     --N 100000 \
-    --N_used 1000 \
+    --N_used 10000 \
     --RDIM 1 \
     --noise_level 1 \
     --scaler MinMaxZeroOne \
-    --nqrc 5 \
+    --nqrc 1 \
     --alpha $ALPHA \
-    --max_energy 2.0 \
+    --max_energy 1.0 \
     --virtual_nodes $V \
-    --tau 4.0 \
+    --tau $TAU \
     --n_units 6 \
     --reg $BETA \
-    --dynamics_length 200 \
-    --it_pred_length 100 \
+    --dynamics_length 2000 \
+    --it_pred_length 1000 \
     --n_tests 2 \
+    --record_mag 1\
     --solver pinv \
     --augment 0
+done
 done
 done
 done
