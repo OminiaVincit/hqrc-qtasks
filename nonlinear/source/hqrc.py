@@ -9,15 +9,19 @@ import scipy as sp
 from scipy import sparse as sparse
 from scipy.sparse import linalg as splinalg
 from scipy.linalg import pinv2 as scipypinv2
-
+from IPC import *
 from utils import *
 
+import time
+from datetime import timedelta
+
 class HQRC(object):
-    def __init__(self, nqrc, alpha, sparsity, sigma_input):
+    def __init__(self, nqrc, alpha, sparsity, sigma_input, type_input=0):
         self.nqrc = nqrc
         self.alpha = alpha
         self.sparsity = sparsity
         self.sigma_input = sigma_input
+        self.type_input = type_input
 
     def __init_reservoir(self, qparams, ranseed):
         if ranseed >= 0:
@@ -100,20 +104,19 @@ class HQRC(object):
                     J += Jij / (Nspins-1)
             B = J/bc # Magnetic field
 
-            # include input qubit for computation
             for qindex in range(Nspins):
                 if dynamic == DYNAMIC_FULL_RANDOM:
                     coef = (np.random.rand()-0.5) * 2 * self.max_energy
                 elif dynamic == DYNAMIC_ION_TRAP:
                     coef = - B * self.max_energy
                 else:
-                    coef = self.non_diag * self.max_energy
+                    coef = - self.non_diag * self.max_energy
                 hamiltonian += coef * self.Zop[qindex]
 
             for qindex1 in range(Nspins):
                 for qindex2 in range(qindex1+1, Nspins):
                     if dynamic == DYNAMIC_FULL_CONST_COEFF:
-                        coef = self.max_energy
+                        coef =  - self.max_energy
                     elif dynamic == DYNAMIC_ION_TRAP:
                         coef =  - np.abs(qindex2 - qindex1)**(-a) / J
                         coef = 2 * self.max_energy * coef
@@ -163,12 +166,15 @@ class HQRC(object):
             # Replace the density matrix
             rho = self.P0op @ rho @ self.P0op + self.Xop[0] @ self.P1op @ rho @ self.P1op @ self.Xop[0]
             # (1 + u Z)/2 = (1+u)/2 |0><0| + (1-u)/2 |1><1|
-        
-            # for input in [-1, 1]
-            rho = (1+value)/2 * rho + (1-value)/2 *self.Xop[0] @ rho @ self.Xop[0]
+            # inv1 = (self.affine[1] + self.value) / self.affine[0]
+            # inv2 = (self.affine[1] - self.value) / self.affine[0]
 
-            # for input in [0, 1]
-            # rho = (1 - value) * rho + value * self.Xop[0] @ rho @ self.Xop[0]
+            if self.type_input == 0:
+                # for input in [0, 1]
+                rho = (1 - value) * rho + value * self.Xop[0] @ rho @ self.Xop[0]
+            else:
+                # for input in [-1, 1]
+                rho = ((1+value)/2) * rho + ((1-value)/2) *self.Xop[0] @ rho @ self.Xop[0]
             
             current_state = []
             for v in range(self.virtual_nodes):
@@ -262,8 +268,8 @@ class HQRC(object):
         return state_list
 
 def get_loss(qparams, buffer, train_input_seq, train_output_seq, \
-        val_input_seq, val_output_seq, nqrc, alpha, sparsity, sigma_input, ranseed):
-    model = HQRC(nqrc, alpha, sparsity, sigma_input)
+        val_input_seq, val_output_seq, nqrc, alpha, sparsity, sigma_input, ranseed, type_input=0):
+    model = HQRC(nqrc, alpha, sparsity, sigma_input, type_input)
 
     train_input_seq = np.array(train_input_seq)
     train_output_seq = np.array(train_output_seq)
@@ -280,8 +286,37 @@ def get_loss(qparams, buffer, train_input_seq, train_output_seq, \
 
     return train_pred_seq, train_loss, val_pred_seq, val_loss
 
+def get_IPC(qparams, ipcparams, length, logger, ranseed=-1, Ntrials=1, savedir=None, \
+    posfix='capa', writedelay=False, type_input=0):
+    start_time = time.monotonic()
+    fname = sys._getframe().f_code.co_name
+    nqrc = 1
+    transient = length // 2
+
+    if ranseed >= 0:
+        np.random.seed(seed=ranseed)
+    for n in range(Ntrials):
+        if type_input == 0:
+            input_signals = np.random.uniform(0, 1, length) 
+        else:
+            input_signals = np.random.uniform(-1, 1, length)
+        input_signals = np.array(input_signals)
+        input_signals = np.tile(input_signals, (nqrc, 1))
+
+        ipc = IPC(ipcparams, log=logger, savedir=savedir)
+        model = HQRC(nqrc=nqrc, alpha=0.0, sparsity=1.0, sigma_input=1.0, type_input=type_input)
+        output_signals = model.init_forward(qparams, input_signals, init_rs=True, ranseed = n + ranseed)
+        logger.debug('{}: n={} per {} trials, input shape = {}, output shape={}'.format(fname, n+1, Ntrials, input_signals.shape, output_signals.shape))
+        
+        ipc.run(input_signals[0, transient:], output_signals[transient:])
+        total_capacity = np.sum(ipc.ipc_rs)
+        logger.info('ipc_arr_shape={}, total_capacity={}'.format(ipc.ipc_arr.shape, total_capacity))
+        ipc.write_results(posfix=posfix, writedelay=writedelay)
+    end_time = time.monotonic()
+    logger.info('{}: Executed time {}'.format(fname, timedelta(seconds=end_time - start_time)))
+
 def memory_function(taskname, qparams, train_len, val_len, buffer, dlist, \
-        nqrc, alpha, sparsity, sigma_input, ranseed=-1, Ntrials=1):    
+        nqrc, alpha, sparsity, sigma_input, ranseed=-1, Ntrials=1, type_input=0):    
     MFlist = []
     MFstds = []
     train_list, val_list = [], []
@@ -298,7 +333,10 @@ def memory_function(taskname, qparams, train_len, val_len, buffer, dlist, \
         data = np.random.randint(0, 2, length)
     else:
         print('Generate STM task data')
-        data = 2.0*np.random.rand(length) - 1.0
+        if type_input == 0:
+            data = np.random.rand(length)
+        else:
+            data = 2.0*np.random.rand(length) - 1.0
 
     for d in dlist:
         train_input_seq = np.array(data[  : buffer + train_len])
@@ -338,7 +376,7 @@ def memory_function(taskname, qparams, train_len, val_len, buffer, dlist, \
             # Use the same ranseed the same trial
             train_pred_seq, train_loss, val_pred_seq, val_loss = \
                 get_loss(qparams, buffer, train_input_seq, train_output_seq, \
-                    val_input_seq, val_output_seq, nqrc, alpha, sparsity, sigma_input, ranseed_net)
+                    val_input_seq, val_output_seq, nqrc, alpha, sparsity, sigma_input, ranseed_net, type_input)
 
             # Compute memory function
             val_out_seq, val_pred_seq = val_output_seq.flatten(), val_pred_seq.flatten()
