@@ -1,0 +1,16 @@
+2020-08-22 23:17:32,019 - __main__ - INFO - ../rs2_IPC/log/logtau_-5.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_4000000.log
+2020-08-22 23:36:07,025 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 4000000), output shape=(4000000, 4)
+2020-08-22 23:36:07,658 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 23:36:08,160 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 2000000)
+2020-08-22 23:40:33,830 - __main__ - INFO - Deg = 2, capa=0.0026013662714926616
+2020-08-23 00:34:29,441 - __main__ - INFO - Deg = 4, capa=0.017828730469553595
+2020-08-23 01:08:12,206 - __main__ - INFO - Deg = 6, capa=0.0103026160971489
+2020-08-23 01:08:36,627 - __main__ - INFO - Deg = 1, capa=0.6377597193832271
+2020-08-23 03:12:46,826 - __main__ - INFO - Deg = 3, capa=0.04412399325098035
+2020-08-23 07:55:06,519 - __main__ - INFO - Deg = 5, capa=0.0865158663270577
+2020-08-23 09:14:38,109 - __main__ - INFO - Deg = 7, capa=0.023172718114695214
+2020-08-23 09:14:38,110 - __main__ - INFO - Total capacity = 0.8223050099141556
+2020-08-23 09:14:38,113 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-23 09:14:38,116 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-23 09:14:38,116 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006339
+2020-08-23 09:14:38,117 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 9:57:06.097027

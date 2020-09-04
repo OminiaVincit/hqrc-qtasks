@@ -1,0 +1,16 @@
+2020-08-24 17:29:37,000 - __main__ - INFO - ../rs3_IPC_seed1/log/logtau_-3.600_V_5_qrc_IPC_full_random_seed_1_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-24 17:57:24,977 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 20)
+2020-08-24 17:57:25,211 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-24 17:57:25,447 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-24 18:00:04,413 - __main__ - INFO - Deg = 2, capa=0.7797590767508205
+2020-08-24 18:30:09,055 - __main__ - INFO - Deg = 4, capa=0.16460736400007184
+2020-08-24 18:50:19,205 - __main__ - INFO - Deg = 6, capa=0.09685145483298771
+2020-08-24 18:50:32,612 - __main__ - INFO - Deg = 1, capa=10.248881211701827
+2020-08-24 19:55:10,244 - __main__ - INFO - Deg = 3, capa=0.4268778669662075
+2020-08-24 22:32:30,596 - __main__ - INFO - Deg = 5, capa=0.805526381504147
+2020-08-24 23:19:26,670 - __main__ - INFO - Deg = 7, capa=0.2200659867059928
+2020-08-24 23:19:26,671 - __main__ - INFO - Total capacity = 12.742569342462053
+2020-08-24 23:19:26,672 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-24 23:19:26,673 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-24 23:19:26,673 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002284
+2020-08-24 23:19:26,673 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:49:49.673185

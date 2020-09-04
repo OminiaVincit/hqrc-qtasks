@@ -18,11 +18,11 @@ if __name__  == '__main__':
     print(args)
     folder, prefix, posfix = args.folder, args.prefix, args.posfix
     
-
+    dfolder = os.path.join(folder, 'degrs')
     tx = list(np.arange(-7, 7.1, 0.2))
     degcapa, xs = [], []
     for x in tx:
-        filename = os.path.join(folder, '{}_logtau_{:.3f}_{}.txt'.format(prefix, x, posfix))
+        filename = os.path.join(dfolder, '{}_logtau_{:.3f}_{}.txt'.format(prefix, x, posfix))
         if os.path.isfile(filename) == False:
             print('Not found {}'.format(filename))
             continue
@@ -40,15 +40,16 @@ if __name__  == '__main__':
     fig = plt.figure(figsize=(24, 16), dpi=600)
     
     
-    d_colors = ['#2166ac',
+    d_colors = ['#777777',
+                '#2166ac',
                 '#fee090',
                 '#fdbb84',
                 '#fc8d59',
                 '#e34a33',
                 '#b30000',
-                '#00706c',
-                '#777777']
-    N = min(len(d_colors)+1, degcapa.shape[0])
+                '#00706c'
+                ]
+    N = min(len(d_colors), degcapa.shape[0])
 
     ax1 = plt.subplot2grid((2,1), (0,0), colspan=1, rowspan=1)
     ax1.set_title('IPC by degree {}/{}'.format(folder, posfix), size=14)
@@ -56,13 +57,13 @@ if __name__  == '__main__':
     ax2 = plt.subplot2grid((2,1), (1,0), colspan=1, rowspan=1)
     ax2.set_title('Normalized IPC by degree {}/{}'.format(folder, posfix), size=14)
 
-    ax1.bar(xs, degcapa[0])
-    ax2.bar(xs, degcapa[0] / sum_by_cols)
+    ax1.bar(xs, degcapa[0], width=0.2, color=d_colors[0], edgecolor='k', label='deg-0')
+    ax2.bar(xs, degcapa[0] / sum_by_cols,  width=0.2, color=d_colors[0], edgecolor='k', label='deg-0')
     for i in range(1, N):
         bt = degcapa[:i].reshape(i, -1)
         bt = np.sum(bt, axis=0).ravel()
-        ax1.bar(xs, degcapa[i], bottom=bt, width=0.2, label='deg-{}'.format(i), color=d_colors[i-1], edgecolor='k')
-        ax2.bar(xs, degcapa[i] / sum_by_cols, bottom=bt/sum_by_cols, width=0.2, label='deg-{}'.format(i), color=d_colors[i-1], edgecolor='k')
+        ax1.bar(xs, degcapa[i], bottom=bt, width=0.2, label='deg-{}'.format(i), color=d_colors[i], edgecolor='k')
+        ax2.bar(xs, degcapa[i] / sum_by_cols, bottom=bt/sum_by_cols, width=0.2, label='deg-{}'.format(i), color=d_colors[i], edgecolor='k')
     
     ax1.legend()
     ax2.legend()
@@ -72,7 +73,7 @@ if __name__  == '__main__':
     #ax1.set_xscale('log', basex=2)
 
 
-    fig_folder = '{}_fig'.format(folder)
+    fig_folder = os.path.join(folder, 'fig')
     if os.path.isdir(fig_folder) == False:
         os.mkdir(fig_folder)
     outbase = os.path.join(fig_folder, 'fig_deg_{}'.format(posfix))

@@ -1,0 +1,1137 @@
+2020-08-22 16:35:49,048 - __main__ - INFO - ../rs1_IPC/log/qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,052 - __main__ - INFO - ../rs1_IPC/log/logtau_-7.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,053 - __main__ - INFO - ../rs1_IPC/log/logtau_-6.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,053 - __main__ - INFO - ../rs1_IPC/log/logtau_-6.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,054 - __main__ - INFO - ../rs1_IPC/log/logtau_-6.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,055 - __main__ - INFO - ../rs1_IPC/log/logtau_-6.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,056 - __main__ - INFO - ../rs1_IPC/log/logtau_-6.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,057 - __main__ - INFO - ../rs1_IPC/log/logtau_-5.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,057 - __main__ - INFO - ../rs1_IPC/log/logtau_-5.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,058 - __main__ - INFO - ../rs1_IPC/log/logtau_-5.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,059 - __main__ - INFO - ../rs1_IPC/log/logtau_-5.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,060 - __main__ - INFO - ../rs1_IPC/log/logtau_-5.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,061 - __main__ - INFO - ../rs1_IPC/log/logtau_-4.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,062 - __main__ - INFO - ../rs1_IPC/log/logtau_-4.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,062 - __main__ - INFO - ../rs1_IPC/log/logtau_-4.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,063 - __main__ - INFO - ../rs1_IPC/log/logtau_-4.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,064 - __main__ - INFO - ../rs1_IPC/log/logtau_-4.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,065 - __main__ - INFO - ../rs1_IPC/log/logtau_-3.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,065 - __main__ - INFO - ../rs1_IPC/log/logtau_-3.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,066 - __main__ - INFO - ../rs1_IPC/log/logtau_-3.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,067 - __main__ - INFO - ../rs1_IPC/log/logtau_-3.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,068 - __main__ - INFO - ../rs1_IPC/log/logtau_-3.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,069 - __main__ - INFO - ../rs1_IPC/log/logtau_-2.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,070 - __main__ - INFO - ../rs1_IPC/log/logtau_-2.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,071 - __main__ - INFO - ../rs1_IPC/log/logtau_-2.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,072 - __main__ - INFO - ../rs1_IPC/log/logtau_-2.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,073 - __main__ - INFO - ../rs1_IPC/log/logtau_-2.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,074 - __main__ - INFO - ../rs1_IPC/log/logtau_-1.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,075 - __main__ - INFO - ../rs1_IPC/log/logtau_-1.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,077 - __main__ - INFO - ../rs1_IPC/log/logtau_-1.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,079 - __main__ - INFO - ../rs1_IPC/log/logtau_-1.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,081 - __main__ - INFO - ../rs1_IPC/log/logtau_-1.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,083 - __main__ - INFO - ../rs1_IPC/log/logtau_-0.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,085 - __main__ - INFO - ../rs1_IPC/log/logtau_-0.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,088 - __main__ - INFO - ../rs1_IPC/log/logtau_-0.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,090 - __main__ - INFO - ../rs1_IPC/log/logtau_-0.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,092 - __main__ - INFO - ../rs1_IPC/log/logtau_0.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,095 - __main__ - INFO - ../rs1_IPC/log/logtau_0.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,098 - __main__ - INFO - ../rs1_IPC/log/logtau_0.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,101 - __main__ - INFO - ../rs1_IPC/log/logtau_0.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,104 - __main__ - INFO - ../rs1_IPC/log/logtau_0.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,109 - __main__ - INFO - ../rs1_IPC/log/logtau_1.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,115 - __main__ - INFO - ../rs1_IPC/log/logtau_1.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,122 - __main__ - INFO - ../rs1_IPC/log/logtau_1.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,129 - __main__ - INFO - ../rs1_IPC/log/logtau_1.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,136 - __main__ - INFO - ../rs1_IPC/log/logtau_1.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,140 - __main__ - INFO - ../rs1_IPC/log/logtau_2.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,145 - __main__ - INFO - ../rs1_IPC/log/logtau_2.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,148 - __main__ - INFO - ../rs1_IPC/log/logtau_2.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,150 - __main__ - INFO - ../rs1_IPC/log/logtau_2.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,151 - __main__ - INFO - ../rs1_IPC/log/logtau_2.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,152 - __main__ - INFO - ../rs1_IPC/log/logtau_3.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,154 - __main__ - INFO - ../rs1_IPC/log/logtau_3.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,155 - __main__ - INFO - ../rs1_IPC/log/logtau_3.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,156 - __main__ - INFO - ../rs1_IPC/log/logtau_3.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,157 - __main__ - INFO - ../rs1_IPC/log/logtau_3.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,158 - __main__ - INFO - ../rs1_IPC/log/logtau_4.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,159 - __main__ - INFO - ../rs1_IPC/log/logtau_4.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,160 - __main__ - INFO - ../rs1_IPC/log/logtau_4.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,161 - __main__ - INFO - ../rs1_IPC/log/logtau_4.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,162 - __main__ - INFO - ../rs1_IPC/log/logtau_4.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,163 - __main__ - INFO - ../rs1_IPC/log/logtau_5.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,165 - __main__ - INFO - ../rs1_IPC/log/logtau_5.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,166 - __main__ - INFO - ../rs1_IPC/log/logtau_5.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,167 - __main__ - INFO - ../rs1_IPC/log/logtau_5.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,169 - __main__ - INFO - ../rs1_IPC/log/logtau_5.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,170 - __main__ - INFO - ../rs1_IPC/log/logtau_6.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,172 - __main__ - INFO - ../rs1_IPC/log/logtau_6.200_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,173 - __main__ - INFO - ../rs1_IPC/log/logtau_6.400_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,175 - __main__ - INFO - ../rs1_IPC/log/logtau_6.600_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,177 - __main__ - INFO - ../rs1_IPC/log/logtau_6.800_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:35:49,179 - __main__ - INFO - ../rs1_IPC/log/logtau_7.000_V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_0,100,50,50,20,20,10,10_T_2000000.log
+2020-08-22 16:45:03,423 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:03,468 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:03,435 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:03,483 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:03,471 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:03,516 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:03,552 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:03,566 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:03,604 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:03,641 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:03,695 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:03,782 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,130 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,214 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,152 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,254 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,219 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,284 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,311 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,375 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,392 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,311 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,426 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,382 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,524 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,386 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,529 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,562 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,642 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,645 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,551 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,649 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,578 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,779 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,782 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,659 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,877 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,675 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:04,891 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:04,983 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:04,963 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,066 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,095 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,098 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,167 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,118 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,210 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,032 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,309 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,311 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,166 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,444 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,343 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,456 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,263 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,540 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,560 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,571 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,396 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,576 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,503 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,628 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,470 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,691 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,696 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,459 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,719 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,746 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,754 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,785 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,569 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,873 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,887 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,753 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,895 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,676 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,907 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,729 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:05,922 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:05,937 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:06,031 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,737 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:06,052 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:06,130 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:06,130 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:05,981 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:06,136 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:06,138 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:06,268 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:06,304 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:06,007 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:06,323 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:06,293 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:06,567 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:06,609 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:06,773 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:06,433 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:06,804 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:06,615 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:06,926 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:07,181 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:07,250 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:07,417 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:07,704 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:07,513 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:07,799 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:07,941 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:08,029 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:08,028 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:08,224 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:08,388 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:08,755 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:08,919 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:09,072 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:08,762 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:09,089 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:09,377 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:09,951 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:10,116 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:10,271 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:10,974 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:11,272 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:11,522 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:20,043 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:20,279 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:20,477 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:23,933 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:24,172 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:24,351 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:25,025 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:25,331 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:25,562 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:30,704 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:30,991 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:31,219 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:45,542 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:45,903 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:46,195 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:49,505 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:49,793 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:50,025 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:53,879 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:54,171 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:54,409 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:45:54,414 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:45:54,611 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:45:54,761 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:04,282 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:46:04,740 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:46:05,150 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:05,112 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:46:05,437 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:46:05,701 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:18,830 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:46:19,158 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:46:19,452 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:20,922 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:46:21,152 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:46:21,378 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:30,724 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:46:30,928 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:46:31,110 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:32,638 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:46:32,937 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:46:33,202 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:38,564 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:46:38,860 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:46:39,084 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:43,962 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:46:44,345 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:46:44,599 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:46:52,625 - __main__ - INFO - Deg = 2, capa=0.5849968405652137
+2020-08-22 16:46:57,658 - __main__ - INFO - Deg = 2, capa=0.5035923894006151
+2020-08-22 16:47:00,478 - __main__ - INFO - Deg = 2, capa=0.6266594252791823
+2020-08-22 16:47:00,640 - __main__ - INFO - Deg = 2, capa=0.03519224265051371
+2020-08-22 16:47:01,468 - __main__ - INFO - Deg = 2, capa=0.07904018199462876
+2020-08-22 16:47:02,514 - __main__ - INFO - Deg = 2, capa=0.10938195691808818
+2020-08-22 16:47:03,316 - __main__ - INFO - Deg = 2, capa=0.005369697710400864
+2020-08-22 16:47:04,168 - __main__ - INFO - Deg = 2, capa=0.4646302069874616
+2020-08-22 16:47:04,277 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:47:04,642 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:47:04,943 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:47:06,257 - __main__ - INFO - Deg = 2, capa=1.1805055276295349
+2020-08-22 16:47:07,125 - __main__ - INFO - Deg = 2, capa=1.3207789817313638
+2020-08-22 16:47:07,215 - __main__ - INFO - Deg = 2, capa=0.5502219839525426
+2020-08-22 16:47:07,875 - __main__ - INFO - Deg = 2, capa=0.0047838235484242726
+2020-08-22 16:47:09,637 - __main__ - INFO - Deg = 2, capa=1.1716224480596016
+2020-08-22 16:47:10,691 - __main__ - INFO - Deg = 2, capa=0.7681450464022298
+2020-08-22 16:47:10,964 - __main__ - INFO - Deg = 2, capa=0.004576845927905157
+2020-08-22 16:47:11,157 - __main__ - INFO - Deg = 2, capa=0.534901907287965
+2020-08-22 16:47:12,378 - __main__ - INFO - Deg = 2, capa=0.005261607654591053
+2020-08-22 16:47:12,410 - __main__ - INFO - Deg = 2, capa=0.00629836288400714
+2020-08-22 16:47:12,725 - __main__ - INFO - Deg = 2, capa=0.009482072008646574
+2020-08-22 16:47:13,188 - __main__ - INFO - Deg = 2, capa=0.007083047313150463
+2020-08-22 16:47:13,338 - __main__ - INFO - Deg = 2, capa=0.17791812246141123
+2020-08-22 16:47:13,650 - __main__ - INFO - Deg = 2, capa=0.37323715923619644
+2020-08-22 16:47:14,962 - __main__ - INFO - Deg = 2, capa=0.012803654475961587
+2020-08-22 16:47:15,154 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:47:15,470 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:47:15,548 - __main__ - INFO - Deg = 2, capa=0.32798819600625434
+2020-08-22 16:47:15,717 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:47:15,964 - __main__ - INFO - Deg = 2, capa=0.9714897878953861
+2020-08-22 16:47:16,454 - __main__ - INFO - Deg = 2, capa=0.005058211876136385
+2020-08-22 16:47:16,577 - __main__ - INFO - Deg = 2, capa=0.5475385937909963
+2020-08-22 16:47:18,221 - __main__ - INFO - Deg = 2, capa=0.6907231335886563
+2020-08-22 16:47:20,635 - __main__ - INFO - Deg = 2, capa=0.025741098510631
+2020-08-22 16:47:21,052 - __main__ - INFO - Deg = 2, capa=0.8057254513498449
+2020-08-22 16:47:21,750 - __main__ - INFO - Deg = 2, capa=0.06159192254736678
+2020-08-22 16:47:21,942 - __main__ - INFO - Deg = 2, capa=0.7156230776627092
+2020-08-22 16:47:22,663 - __main__ - INFO - Deg = 2, capa=0.14186720140959852
+2020-08-22 16:47:22,684 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:47:23,275 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:47:23,690 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:47:25,259 - __main__ - INFO - Deg = 2, capa=0.7360753053915782
+2020-08-22 16:47:25,482 - __main__ - INFO - Deg = 2, capa=0.9929426231927653
+2020-08-22 16:47:25,966 - __main__ - INFO - Deg = 2, capa=0.005001884733167576
+2020-08-22 16:47:26,089 - __main__ - INFO - Deg = 2, capa=0.0568378943423955
+2020-08-22 16:47:27,041 - __main__ - INFO - Deg = 2, capa=0.21571109241656533
+2020-08-22 16:47:28,102 - __main__ - INFO - Deg = 2, capa=0.04381875908164215
+2020-08-22 16:47:28,803 - __main__ - INFO - Deg = 2, capa=0.004641108894495625
+2020-08-22 16:47:30,601 - __main__ - INFO - Deg = 2, capa=0.004924866326762517
+2020-08-22 16:47:32,447 - __main__ - INFO - Deg = 2, capa=0.004807623634249986
+2020-08-22 16:47:36,301 - __main__ - INFO - Deg = 2, capa=1.1358620078953634
+2020-08-22 16:47:40,744 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:47:41,110 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:47:41,406 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:47:52,346 - __main__ - INFO - Deg = 2, capa=0.004794057682057216
+2020-08-22 16:47:53,544 - __main__ - INFO - Deg = 2, capa=0.7422821668994749
+2020-08-22 16:47:55,653 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:47:56,118 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:47:56,516 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:48:03,502 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:48:03,895 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:48:04,209 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:48:08,175 - __main__ - INFO - Deg = 2, capa=1.0294914398512711
+2020-08-22 16:48:09,703 - __main__ - INFO - Deg = 2, capa=0.017979713150217347
+2020-08-22 16:48:10,135 - __main__ - INFO - Deg = 2, capa=0.0054396442692042305
+2020-08-22 16:48:16,281 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:48:16,915 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:48:17,345 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:48:19,371 - __main__ - INFO - Deg = 2, capa=0.3764739684068946
+2020-08-22 16:48:20,816 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:48:21,185 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:48:21,473 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:48:39,590 - __main__ - INFO - Deg = 2, capa=0.005778111210151163
+2020-08-22 16:48:45,133 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:48:45,509 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:48:45,814 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:48:47,095 - __main__ - INFO - Deg = 2, capa=0.1251578778059771
+2020-08-22 16:48:48,670 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:48:49,059 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:48:49,379 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:48:50,990 - __main__ - INFO - Deg = 2, capa=0.7853665416308303
+2020-08-22 16:48:57,633 - __main__ - INFO - Deg = 2, capa=1.048018826038045
+2020-08-22 16:49:01,286 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:49:01,701 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:49:02,038 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:49:13,796 - __main__ - INFO - Deg = 2, capa=0.004439669003957704
+2020-08-22 16:49:13,919 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:49:14,336 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:49:14,710 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:49:14,533 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:49:15,003 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:49:15,362 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:49:16,972 - __main__ - INFO - Deg = 2, capa=0.00470034214957595
+2020-08-22 16:49:27,770 - __main__ - INFO - Deg = 2, capa=0.8571519162878569
+2020-08-22 16:49:27,364 - __main__ - DEBUG - log2tau_7.000_get_IPC: n=1 per 1 trials, input shape = (1, 2000000), output shape=(2000000, 4)
+2020-08-22 16:49:27,776 - __main__ - INFO - log2tau_7.000___loop_IPC: Prepare signals...
+2020-08-22 16:49:28,103 - __main__ - DEBUG - log2tau_7.000___loop_IPC: Created legendre input (8, 1000000)
+2020-08-22 16:49:29,837 - __main__ - INFO - Deg = 2, capa=1.0969358191675864
+2020-08-22 16:49:58,042 - __main__ - INFO - Deg = 2, capa=0.0043724266212396955
+2020-08-22 16:50:11,465 - __main__ - INFO - Deg = 2, capa=0.005886135548720662
+2020-08-22 16:50:22,494 - __main__ - INFO - Deg = 2, capa=0.19248110753698977
+2020-08-22 16:50:45,916 - __main__ - INFO - Deg = 2, capa=0.4510425669932723
+2020-08-22 16:51:03,889 - __main__ - INFO - Deg = 2, capa=1.3899512672395085
+2020-08-22 16:51:12,367 - __main__ - INFO - Deg = 2, capa=0.8789541270160884
+2020-08-22 16:51:21,874 - __main__ - INFO - Deg = 2, capa=0.2577547591862428
+2020-08-22 16:51:36,337 - __main__ - INFO - Deg = 2, capa=0.15875212931030047
+2020-08-22 16:51:50,084 - __main__ - INFO - Deg = 2, capa=0.003837175833358786
+2020-08-22 16:51:55,851 - __main__ - INFO - Deg = 2, capa=0.005476569267634051
+2020-08-22 16:52:14,411 - __main__ - INFO - Deg = 2, capa=0.3887231016417659
+2020-08-22 16:52:26,104 - __main__ - INFO - Deg = 2, capa=1.0342637279979896
+2020-08-22 16:52:28,628 - __main__ - INFO - Deg = 2, capa=0.005182453755029684
+2020-08-22 16:52:34,613 - __main__ - INFO - Deg = 2, capa=1.1461189672901086
+2020-08-22 17:13:36,722 - __main__ - INFO - Deg = 4, capa=0.08119032385435339
+2020-08-22 17:13:43,655 - __main__ - INFO - Deg = 4, capa=0.034243212332995904
+2020-08-22 17:13:45,472 - __main__ - INFO - Deg = 4, capa=0.04827961393353032
+2020-08-22 17:13:48,534 - __main__ - INFO - Deg = 4, capa=0.035074444020698946
+2020-08-22 17:13:51,378 - __main__ - INFO - Deg = 4, capa=0.05568223829516356
+2020-08-22 17:13:56,490 - __main__ - INFO - Deg = 4, capa=0.04172282368161168
+2020-08-22 17:13:57,719 - __main__ - INFO - Deg = 4, capa=0.037095489416721174
+2020-08-22 17:13:57,757 - __main__ - INFO - Deg = 4, capa=0.0646607267268983
+2020-08-22 17:13:58,688 - __main__ - INFO - Deg = 4, capa=0.041115977818048884
+2020-08-22 17:14:03,476 - __main__ - INFO - Deg = 4, capa=0.05985948849569621
+2020-08-22 17:14:04,763 - __main__ - INFO - Deg = 4, capa=0.06747895019699257
+2020-08-22 17:14:07,439 - __main__ - INFO - Deg = 4, capa=0.06702232870396524
+2020-08-22 17:14:07,618 - __main__ - INFO - Deg = 4, capa=0.035653302086213035
+2020-08-22 17:14:09,247 - __main__ - INFO - Deg = 4, capa=0.037372639011741794
+2020-08-22 17:14:11,897 - __main__ - INFO - Deg = 4, capa=0.03802731410554351
+2020-08-22 17:14:13,751 - __main__ - INFO - Deg = 4, capa=0.05570650621614554
+2020-08-22 17:14:14,868 - __main__ - INFO - Deg = 4, capa=0.05212741454354798
+2020-08-22 17:14:15,327 - __main__ - INFO - Deg = 4, capa=0.03996555108752073
+2020-08-22 17:14:16,212 - __main__ - INFO - Deg = 4, capa=0.03975721266135662
+2020-08-22 17:14:17,041 - __main__ - INFO - Deg = 4, capa=0.03608221650964862
+2020-08-22 17:14:17,519 - __main__ - INFO - Deg = 4, capa=0.06480550323849718
+2020-08-22 17:14:17,565 - __main__ - INFO - Deg = 4, capa=0.07790446879085794
+2020-08-22 17:14:18,195 - __main__ - INFO - Deg = 4, capa=0.04605945756247298
+2020-08-22 17:14:18,201 - __main__ - INFO - Deg = 4, capa=0.034601864063002453
+2020-08-22 17:14:18,687 - __main__ - INFO - Deg = 4, capa=0.10316295606883803
+2020-08-22 17:14:19,035 - __main__ - INFO - Deg = 4, capa=0.09437873377154389
+2020-08-22 17:14:19,321 - __main__ - INFO - Deg = 4, capa=0.05604961518326092
+2020-08-22 17:14:22,318 - __main__ - INFO - Deg = 4, capa=0.06976743228635604
+2020-08-22 17:14:25,194 - __main__ - INFO - Deg = 4, capa=0.035654608774634076
+2020-08-22 17:14:25,525 - __main__ - INFO - Deg = 4, capa=0.08013965461941636
+2020-08-22 17:14:26,656 - __main__ - INFO - Deg = 4, capa=0.0594202508504665
+2020-08-22 17:14:26,689 - __main__ - INFO - Deg = 4, capa=0.03531503483607532
+2020-08-22 17:14:27,270 - __main__ - INFO - Deg = 4, capa=0.08671797266892475
+2020-08-22 17:14:29,346 - __main__ - INFO - Deg = 4, capa=0.040609552755895256
+2020-08-22 17:14:31,722 - __main__ - INFO - Deg = 4, capa=0.03661622170731032
+2020-08-22 17:14:32,196 - __main__ - INFO - Deg = 4, capa=0.03489781171625613
+2020-08-22 17:14:37,682 - __main__ - INFO - Deg = 4, capa=0.06241260645907311
+2020-08-22 17:14:41,336 - __main__ - INFO - Deg = 4, capa=0.0353808959146253
+2020-08-22 17:14:44,940 - __main__ - INFO - Deg = 4, capa=0.03577586172680042
+2020-08-22 17:14:47,794 - __main__ - INFO - Deg = 4, capa=0.05093831560988012
+2020-08-22 17:14:48,733 - __main__ - INFO - Deg = 4, capa=0.06669933354955633
+2020-08-22 17:14:52,493 - __main__ - INFO - Deg = 4, capa=0.05198903713293587
+2020-08-22 17:14:55,155 - __main__ - INFO - Deg = 4, capa=0.036185412683407685
+2020-08-22 17:14:58,445 - __main__ - INFO - Deg = 4, capa=0.07998656324817369
+2020-08-22 17:14:58,624 - __main__ - INFO - Deg = 4, capa=0.07342398458428989
+2020-08-22 17:15:09,656 - __main__ - INFO - Deg = 4, capa=0.036576201664983966
+2020-08-22 17:15:18,904 - __main__ - INFO - Deg = 4, capa=0.03497258494510004
+2020-08-22 17:15:22,670 - __main__ - INFO - Deg = 4, capa=0.034121945869505656
+2020-08-22 17:15:35,840 - __main__ - INFO - Deg = 4, capa=0.048184203768786654
+2020-08-22 17:15:48,740 - __main__ - INFO - Deg = 4, capa=0.035622330827217476
+2020-08-22 17:15:58,779 - __main__ - INFO - Deg = 4, capa=0.0433086998480674
+2020-08-22 17:16:10,101 - __main__ - INFO - Deg = 4, capa=0.09782038351589978
+2020-08-22 17:16:12,788 - __main__ - INFO - Deg = 4, capa=0.0341847095964057
+2020-08-22 17:16:18,285 - __main__ - INFO - Deg = 4, capa=0.0895877740104888
+2020-08-22 17:16:31,144 - __main__ - INFO - Deg = 4, capa=0.21396646257250876
+2020-08-22 17:16:52,100 - __main__ - INFO - Deg = 4, capa=0.03445880078294174
+2020-08-22 17:16:52,911 - __main__ - INFO - Deg = 4, capa=0.08656115258257309
+2020-08-22 17:17:25,650 - __main__ - INFO - Deg = 4, capa=0.03510250972177853
+2020-08-22 17:17:48,219 - __main__ - INFO - Deg = 4, capa=0.03639010593923473
+2020-08-22 17:17:57,819 - __main__ - INFO - Deg = 4, capa=0.042555072413091796
+2020-08-22 17:18:05,183 - __main__ - INFO - Deg = 4, capa=0.06670782736353986
+2020-08-22 17:18:06,453 - __main__ - INFO - Deg = 4, capa=0.061980487759595464
+2020-08-22 17:18:30,918 - __main__ - INFO - Deg = 4, capa=0.09262601866796812
+2020-08-22 17:18:42,995 - __main__ - INFO - Deg = 4, capa=0.05896018102999728
+2020-08-22 17:18:47,350 - __main__ - INFO - Deg = 4, capa=0.05759154545696171
+2020-08-22 17:18:58,599 - __main__ - INFO - Deg = 4, capa=0.03666944818679755
+2020-08-22 17:19:00,797 - __main__ - INFO - Deg = 4, capa=0.03419779651000186
+2020-08-22 17:19:28,808 - __main__ - INFO - Deg = 4, capa=0.0499946174639096
+2020-08-22 17:19:31,777 - __main__ - INFO - Deg = 4, capa=0.09313961245950261
+2020-08-22 17:19:44,639 - __main__ - INFO - Deg = 4, capa=0.06030564629403286
+2020-08-22 17:19:49,278 - __main__ - INFO - Deg = 4, capa=0.035769845862184645
+2020-08-22 17:30:24,829 - __main__ - INFO - Deg = 6, capa=0.021255292032045823
+2020-08-22 17:30:28,119 - __main__ - INFO - Deg = 6, capa=0.019107901219496404
+2020-08-22 17:30:32,275 - __main__ - INFO - Deg = 6, capa=0.02090413228563665
+2020-08-22 17:30:32,316 - __main__ - INFO - Deg = 6, capa=0.028166420041365086
+2020-08-22 17:30:32,832 - __main__ - INFO - Deg = 6, capa=0.025526578947127433
+2020-08-22 17:30:34,890 - __main__ - INFO - Deg = 6, capa=0.027871581797836473
+2020-08-22 17:30:36,343 - __main__ - INFO - Deg = 6, capa=0.02445296454830892
+2020-08-22 17:30:37,193 - __main__ - INFO - Deg = 1, capa=3.5672479306293994
+2020-08-22 17:30:37,664 - __main__ - INFO - Deg = 6, capa=0.028142252323629414
+2020-08-22 17:30:40,438 - __main__ - INFO - Deg = 6, capa=0.027981552176240897
+2020-08-22 17:30:40,522 - __main__ - INFO - Deg = 6, capa=0.028049118403683744
+2020-08-22 17:30:40,667 - __main__ - INFO - Deg = 1, capa=0.22281998257803373
+2020-08-22 17:30:44,443 - __main__ - INFO - Deg = 1, capa=2.5543301383500383
+2020-08-22 17:30:44,727 - __main__ - INFO - Deg = 1, capa=3.2941880869328766
+2020-08-22 17:30:44,807 - __main__ - INFO - Deg = 1, capa=1.796424550482829
+2020-08-22 17:30:45,865 - __main__ - INFO - Deg = 6, capa=0.02486868528507697
+2020-08-22 17:30:49,693 - __main__ - INFO - Deg = 1, capa=3.178293505602607
+2020-08-22 17:30:49,810 - __main__ - INFO - Deg = 1, capa=3.8740184392339843
+2020-08-22 17:30:52,848 - __main__ - INFO - Deg = 6, capa=0.02219425380918213
+2020-08-22 17:30:54,053 - __main__ - INFO - Deg = 1, capa=3.106688386526976
+2020-08-22 17:30:54,702 - __main__ - INFO - Deg = 1, capa=3.0191119494082113
+2020-08-22 17:30:54,733 - __main__ - INFO - Deg = 1, capa=2.8004312954901143
+2020-08-22 17:30:55,111 - __main__ - INFO - Deg = 6, capa=0.02060020229827962
+2020-08-22 17:30:58,203 - __main__ - INFO - Deg = 6, capa=0.02792482491351597
+2020-08-22 17:31:00,542 - __main__ - INFO - Deg = 6, capa=0.02669048538171036
+2020-08-22 17:31:02,270 - __main__ - INFO - Deg = 6, capa=0.020805862304390514
+2020-08-22 17:31:02,532 - __main__ - INFO - Deg = 6, capa=0.02066553396107726
+2020-08-22 17:31:02,551 - __main__ - INFO - Deg = 1, capa=3.798924798277301
+2020-08-22 17:31:07,677 - __main__ - INFO - Deg = 6, capa=0.02664791206479558
+2020-08-22 17:31:07,911 - __main__ - INFO - Deg = 6, capa=0.027806167215404402
+2020-08-22 17:31:08,097 - __main__ - INFO - Deg = 1, capa=3.935639109727879
+2020-08-22 17:31:09,086 - __main__ - INFO - Deg = 6, capa=0.026116034491254936
+2020-08-22 17:31:09,690 - __main__ - INFO - Deg = 1, capa=1.1613855920644662
+2020-08-22 17:31:11,594 - __main__ - INFO - Deg = 1, capa=3.1779621149849224
+2020-08-22 17:31:12,235 - __main__ - INFO - Deg = 6, capa=0.021300442634086612
+2020-08-22 17:31:13,763 - __main__ - INFO - Deg = 6, capa=0.020508861663783552
+2020-08-22 17:31:13,837 - __main__ - INFO - Deg = 1, capa=3.079358537830498
+2020-08-22 17:31:13,967 - __main__ - INFO - Deg = 6, capa=0.02372772299516471
+2020-08-22 17:31:14,274 - __main__ - INFO - Deg = 6, capa=0.02081007911127391
+2020-08-22 17:31:15,051 - __main__ - INFO - Deg = 1, capa=1.622452256316932
+2020-08-22 17:31:15,206 - __main__ - INFO - Deg = 6, capa=0.02861387647894366
+2020-08-22 17:31:15,562 - __main__ - INFO - Deg = 6, capa=0.0273731321052188
+2020-08-22 17:31:16,559 - __main__ - INFO - Deg = 6, capa=0.020223776622679657
+2020-08-22 17:31:16,907 - __main__ - INFO - Deg = 1, capa=3.3886161257789897
+2020-08-22 17:31:17,605 - __main__ - INFO - Deg = 6, capa=0.022841518013279594
+2020-08-22 17:31:18,042 - __main__ - INFO - Deg = 6, capa=0.02863395615374405
+2020-08-22 17:31:18,511 - __main__ - INFO - Deg = 6, capa=0.026401857390899435
+2020-08-22 17:31:19,831 - __main__ - INFO - Deg = 6, capa=0.0285417148552969
+2020-08-22 17:31:19,954 - __main__ - INFO - Deg = 6, capa=0.028673142690966533
+2020-08-22 17:31:20,438 - __main__ - INFO - Deg = 1, capa=3.4205047900504515
+2020-08-22 17:31:20,748 - __main__ - INFO - Deg = 1, capa=2.9403916585793723
+2020-08-22 17:31:22,903 - __main__ - INFO - Deg = 1, capa=3.1389731176326148
+2020-08-22 17:31:23,854 - __main__ - INFO - Deg = 6, capa=0.028581610736900652
+2020-08-22 17:31:24,029 - __main__ - INFO - Deg = 6, capa=0.020077815775537192
+2020-08-22 17:31:25,081 - __main__ - INFO - Deg = 1, capa=3.9094252831750813
+2020-08-22 17:31:25,828 - __main__ - INFO - Deg = 6, capa=0.027877302616743753
+2020-08-22 17:31:26,554 - __main__ - INFO - Deg = 1, capa=0.5714340528786138
+2020-08-22 17:31:26,816 - __main__ - INFO - Deg = 1, capa=3.9238609116738465
+2020-08-22 17:31:27,585 - __main__ - INFO - Deg = 1, capa=2.6200097668517275
+2020-08-22 17:31:27,954 - __main__ - INFO - Deg = 1, capa=1.421444929941285
+2020-08-22 17:31:28,432 - __main__ - INFO - Deg = 1, capa=3.2836303691096203
+2020-08-22 17:31:29,420 - __main__ - INFO - Deg = 6, capa=0.028812602953982497
+2020-08-22 17:31:29,609 - __main__ - INFO - Deg = 1, capa=3.9334606423177387
+2020-08-22 17:31:29,744 - __main__ - INFO - Deg = 1, capa=0.7292271287644516
+2020-08-22 17:31:30,255 - __main__ - INFO - Deg = 6, capa=0.028494539452316163
+2020-08-22 17:31:30,839 - __main__ - INFO - Deg = 1, capa=3.549550053742774
+2020-08-22 17:31:31,699 - __main__ - INFO - Deg = 1, capa=2.4359932943835836
+2020-08-22 17:31:32,620 - __main__ - INFO - Deg = 1, capa=2.8076592048249536
+2020-08-22 17:31:34,900 - __main__ - INFO - Deg = 1, capa=2.904338121520625
+2020-08-22 17:31:36,060 - __main__ - INFO - Deg = 1, capa=2.86098612778086
+2020-08-22 17:31:37,464 - __main__ - INFO - Deg = 6, capa=0.019398243230942455
+2020-08-22 17:31:37,895 - __main__ - INFO - Deg = 1, capa=0.5175727698114535
+2020-08-22 17:31:38,205 - __main__ - INFO - Deg = 1, capa=3.060687974587252
+2020-08-22 17:31:42,012 - __main__ - INFO - Deg = 1, capa=2.684159279905581
+2020-08-22 17:31:42,574 - __main__ - INFO - Deg = 1, capa=2.7109555439137765
+2020-08-22 17:31:45,120 - __main__ - INFO - Deg = 6, capa=0.021563523392162547
+2020-08-22 17:31:46,051 - __main__ - INFO - Deg = 6, capa=0.020239316882728477
+2020-08-22 17:31:47,883 - __main__ - INFO - Deg = 6, capa=0.028289551414951125
+2020-08-22 17:31:49,470 - __main__ - INFO - Deg = 1, capa=0.6412073116781012
+2020-08-22 17:31:57,190 - __main__ - INFO - Deg = 1, capa=3.84436632834868
+2020-08-22 17:31:57,868 - __main__ - INFO - Deg = 6, capa=0.020517076610511102
+2020-08-22 17:31:58,180 - __main__ - INFO - Deg = 6, capa=0.021090322926433668
+2020-08-22 17:31:58,629 - __main__ - INFO - Deg = 6, capa=0.027079311733802007
+2020-08-22 17:31:59,848 - __main__ - INFO - Deg = 1, capa=0.8741488190599307
+2020-08-22 17:32:00,271 - __main__ - INFO - Deg = 1, capa=2.6926598250767624
+2020-08-22 17:32:04,743 - __main__ - INFO - Deg = 6, capa=0.020090901929747922
+2020-08-22 17:32:08,882 - __main__ - INFO - Deg = 6, capa=0.019862291642030697
+2020-08-22 17:32:10,325 - __main__ - INFO - Deg = 1, capa=2.917954850749018
+2020-08-22 17:32:10,716 - __main__ - INFO - Deg = 1, capa=3.204186982925744
+2020-08-22 17:32:12,946 - __main__ - INFO - Deg = 1, capa=3.1624904931631885
+2020-08-22 17:32:13,307 - __main__ - INFO - Deg = 6, capa=0.029069462280334822
+2020-08-22 17:32:15,642 - __main__ - INFO - Deg = 6, capa=0.02097111117875312
+2020-08-22 17:32:19,878 - __main__ - INFO - Deg = 1, capa=0.3129334218781306
+2020-08-22 17:32:21,825 - __main__ - INFO - Deg = 1, capa=0.1703853005576238
+2020-08-22 17:32:27,137 - __main__ - INFO - Deg = 1, capa=2.663884618886889
+2020-08-22 17:32:27,948 - __main__ - INFO - Deg = 1, capa=3.6991296114482073
+2020-08-22 17:32:30,068 - __main__ - INFO - Deg = 6, capa=0.025989711585826265
+2020-08-22 17:32:42,369 - __main__ - INFO - Deg = 1, capa=3.5484240023313474
+2020-08-22 17:32:47,391 - __main__ - INFO - Deg = 6, capa=0.027172798280317448
+2020-08-22 17:32:49,717 - __main__ - INFO - Deg = 6, capa=0.02872459673138247
+2020-08-22 17:32:56,338 - __main__ - INFO - Deg = 6, capa=0.019876484413386804
+2020-08-22 17:33:00,284 - __main__ - INFO - Deg = 1, capa=3.1000693307554386
+2020-08-22 17:33:03,890 - __main__ - INFO - Deg = 6, capa=0.025325839552342258
+2020-08-22 17:33:04,409 - __main__ - INFO - Deg = 1, capa=2.734016090496338
+2020-08-22 17:33:06,452 - __main__ - INFO - Deg = 6, capa=0.019473117159273162
+2020-08-22 17:33:09,233 - __main__ - INFO - Deg = 1, capa=0.27809343432121386
+2020-08-22 17:33:13,606 - __main__ - INFO - Deg = 6, capa=0.03099768964369321
+2020-08-22 17:33:17,463 - __main__ - INFO - Deg = 1, capa=3.7042678629341963
+2020-08-22 17:33:19,547 - __main__ - INFO - Deg = 1, capa=0.24304296837816883
+2020-08-22 17:33:27,571 - __main__ - INFO - Deg = 1, capa=2.2688379908210927
+2020-08-22 17:33:32,268 - __main__ - INFO - Deg = 6, capa=0.029258442183026385
+2020-08-22 17:33:44,489 - __main__ - INFO - Deg = 1, capa=2.7980403769726414
+2020-08-22 17:34:03,830 - __main__ - INFO - Deg = 6, capa=0.028915264366490574
+2020-08-22 17:34:13,860 - __main__ - INFO - Deg = 6, capa=0.020940990011188737
+2020-08-22 17:34:16,539 - __main__ - INFO - Deg = 1, capa=2.611501118375473
+2020-08-22 17:34:22,712 - __main__ - INFO - Deg = 6, capa=0.019842323044408333
+2020-08-22 17:34:25,337 - __main__ - INFO - Deg = 1, capa=2.653298433881016
+2020-08-22 17:34:30,134 - __main__ - INFO - Deg = 6, capa=0.024899480705678646
+2020-08-22 17:34:35,041 - __main__ - INFO - Deg = 1, capa=0.4140260249006713
+2020-08-22 17:34:42,691 - __main__ - INFO - Deg = 1, capa=3.7802086037635054
+2020-08-22 17:35:02,302 - __main__ - INFO - Deg = 6, capa=0.02806399148527482
+2020-08-22 17:35:09,117 - __main__ - INFO - Deg = 6, capa=0.028744599503770635
+2020-08-22 17:35:16,670 - __main__ - INFO - Deg = 1, capa=2.4323851852782106
+2020-08-22 17:35:18,492 - __main__ - INFO - Deg = 6, capa=0.02703850210059256
+2020-08-22 17:35:21,347 - __main__ - INFO - Deg = 1, capa=2.772359894030265
+2020-08-22 17:35:28,462 - __main__ - INFO - Deg = 6, capa=0.02732941907868775
+2020-08-22 17:35:31,169 - __main__ - INFO - Deg = 1, capa=3.326411516945226
+2020-08-22 17:35:36,192 - __main__ - INFO - Deg = 6, capa=0.019987349793282743
+2020-08-22 17:35:41,032 - __main__ - INFO - Deg = 6, capa=0.020177945605720515
+2020-08-22 17:35:41,335 - __main__ - INFO - Deg = 1, capa=3.063913386343469
+2020-08-22 17:35:48,280 - __main__ - INFO - Deg = 6, capa=0.02681485699949815
+2020-08-22 17:35:49,937 - __main__ - INFO - Deg = 1, capa=0.20304490635782396
+2020-08-22 17:35:53,681 - __main__ - INFO - Deg = 1, capa=2.0507941666899216
+2020-08-22 17:36:00,555 - __main__ - INFO - Deg = 1, capa=3.5085778878567146
+2020-08-22 17:36:01,680 - __main__ - INFO - Deg = 6, capa=0.026274794983358267
+2020-08-22 17:36:14,332 - __main__ - INFO - Deg = 1, capa=3.479590025382937
+2020-08-22 17:36:17,600 - __main__ - INFO - Deg = 6, capa=0.020903733672353958
+2020-08-22 17:36:28,342 - __main__ - INFO - Deg = 6, capa=0.029498733588517612
+2020-08-22 17:36:30,454 - __main__ - INFO - Deg = 6, capa=0.028553503212982185
+2020-08-22 17:36:31,173 - __main__ - INFO - Deg = 1, capa=2.3730869501732603
+2020-08-22 17:36:41,086 - __main__ - INFO - Deg = 1, capa=2.4977596059929583
+2020-08-22 17:36:42,878 - __main__ - INFO - Deg = 1, capa=2.605681287355336
+2020-08-22 18:32:30,456 - __main__ - INFO - Deg = 3, capa=0.2939416745695092
+2020-08-22 18:32:48,832 - __main__ - INFO - Deg = 3, capa=0.08852298248426288
+2020-08-22 18:32:51,668 - __main__ - INFO - Deg = 3, capa=0.3418144918669936
+2020-08-22 18:32:54,253 - __main__ - INFO - Deg = 3, capa=0.09182698868530137
+2020-08-22 18:33:04,884 - __main__ - INFO - Deg = 3, capa=0.08813972070085246
+2020-08-22 18:33:14,524 - __main__ - INFO - Deg = 3, capa=0.26048649870644625
+2020-08-22 18:33:16,553 - __main__ - INFO - Deg = 3, capa=0.08766192912944873
+2020-08-22 18:33:16,677 - __main__ - INFO - Deg = 3, capa=0.13196757186157781
+2020-08-22 18:33:18,035 - __main__ - INFO - Deg = 3, capa=0.5310808622222026
+2020-08-22 18:33:19,785 - __main__ - INFO - Deg = 3, capa=0.09012433298282067
+2020-08-22 18:33:20,591 - __main__ - INFO - Deg = 3, capa=0.5248674384730154
+2020-08-22 18:33:20,678 - __main__ - INFO - Deg = 3, capa=0.09157932824463741
+2020-08-22 18:33:21,760 - __main__ - INFO - Deg = 3, capa=0.28563852100114656
+2020-08-22 18:33:21,815 - __main__ - INFO - Deg = 3, capa=0.0913240143036238
+2020-08-22 18:33:24,541 - __main__ - INFO - Deg = 3, capa=0.5054866564698063
+2020-08-22 18:33:30,860 - __main__ - INFO - Deg = 3, capa=0.08920564921549938
+2020-08-22 18:33:34,592 - __main__ - INFO - Deg = 3, capa=0.08791257427982764
+2020-08-22 18:33:36,680 - __main__ - INFO - Deg = 3, capa=0.29322045925707907
+2020-08-22 18:33:36,832 - __main__ - INFO - Deg = 3, capa=0.2044726446416955
+2020-08-22 18:33:38,766 - __main__ - INFO - Deg = 3, capa=0.6929424772320768
+2020-08-22 18:33:40,115 - __main__ - INFO - Deg = 3, capa=0.11411192357666261
+2020-08-22 18:33:40,808 - __main__ - INFO - Deg = 3, capa=0.16932717440101627
+2020-08-22 18:33:40,862 - __main__ - INFO - Deg = 3, capa=0.35811111321770117
+2020-08-22 18:33:41,391 - __main__ - INFO - Deg = 3, capa=0.3669845626475551
+2020-08-22 18:33:42,628 - __main__ - INFO - Deg = 3, capa=0.24406112335988925
+2020-08-22 18:33:43,663 - __main__ - INFO - Deg = 3, capa=0.5504764139633876
+2020-08-22 18:33:43,758 - __main__ - INFO - Deg = 3, capa=0.30339356156544073
+2020-08-22 18:33:44,863 - __main__ - INFO - Deg = 3, capa=0.3353291529355993
+2020-08-22 18:33:49,871 - __main__ - INFO - Deg = 3, capa=0.2622258067493978
+2020-08-22 18:33:50,455 - __main__ - INFO - Deg = 3, capa=0.6063398976625207
+2020-08-22 18:33:50,856 - __main__ - INFO - Deg = 3, capa=0.09514766742849068
+2020-08-22 18:33:50,955 - __main__ - INFO - Deg = 3, capa=0.09083348527650745
+2020-08-22 18:33:52,061 - __main__ - INFO - Deg = 3, capa=0.10646751262971506
+2020-08-22 18:33:55,081 - __main__ - INFO - Deg = 3, capa=0.2747203724401098
+2020-08-22 18:33:58,558 - __main__ - INFO - Deg = 3, capa=0.09957528174228283
+2020-08-22 18:33:59,634 - __main__ - INFO - Deg = 3, capa=0.09115290048371621
+2020-08-22 18:34:02,978 - __main__ - INFO - Deg = 3, capa=0.33991530056915387
+2020-08-22 18:34:05,680 - __main__ - INFO - Deg = 3, capa=0.08731922272265968
+2020-08-22 18:34:10,517 - __main__ - INFO - Deg = 3, capa=0.09032857571440409
+2020-08-22 18:34:11,588 - __main__ - INFO - Deg = 3, capa=0.08801561630295515
+2020-08-22 18:34:18,476 - __main__ - INFO - Deg = 3, capa=0.4457599021944154
+2020-08-22 18:34:23,165 - __main__ - INFO - Deg = 3, capa=0.09201346309068865
+2020-08-22 18:34:29,279 - __main__ - INFO - Deg = 3, capa=0.23943425779448607
+2020-08-22 18:34:32,342 - __main__ - INFO - Deg = 3, capa=0.08708307366899776
+2020-08-22 18:34:33,479 - __main__ - INFO - Deg = 3, capa=0.0890689734751075
+2020-08-22 18:34:46,038 - __main__ - INFO - Deg = 3, capa=0.17759640054360804
+2020-08-22 18:34:54,027 - __main__ - INFO - Deg = 3, capa=0.5893965170922698
+2020-08-22 18:34:58,594 - __main__ - INFO - Deg = 3, capa=0.1615266247794257
+2020-08-22 18:35:05,097 - __main__ - INFO - Deg = 3, capa=0.09103958594859207
+2020-08-22 18:35:17,429 - __main__ - INFO - Deg = 3, capa=0.4392345789194764
+2020-08-22 18:35:25,398 - __main__ - INFO - Deg = 3, capa=0.08682059201453078
+2020-08-22 18:35:25,425 - __main__ - INFO - Deg = 3, capa=0.08695330665400577
+2020-08-22 18:35:34,056 - __main__ - INFO - Deg = 3, capa=0.6333602460316905
+2020-08-22 18:35:45,860 - __main__ - INFO - Deg = 3, capa=0.23531189360099342
+2020-08-22 18:35:47,781 - __main__ - INFO - Deg = 3, capa=0.587936944936648
+2020-08-22 18:36:26,562 - __main__ - INFO - Deg = 3, capa=0.4341387024827432
+2020-08-22 18:36:28,407 - __main__ - INFO - Deg = 3, capa=0.33440464774784134
+2020-08-22 18:36:40,584 - __main__ - INFO - Deg = 3, capa=0.08718336239238905
+2020-08-22 18:36:52,832 - __main__ - INFO - Deg = 3, capa=0.08771454158879446
+2020-08-22 18:37:07,372 - __main__ - INFO - Deg = 3, capa=0.12103668395286295
+2020-08-22 18:37:26,020 - __main__ - INFO - Deg = 3, capa=0.38992856159590983
+2020-08-22 18:37:29,637 - __main__ - INFO - Deg = 3, capa=0.2415823793095582
+2020-08-22 18:37:47,984 - __main__ - INFO - Deg = 3, capa=0.6138370421659902
+2020-08-22 18:38:06,108 - __main__ - INFO - Deg = 3, capa=0.08917806970981715
+2020-08-22 18:38:12,532 - __main__ - INFO - Deg = 3, capa=0.29305722038621224
+2020-08-22 18:38:22,112 - __main__ - INFO - Deg = 3, capa=0.09282467780498314
+2020-08-22 18:38:22,929 - __main__ - INFO - Deg = 3, capa=0.38986382656995416
+2020-08-22 18:38:31,906 - __main__ - INFO - Deg = 3, capa=0.08915847282426591
+2020-08-22 18:38:39,750 - __main__ - INFO - Deg = 3, capa=0.21333230182431173
+2020-08-22 18:38:45,530 - __main__ - INFO - Deg = 3, capa=0.392067393421239
+2020-08-22 18:39:16,209 - __main__ - INFO - Deg = 3, capa=0.4351363405708489
+2020-08-22 20:53:59,741 - __main__ - INFO - Deg = 5, capa=0.17493063333226094
+2020-08-22 20:54:30,690 - __main__ - INFO - Deg = 5, capa=0.17712417529788022
+2020-08-22 20:54:41,186 - __main__ - INFO - Deg = 5, capa=0.21041862484972298
+2020-08-22 20:54:41,853 - __main__ - INFO - Deg = 5, capa=0.21270002647598882
+2020-08-22 20:54:44,629 - __main__ - INFO - Deg = 5, capa=0.17412624706384155
+2020-08-22 20:54:50,404 - __main__ - INFO - Deg = 5, capa=0.17443597309017708
+2020-08-22 20:54:55,663 - __main__ - INFO - Deg = 5, capa=0.1962000307708238
+2020-08-22 20:55:09,191 - __main__ - INFO - Deg = 5, capa=0.18050220917090773
+2020-08-22 20:55:11,540 - __main__ - INFO - Deg = 5, capa=0.2026093918884952
+2020-08-22 20:55:14,442 - __main__ - INFO - Deg = 5, capa=0.18979325215339238
+2020-08-22 20:55:26,101 - __main__ - INFO - Deg = 5, capa=0.20984538861448898
+2020-08-22 20:55:31,851 - __main__ - INFO - Deg = 5, capa=0.2178048972262133
+2020-08-22 20:55:33,705 - __main__ - INFO - Deg = 5, capa=0.17232647617878172
+2020-08-22 20:55:33,834 - __main__ - INFO - Deg = 5, capa=0.20383348690844572
+2020-08-22 20:55:34,461 - __main__ - INFO - Deg = 5, capa=0.17758475340646013
+2020-08-22 20:55:39,678 - __main__ - INFO - Deg = 5, capa=0.1715942869690775
+2020-08-22 20:55:45,154 - __main__ - INFO - Deg = 5, capa=0.20821083044115987
+2020-08-22 20:55:47,696 - __main__ - INFO - Deg = 5, capa=0.20863612187688088
+2020-08-22 20:55:51,388 - __main__ - INFO - Deg = 5, capa=0.17345888524389436
+2020-08-22 20:56:00,186 - __main__ - INFO - Deg = 5, capa=0.21001397681654482
+2020-08-22 20:56:02,307 - __main__ - INFO - Deg = 5, capa=0.21319104777970663
+2020-08-22 20:56:04,460 - __main__ - INFO - Deg = 5, capa=0.21060946466988723
+2020-08-22 20:56:04,923 - __main__ - INFO - Deg = 5, capa=0.2037332031204981
+2020-08-22 20:56:07,875 - __main__ - INFO - Deg = 5, capa=0.21071390656167405
+2020-08-22 20:56:10,124 - __main__ - INFO - Deg = 5, capa=0.21054088511576574
+2020-08-22 20:56:13,240 - __main__ - INFO - Deg = 5, capa=0.21095823800124683
+2020-08-22 20:56:16,492 - __main__ - INFO - Deg = 5, capa=0.1933371944262543
+2020-08-22 20:56:17,261 - __main__ - INFO - Deg = 5, capa=0.1826073265887605
+2020-08-22 20:56:17,391 - __main__ - INFO - Deg = 5, capa=0.1757787855025034
+2020-08-22 20:56:23,821 - __main__ - INFO - Deg = 5, capa=0.21332287885866244
+2020-08-22 20:56:25,417 - __main__ - INFO - Deg = 5, capa=0.17680204523536128
+2020-08-22 20:56:25,954 - __main__ - INFO - Deg = 5, capa=0.2094033460851587
+2020-08-22 20:56:32,035 - __main__ - INFO - Deg = 5, capa=0.20626316529463942
+2020-08-22 20:56:38,302 - __main__ - INFO - Deg = 5, capa=0.21153340417975033
+2020-08-22 20:56:41,216 - __main__ - INFO - Deg = 5, capa=0.17622017366492732
+2020-08-22 20:56:44,073 - __main__ - INFO - Deg = 5, capa=0.19945639977153454
+2020-08-22 20:56:44,287 - __main__ - INFO - Deg = 5, capa=0.1933718437105457
+2020-08-22 20:56:45,008 - __main__ - INFO - Deg = 5, capa=0.18490122018440125
+2020-08-22 20:56:46,349 - __main__ - INFO - Deg = 5, capa=0.20366270671776818
+2020-08-22 20:56:55,469 - __main__ - INFO - Deg = 5, capa=0.20284234842472482
+2020-08-22 20:57:00,329 - __main__ - INFO - Deg = 5, capa=0.21235899167424055
+2020-08-22 20:57:02,170 - __main__ - INFO - Deg = 5, capa=0.17247397445510393
+2020-08-22 20:57:02,863 - __main__ - INFO - Deg = 5, capa=0.18641908918402242
+2020-08-22 20:57:12,042 - __main__ - INFO - Deg = 5, capa=0.1736410355055644
+2020-08-22 20:57:12,119 - __main__ - INFO - Deg = 5, capa=0.20875131665189717
+2020-08-22 20:57:22,334 - __main__ - INFO - Deg = 5, capa=0.17877277681535447
+2020-08-22 20:57:22,991 - __main__ - INFO - Deg = 5, capa=0.1706886179818372
+2020-08-22 20:57:30,959 - __main__ - INFO - Deg = 5, capa=0.22919264327235203
+2020-08-22 20:57:31,416 - __main__ - INFO - Deg = 5, capa=0.1739714249163492
+2020-08-22 20:57:39,844 - __main__ - INFO - Deg = 5, capa=0.21341673778932885
+2020-08-22 20:57:44,480 - __main__ - INFO - Deg = 5, capa=0.17475536961082633
+2020-08-22 20:57:49,077 - __main__ - INFO - Deg = 5, capa=0.17476314831044315
+2020-08-22 20:57:56,831 - __main__ - INFO - Deg = 5, capa=0.23486327481242636
+2020-08-22 20:58:02,384 - __main__ - INFO - Deg = 5, capa=0.21918719530980618
+2020-08-22 20:58:07,047 - __main__ - INFO - Deg = 5, capa=0.19833122021613533
+2020-08-22 20:58:08,019 - __main__ - INFO - Deg = 5, capa=0.21187543364281886
+2020-08-22 20:58:17,376 - __main__ - INFO - Deg = 5, capa=0.17140792193539503
+2020-08-22 20:58:34,221 - __main__ - INFO - Deg = 5, capa=0.2169623270263998
+2020-08-22 20:59:20,565 - __main__ - INFO - Deg = 5, capa=0.1811321066331703
+2020-08-22 20:59:31,548 - __main__ - INFO - Deg = 5, capa=0.21030258796411583
+2020-08-22 20:59:38,118 - __main__ - INFO - Deg = 5, capa=0.20515372085082612
+2020-08-22 20:59:41,724 - __main__ - INFO - Deg = 5, capa=0.1964295915429333
+2020-08-22 20:59:55,183 - __main__ - INFO - Deg = 5, capa=0.21154167468729979
+2020-08-22 21:00:02,210 - __main__ - INFO - Deg = 5, capa=0.17881786889414708
+2020-08-22 21:00:03,347 - __main__ - INFO - Deg = 5, capa=0.2118844744823386
+2020-08-22 21:00:35,094 - __main__ - INFO - Deg = 5, capa=0.21506511373366285
+2020-08-22 21:00:51,245 - __main__ - INFO - Deg = 5, capa=0.20122046788200987
+2020-08-22 21:00:51,729 - __main__ - INFO - Deg = 5, capa=0.16886000596366266
+2020-08-22 21:01:20,936 - __main__ - INFO - Deg = 5, capa=0.20432654314885218
+2020-08-22 21:01:24,157 - __main__ - INFO - Deg = 5, capa=0.17861506724611775
+2020-08-22 21:01:49,314 - __main__ - INFO - Deg = 5, capa=0.21609359924948887
+2020-08-22 21:34:03,580 - __main__ - INFO - Deg = 7, capa=0.04761615351264433
+2020-08-22 21:34:03,584 - __main__ - INFO - Total capacity = 1.5327739854384963
+2020-08-22 21:34:03,603 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:34:03,629 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:34:03,632 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.044764
+2020-08-22 21:34:03,635 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:58:14.572913
+2020-08-22 21:34:15,367 - __main__ - INFO - Deg = 7, capa=0.04919891305310604
+2020-08-22 21:34:15,368 - __main__ - INFO - Total capacity = 3.772888693197299
+2020-08-22 21:34:15,371 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:34:15,375 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:34:15,375 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006820
+2020-08-22 21:34:15,375 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:58:26.306090
+2020-08-22 21:34:22,877 - __main__ - INFO - Deg = 7, capa=0.047997760786843535
+2020-08-22 21:34:22,878 - __main__ - INFO - Total capacity = 1.794391212170659
+2020-08-22 21:34:22,881 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:34:22,885 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:34:22,885 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.007073
+2020-08-22 21:34:22,885 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:58:33.822664
+2020-08-22 21:34:36,241 - __main__ - INFO - Deg = 7, capa=0.06699714098410064
+2020-08-22 21:34:36,245 - __main__ - INFO - Total capacity = 4.4334314702703255
+2020-08-22 21:34:36,260 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:34:36,282 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:34:36,285 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.036159
+2020-08-22 21:34:36,287 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:58:47.114528
+2020-08-22 21:34:42,284 - __main__ - INFO - Deg = 7, capa=0.04911738331419027
+2020-08-22 21:34:42,285 - __main__ - INFO - Total capacity = 3.9598489477245273
+2020-08-22 21:34:42,288 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:34:42,292 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:34:42,292 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006767
+2020-08-22 21:34:42,292 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:58:53.221867
+2020-08-22 21:34:47,685 - __main__ - INFO - Deg = 7, capa=0.06673171595419168
+2020-08-22 21:34:47,688 - __main__ - INFO - Total capacity = 4.442387569452144
+2020-08-22 21:34:47,697 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:34:47,709 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:34:47,711 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.021765
+2020-08-22 21:34:47,713 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:58:58.532569
+2020-08-22 21:34:55,737 - __main__ - INFO - Deg = 7, capa=0.06534115743244795
+2020-08-22 21:34:55,738 - __main__ - INFO - Total capacity = 4.4070508473546495
+2020-08-22 21:34:55,740 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:34:55,744 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:34:55,744 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006112
+2020-08-22 21:34:55,744 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:06.641915
+2020-08-22 21:34:57,627 - __main__ - INFO - Deg = 7, capa=0.05755844579378009
+2020-08-22 21:34:57,628 - __main__ - INFO - Total capacity = 4.397983915127698
+2020-08-22 21:34:57,631 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:34:57,635 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:34:57,635 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006282
+2020-08-22 21:34:57,635 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:08.553185
+2020-08-22 21:35:00,092 - __main__ - INFO - Deg = 7, capa=0.05940987922617455
+2020-08-22 21:35:00,093 - __main__ - INFO - Total capacity = 4.419483036135113
+2020-08-22 21:35:00,096 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:00,100 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:00,101 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006767
+2020-08-22 21:35:00,101 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:10.985130
+2020-08-22 21:35:04,435 - __main__ - INFO - Deg = 7, capa=0.06649923258734203
+2020-08-22 21:35:04,436 - __main__ - INFO - Total capacity = 4.442108937134716
+2020-08-22 21:35:04,439 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:04,443 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:04,443 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006328
+2020-08-22 21:35:04,443 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:15.281259
+2020-08-22 21:35:10,610 - __main__ - INFO - Deg = 7, capa=0.05325671205474667
+2020-08-22 21:35:10,611 - __main__ - INFO - Total capacity = 4.402623082598788
+2020-08-22 21:35:10,613 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:10,617 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:10,617 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006693
+2020-08-22 21:35:10,618 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:21.541990
+2020-08-22 21:35:19,755 - __main__ - INFO - Deg = 7, capa=0.050090851087019654
+2020-08-22 21:35:19,755 - __main__ - INFO - Total capacity = 4.253755230029684
+2020-08-22 21:35:19,758 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:19,761 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:19,762 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005788
+2020-08-22 21:35:19,762 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:30.689608
+2020-08-22 21:35:23,516 - __main__ - INFO - Deg = 7, capa=0.06137225069901307
+2020-08-22 21:35:23,517 - __main__ - INFO - Total capacity = 4.3871954209309045
+2020-08-22 21:35:23,520 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:23,524 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:23,524 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006327
+2020-08-22 21:35:23,524 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:34.438500
+2020-08-22 21:35:23,613 - __main__ - INFO - Deg = 7, capa=0.048835605057505116
+2020-08-22 21:35:23,614 - __main__ - INFO - Total capacity = 2.1703243233818603
+2020-08-22 21:35:23,617 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:23,620 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:23,621 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006223
+2020-08-22 21:35:23,621 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:34.556431
+2020-08-22 21:35:24,206 - __main__ - INFO - Deg = 7, capa=0.048957404756345024
+2020-08-22 21:35:24,207 - __main__ - INFO - Total capacity = 1.995338652145163
+2020-08-22 21:35:24,209 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:24,212 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:24,212 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005288
+2020-08-22 21:35:24,212 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:35.148781
+2020-08-22 21:35:30,541 - __main__ - INFO - Deg = 7, capa=0.06650351169085891
+2020-08-22 21:35:30,542 - __main__ - INFO - Total capacity = 4.43909151983312
+2020-08-22 21:35:30,544 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:30,548 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:30,548 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005967
+2020-08-22 21:35:30,548 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:41.377212
+2020-08-22 21:35:32,975 - __main__ - INFO - Deg = 7, capa=0.06566789276572474
+2020-08-22 21:35:32,976 - __main__ - INFO - Total capacity = 4.436942673931472
+2020-08-22 21:35:32,978 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:32,982 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:32,982 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.006079
+2020-08-22 21:35:32,982 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:43.830499
+2020-08-22 21:35:38,550 - __main__ - INFO - Deg = 7, capa=0.04774189683282258
+2020-08-22 21:35:38,551 - __main__ - INFO - Total capacity = 0.9465419355335456
+2020-08-22 21:35:38,553 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:38,556 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:38,556 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004854
+2020-08-22 21:35:38,556 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:49.497511
+2020-08-22 21:35:42,230 - __main__ - INFO - Deg = 7, capa=0.04652622272816931
+2020-08-22 21:35:42,231 - __main__ - INFO - Total capacity = 0.5878010242390261
+2020-08-22 21:35:42,233 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:42,236 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:42,236 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005744
+2020-08-22 21:35:42,237 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:53.182727
+2020-08-22 21:35:43,390 - __main__ - INFO - Deg = 7, capa=0.06555593101223323
+2020-08-22 21:35:43,391 - __main__ - INFO - Total capacity = 4.4286319359151545
+2020-08-22 21:35:43,393 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:43,396 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:43,396 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005001
+2020-08-22 21:35:43,396 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:54.229957
+2020-08-22 21:35:46,052 - __main__ - INFO - Deg = 7, capa=0.06141004679415449
+2020-08-22 21:35:46,053 - __main__ - INFO - Total capacity = 4.42146495743797
+2020-08-22 21:35:46,055 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:46,058 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:46,058 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004996
+2020-08-22 21:35:46,058 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:56.894140
+2020-08-22 21:35:47,206 - __main__ - INFO - Deg = 7, capa=0.06335382521226571
+2020-08-22 21:35:47,206 - __main__ - INFO - Total capacity = 4.428453941403044
+2020-08-22 21:35:47,208 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:47,211 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:47,211 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004973
+2020-08-22 21:35:47,211 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 4:59:58.046147
+2020-08-22 21:35:50,451 - __main__ - INFO - Deg = 7, capa=0.06441711957172974
+2020-08-22 21:35:50,452 - __main__ - INFO - Total capacity = 4.430466317135453
+2020-08-22 21:35:50,455 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:50,457 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:50,458 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005077
+2020-08-22 21:35:50,458 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:01.316846
+2020-08-22 21:35:53,861 - __main__ - INFO - Deg = 7, capa=0.06565292255721984
+2020-08-22 21:35:53,862 - __main__ - INFO - Total capacity = 4.435658313658191
+2020-08-22 21:35:53,864 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:53,867 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:53,867 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005309
+2020-08-22 21:35:53,867 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:04.698333
+2020-08-22 21:35:54,786 - __main__ - INFO - Deg = 7, capa=0.04750614081304403
+2020-08-22 21:35:54,786 - __main__ - INFO - Total capacity = 0.8867108566034367
+2020-08-22 21:35:54,789 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:54,791 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:54,792 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004998
+2020-08-22 21:35:54,792 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:05.733702
+2020-08-22 21:35:57,413 - __main__ - INFO - Deg = 7, capa=0.0626185428109257
+2020-08-22 21:35:57,414 - __main__ - INFO - Total capacity = 4.423616688131789
+2020-08-22 21:35:57,416 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:57,418 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:57,418 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004470
+2020-08-22 21:35:57,419 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:08.267985
+2020-08-22 21:35:59,138 - __main__ - INFO - Deg = 7, capa=0.055016521001401086
+2020-08-22 21:35:59,139 - __main__ - INFO - Total capacity = 4.412255748976591
+2020-08-22 21:35:59,144 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:35:59,147 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:35:59,147 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005367
+2020-08-22 21:35:59,147 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:10.069907
+2020-08-22 21:36:00,124 - __main__ - INFO - Deg = 7, capa=0.06321363101271865
+2020-08-22 21:36:00,125 - __main__ - INFO - Total capacity = 4.421551507917549
+2020-08-22 21:36:00,126 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:00,129 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:00,129 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004596
+2020-08-22 21:36:00,129 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:11.019263
+2020-08-22 21:36:01,448 - __main__ - INFO - Deg = 7, capa=0.06439592403817082
+2020-08-22 21:36:01,449 - __main__ - INFO - Total capacity = 4.426523747906385
+2020-08-22 21:36:01,451 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:01,454 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:01,454 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004551
+2020-08-22 21:36:01,454 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:12.294466
+2020-08-22 21:36:08,289 - __main__ - INFO - Deg = 7, capa=0.050692886613782615
+2020-08-22 21:36:08,290 - __main__ - INFO - Total capacity = 4.3346870567919
+2020-08-22 21:36:08,292 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:08,296 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:08,296 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.005332
+2020-08-22 21:36:08,296 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:19.222365
+2020-08-22 21:36:10,375 - __main__ - INFO - Deg = 7, capa=0.04939975250143826
+2020-08-22 21:36:10,376 - __main__ - INFO - Total capacity = 3.294872491607751
+2020-08-22 21:36:10,379 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:10,381 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:10,382 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004829
+2020-08-22 21:36:10,382 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:21.314010
+2020-08-22 21:36:15,171 - __main__ - INFO - Deg = 7, capa=0.04771120840276237
+2020-08-22 21:36:15,171 - __main__ - INFO - Total capacity = 1.1038798671498533
+2020-08-22 21:36:15,174 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:15,176 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:15,176 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004764
+2020-08-22 21:36:15,176 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:26.116134
+2020-08-22 21:36:15,914 - __main__ - INFO - Deg = 7, capa=0.06802840965046174
+2020-08-22 21:36:15,914 - __main__ - INFO - Total capacity = 4.447091663949693
+2020-08-22 21:36:15,916 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:15,918 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:15,919 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004218
+2020-08-22 21:36:15,919 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:26.751497
+2020-08-22 21:36:15,921 - __main__ - INFO - Deg = 7, capa=0.04946793586312158
+2020-08-22 21:36:15,921 - __main__ - INFO - Total capacity = 3.585575131685525
+2020-08-22 21:36:15,923 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:15,926 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:15,926 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004216
+2020-08-22 21:36:15,926 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:26.857352
+2020-08-22 21:36:17,385 - __main__ - INFO - Deg = 7, capa=0.06637166656780953
+2020-08-22 21:36:17,386 - __main__ - INFO - Total capacity = 4.440098908446709
+2020-08-22 21:36:17,388 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:17,391 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:17,391 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004680
+2020-08-22 21:36:17,391 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:28.228160
+2020-08-22 21:36:18,205 - __main__ - INFO - Deg = 7, capa=0.06441322966605101
+2020-08-22 21:36:18,206 - __main__ - INFO - Total capacity = 4.385742758012443
+2020-08-22 21:36:18,208 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:18,211 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:18,211 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004976
+2020-08-22 21:36:18,211 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:29.112833
+2020-08-22 21:36:18,996 - __main__ - INFO - Deg = 7, capa=0.046110981104485305
+2020-08-22 21:36:18,996 - __main__ - INFO - Total capacity = 0.5374631113730611
+2020-08-22 21:36:18,998 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:19,000 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:19,000 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.003846
+2020-08-22 21:36:19,001 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:29.948160
+2020-08-22 21:36:20,179 - __main__ - INFO - Deg = 7, capa=0.07201752673087804
+2020-08-22 21:36:20,180 - __main__ - INFO - Total capacity = 4.456638715555292
+2020-08-22 21:36:20,193 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:20,196 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:20,196 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.016376
+2020-08-22 21:36:20,196 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:31.039877
+2020-08-22 21:36:20,467 - __main__ - INFO - Deg = 7, capa=0.06346743052889244
+2020-08-22 21:36:20,468 - __main__ - INFO - Total capacity = 4.363817760594955
+2020-08-22 21:36:20,469 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:20,471 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:20,472 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.003826
+2020-08-22 21:36:20,472 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:31.383087
+2020-08-22 21:36:21,936 - __main__ - INFO - Deg = 7, capa=0.0658229799099348
+2020-08-22 21:36:21,936 - __main__ - INFO - Total capacity = 4.437519272292951
+2020-08-22 21:36:21,938 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:21,940 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:21,940 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.003539
+2020-08-22 21:36:21,940 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:32.764142
+2020-08-22 21:36:24,614 - __main__ - INFO - Deg = 7, capa=0.06055466422420906
+2020-08-22 21:36:24,615 - __main__ - INFO - Total capacity = 4.420210891600384
+2020-08-22 21:36:24,616 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:24,619 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:24,619 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.004268
+2020-08-22 21:36:24,619 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:35.496089
+2020-08-22 21:36:27,169 - __main__ - INFO - Deg = 7, capa=0.056612335513759486
+2020-08-22 21:36:27,169 - __main__ - INFO - Total capacity = 4.400579314680854
+2020-08-22 21:36:27,171 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:27,173 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:27,173 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.003988
+2020-08-22 21:36:27,174 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:38.093470
+2020-08-22 21:36:27,462 - __main__ - INFO - Deg = 7, capa=0.04687421984925198
+2020-08-22 21:36:27,463 - __main__ - INFO - Total capacity = 1.0125037966077848
+2020-08-22 21:36:27,464 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:27,466 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:27,466 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.003495
+2020-08-22 21:36:27,467 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:38.406978
+2020-08-22 21:36:30,015 - __main__ - INFO - Deg = 7, capa=0.04566981799012355
+2020-08-22 21:36:30,015 - __main__ - INFO - Total capacity = 0.605573560410009
+2020-08-22 21:36:30,016 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:30,018 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:30,018 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002661
+2020-08-22 21:36:30,018 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:40.963304
+2020-08-22 21:36:31,893 - __main__ - INFO - Deg = 7, capa=0.06697614152783303
+2020-08-22 21:36:31,893 - __main__ - INFO - Total capacity = 4.442256470794198
+2020-08-22 21:36:31,894 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:31,896 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:31,896 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002878
+2020-08-22 21:36:31,896 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:42.738755
+2020-08-22 21:36:31,897 - __main__ - INFO - Deg = 7, capa=0.06766492844099176
+2020-08-22 21:36:31,897 - __main__ - INFO - Total capacity = 4.441482018498485
+2020-08-22 21:36:31,899 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:31,900 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:31,901 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.003176
+2020-08-22 21:36:31,901 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:42.746558
+2020-08-22 21:36:32,148 - __main__ - INFO - Deg = 7, capa=0.06327245556777866
+2020-08-22 21:36:32,148 - __main__ - INFO - Total capacity = 4.358423821514112
+2020-08-22 21:36:32,150 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:32,151 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:32,151 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002775
+2020-08-22 21:36:32,151 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:43.056008
+2020-08-22 21:36:33,928 - __main__ - INFO - Deg = 7, capa=0.06709755443773882
+2020-08-22 21:36:33,928 - __main__ - INFO - Total capacity = 4.4349997061930875
+2020-08-22 21:36:33,930 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:33,932 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:33,932 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.003149
+2020-08-22 21:36:33,932 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:44.786653
+2020-08-22 21:36:34,822 - __main__ - INFO - Deg = 7, capa=0.06765702254247233
+2020-08-22 21:36:34,823 - __main__ - INFO - Total capacity = 4.442573794525429
+2020-08-22 21:36:34,824 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:34,826 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:34,826 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002920
+2020-08-22 21:36:34,826 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:45.665368
+2020-08-22 21:36:35,224 - __main__ - INFO - Deg = 7, capa=0.04630262018372404
+2020-08-22 21:36:35,225 - __main__ - INFO - Total capacity = 0.679817695793322
+2020-08-22 21:36:35,226 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:35,228 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:35,228 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002876
+2020-08-22 21:36:35,228 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:46.171897
+2020-08-22 21:36:35,966 - __main__ - INFO - Deg = 7, capa=0.04876519676325272
+2020-08-22 21:36:35,966 - __main__ - INFO - Total capacity = 3.031237001351156
+2020-08-22 21:36:35,967 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:35,969 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:35,969 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002680
+2020-08-22 21:36:35,969 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:46.902174
+2020-08-22 21:36:36,789 - __main__ - INFO - Deg = 7, capa=0.04649306518995795
+2020-08-22 21:36:36,790 - __main__ - INFO - Total capacity = 0.7823062606776766
+2020-08-22 21:36:36,791 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:36,793 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:36,793 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002929
+2020-08-22 21:36:36,793 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:47.735870
+2020-08-22 21:36:37,452 - __main__ - INFO - Deg = 7, capa=0.06585100787227217
+2020-08-22 21:36:37,452 - __main__ - INFO - Total capacity = 4.434032732661236
+2020-08-22 21:36:37,455 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:37,456 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:37,457 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.003130
+2020-08-22 21:36:37,457 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:48.303922
+2020-08-22 21:36:38,978 - __main__ - INFO - Deg = 7, capa=0.04797958753399807
+2020-08-22 21:36:38,979 - __main__ - INFO - Total capacity = 1.2454431308274179
+2020-08-22 21:36:38,980 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:38,981 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:38,981 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002453
+2020-08-22 21:36:38,981 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:49.920110
+2020-08-22 21:36:39,774 - __main__ - INFO - Deg = 7, capa=0.06222204621673953
+2020-08-22 21:36:39,774 - __main__ - INFO - Total capacity = 4.309831198194036
+2020-08-22 21:36:39,775 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:39,777 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:39,777 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002486
+2020-08-22 21:36:39,777 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:50.684144
+2020-08-22 21:36:39,843 - __main__ - INFO - Deg = 7, capa=0.049607995335227494
+2020-08-22 21:36:39,843 - __main__ - INFO - Total capacity = 4.096436325359152
+2020-08-22 21:36:39,844 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:39,845 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:39,846 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002160
+2020-08-22 21:36:39,846 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:50.774329
+2020-08-22 21:36:40,008 - __main__ - INFO - Deg = 7, capa=0.04597932751631423
+2020-08-22 21:36:40,008 - __main__ - INFO - Total capacity = 0.6402155494871213
+2020-08-22 21:36:40,009 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:40,010 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:40,010 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002013
+2020-08-22 21:36:40,010 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:50.954955
+2020-08-22 21:36:42,589 - __main__ - INFO - Deg = 7, capa=0.052095767265809056
+2020-08-22 21:36:42,589 - __main__ - INFO - Total capacity = 4.379499473472174
+2020-08-22 21:36:42,592 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:42,593 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:42,594 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002978
+2020-08-22 21:36:42,594 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:53.518905
+2020-08-22 21:36:43,141 - __main__ - INFO - Deg = 7, capa=0.06605412063053247
+2020-08-22 21:36:43,142 - __main__ - INFO - Total capacity = 4.43504735927074
+2020-08-22 21:36:43,143 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:43,144 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:43,144 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002064
+2020-08-22 21:36:43,144 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:53.970322
+2020-08-22 21:36:43,694 - __main__ - INFO - Deg = 7, capa=0.06251872585428572
+2020-08-22 21:36:43,695 - __main__ - INFO - Total capacity = 4.427202740890011
+2020-08-22 21:36:43,696 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:43,697 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:43,697 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.002335
+2020-08-22 21:36:43,697 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:54.548793
+2020-08-22 21:36:45,012 - __main__ - INFO - Deg = 7, capa=0.05943022122976256
+2020-08-22 21:36:45,012 - __main__ - INFO - Total capacity = 4.391133615187475
+2020-08-22 21:36:45,013 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:45,014 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:45,014 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001919
+2020-08-22 21:36:45,014 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:55.930203
+2020-08-22 21:36:46,763 - __main__ - INFO - Deg = 7, capa=0.0482930321979802
+2020-08-22 21:36:46,763 - __main__ - INFO - Total capacity = 2.429407100552018
+2020-08-22 21:36:46,764 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:46,765 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:46,765 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001885
+2020-08-22 21:36:46,765 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:57.700351
+2020-08-22 21:36:47,429 - __main__ - INFO - Deg = 7, capa=0.061045285330576834
+2020-08-22 21:36:47,430 - __main__ - INFO - Total capacity = 4.420180594508869
+2020-08-22 21:36:47,431 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:47,432 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:47,432 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001590
+2020-08-22 21:36:47,432 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:58.295217
+2020-08-22 21:36:47,971 - __main__ - INFO - Deg = 7, capa=0.06323304162522218
+2020-08-22 21:36:47,972 - __main__ - INFO - Total capacity = 4.300092943163272
+2020-08-22 21:36:47,974 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:47,975 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:47,975 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001800
+2020-08-22 21:36:47,975 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:58.884600
+2020-08-22 21:36:48,405 - __main__ - INFO - Deg = 7, capa=0.06741265106895422
+2020-08-22 21:36:48,405 - __main__ - INFO - Total capacity = 4.442894831187443
+2020-08-22 21:36:48,406 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:48,407 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:48,407 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001611
+2020-08-22 21:36:48,407 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:59.229137
+2020-08-22 21:36:48,878 - __main__ - INFO - Deg = 7, capa=0.05854063672546968
+2020-08-22 21:36:48,878 - __main__ - INFO - Total capacity = 4.416151176640532
+2020-08-22 21:36:48,879 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:48,880 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:48,880 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001382
+2020-08-22 21:36:48,880 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:59.750022
+2020-08-22 21:36:48,961 - __main__ - INFO - Deg = 7, capa=0.06689127435025075
+2020-08-22 21:36:48,961 - __main__ - INFO - Total capacity = 4.4413889496465915
+2020-08-22 21:36:48,962 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:48,963 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:48,963 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001328
+2020-08-22 21:36:48,963 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:00:59.807516
+2020-08-22 21:36:49,755 - __main__ - INFO - Deg = 7, capa=0.04866895996201111
+2020-08-22 21:36:49,755 - __main__ - INFO - Total capacity = 2.7513854834952234
+2020-08-22 21:36:49,756 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:49,756 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:49,756 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001308
+2020-08-22 21:36:49,757 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:01:00.690647
+2020-08-22 21:36:50,512 - __main__ - INFO - Deg = 7, capa=0.04553335307271804
+2020-08-22 21:36:50,512 - __main__ - INFO - Total capacity = 0.5682852653358312
+2020-08-22 21:36:50,512 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:50,513 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:50,513 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001280
+2020-08-22 21:36:50,513 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:01:01.460065
+2020-08-22 21:36:52,068 - __main__ - INFO - Deg = 7, capa=0.06186987760069413
+2020-08-22 21:36:52,068 - __main__ - INFO - Total capacity = 4.407796666942975
+2020-08-22 21:36:52,069 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:52,069 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:52,069 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001241
+2020-08-22 21:36:52,069 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:01:02.964798
+2020-08-22 21:36:52,896 - __main__ - INFO - Deg = 7, capa=0.06848827022330481
+2020-08-22 21:36:52,897 - __main__ - INFO - Total capacity = 4.44316618222512
+2020-08-22 21:36:52,897 - __main__ - INFO - log2tau_7.000_write_results: Finish write to degree.
+2020-08-22 21:36:52,898 - __main__ - INFO - log2tau_7.000_write_results: Finish dump to pickle.
+2020-08-22 21:36:52,898 - __main__ - INFO - log2tau_7.000_write_results: Finish write to results. Executed time 0:00:00.001282
+2020-08-22 21:36:52,898 - __main__ - INFO - log2tau_7.000_get_IPC: Executed time 5:01:03.739665

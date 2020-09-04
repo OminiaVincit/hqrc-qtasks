@@ -287,9 +287,9 @@ def get_loss(qparams, buffer, train_input_seq, train_output_seq, \
     return train_pred_seq, train_loss, val_pred_seq, val_loss
 
 def get_IPC(qparams, ipcparams, length, logger, ranseed=-1, Ntrials=1, savedir=None, \
-    posfix='capa', writedelay=False, type_input=0):
+    posfix='capa', type_input=0, label=''):
     start_time = time.monotonic()
-    fname = sys._getframe().f_code.co_name
+    fname = '{}_{}'.format(label, sys._getframe().f_code.co_name)
     nqrc = 1
     transient = length // 2
 
@@ -303,15 +303,13 @@ def get_IPC(qparams, ipcparams, length, logger, ranseed=-1, Ntrials=1, savedir=N
         input_signals = np.array(input_signals)
         input_signals = np.tile(input_signals, (nqrc, 1))
 
-        ipc = IPC(ipcparams, log=logger, savedir=savedir)
+        ipc = IPC(ipcparams, log=logger, savedir=savedir, label=label)
         model = HQRC(nqrc=nqrc, alpha=0.0, sparsity=1.0, sigma_input=1.0, type_input=type_input)
         output_signals = model.init_forward(qparams, input_signals, init_rs=True, ranseed = n + ranseed)
         logger.debug('{}: n={} per {} trials, input shape = {}, output shape={}'.format(fname, n+1, Ntrials, input_signals.shape, output_signals.shape))
         
         ipc.run(input_signals[0, transient:], output_signals[transient:])
-        total_capacity = np.sum(ipc.ipc_rs)
-        logger.info('ipc_arr_shape={}, total_capacity={}'.format(ipc.ipc_arr.shape, total_capacity))
-        ipc.write_results(posfix=posfix, writedelay=writedelay)
+        ipc.write_results(posfix=posfix)
     end_time = time.monotonic()
     logger.info('{}: Executed time {}'.format(fname, timedelta(seconds=end_time - start_time)))
 
