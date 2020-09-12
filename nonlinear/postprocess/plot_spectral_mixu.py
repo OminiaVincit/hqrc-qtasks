@@ -12,7 +12,7 @@ if __name__  == '__main__':
     parser.add_argument('--folder', type=str, required=True)
     parser.add_argument('--prefix', type=str, default='spec_nspins_5')
     #parser.add_argument('--posfix', type=str, default='a_0.2_bc_0.42_tmax_50.0_ntaus_501_eig_id_100_tot.binaryfile')
-    parser.add_argument('--posfix', type=str, default='a_0.2_bc_0.42_tmax_0.0_ntaus_0_eig_id_100_tot.binaryfile')
+    parser.add_argument('--posfix', type=str, default='J_1.0_tmax_0.0_ntaus_0_eig_id_124_tot.binaryfile')
     
     args = parser.parse_args()
     print(args)
@@ -21,7 +21,7 @@ if __name__  == '__main__':
     pstates = [i/100 for i in range(101)]
     ild2, ld23 = [], []
 
-    lexp1, lexp2 = 0, 14
+    lexp1, lexp2 = -7, 5
     for p in pstates:
         t1, t2 = [], []
         filename = os.path.join(folder, '{}_state_{:.2f}_{}'.format(prefix, p, posfix))
@@ -54,7 +54,7 @@ if __name__  == '__main__':
     plt.rc('font', family='serif', size=14)
     plt.rc('mathtext', fontset='cm')
     fig = plt.figure(figsize=(24, 7), dpi=600)
-    vmin, vmax = 1.0, max(np.max(ild2), np.max(ld23))
+    vmin, vmax = 1.0, np.max(ild2)
     extent = [lexp1, lexp2, 0, 3]
     # Plot Nspins largest eigenvectors
     ax1 = plt.subplot2grid((2,1), (0,0), colspan=1, rowspan=1)
@@ -86,7 +86,7 @@ if __name__  == '__main__':
     fig.colorbar(im1, ax=[ax1, ax2])
 
     outbase = filename.replace('.binaryfile', '')
-    for ftype in ['png']:
+    for ftype in ['png', 'svg']:
         plt.savefig('{}_{}_{}_heat.{}'.format(outbase, lexp1, lexp2, ftype), bbox_inches='tight', dpi=600)
     plt.show()
 

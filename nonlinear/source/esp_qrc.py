@@ -66,7 +66,7 @@ if __name__  == '__main__':
     n_units, max_energy, beta, g = args.units, args.coupling, args.beta, args.nondiag
     dynamic = args.dynamic
     buffer = args.buffer
-    length = buffer + 100
+    length = buffer + 1000
 
     init_rho = args.rho
     net_trials, state_trials = args.ntrials, args.strials
@@ -75,8 +75,8 @@ if __name__  == '__main__':
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
         os.mkdir(savedir)
 
-    #tx = list(np.arange(-7, 7.1, 0.02))
-    tx = list(np.arange(0, 14.1, 0.02))
+    tx = list(np.arange(-7, 7.1, 0.02))
+    #tx = list(np.arange(0, 14.1, 0.02))
     
     taudeltas = [2**x for x in tx]
     
