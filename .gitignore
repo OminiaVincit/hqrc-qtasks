@@ -1,3 +1,4 @@
 *.pyc
 **/*.binaryfile
 **/Data/**/Data 
+chaos/Results/**/Trained_Models

@@ -1,0 +1,9 @@
+length=10100, buffer=10000
+n_units=5
+max_energy=1.0,g=0.42
+beta=1e-14
+dynamic=ion_trap
+layers=1
+Vs=1
+strengths=0.0
+net_trials=1, state_trials=10
