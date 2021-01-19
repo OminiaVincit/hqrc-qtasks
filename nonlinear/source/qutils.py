@@ -2,6 +2,14 @@ from qutip import *
 import numpy as np
 import scipy
 
+def getNormCoef(Nspins, alpha):
+    Nalpha = 0
+    for i in range(Nspins):
+        for j in range(i+1, Nspins):
+            Jij = np.abs(i-j)**(-alpha)
+            Nalpha += Jij / (Nspins-1)
+    return Nalpha
+
 def getSci(sc, i, Nspins):
     iop = identity(2)
     sci = iop
@@ -20,14 +28,10 @@ def eigenstates(a):
     ids = np.argsort(-abs(w))
     return w[ids], vl[:, ids], vr[:, ids]
 
-def getLiouv_IsingOpen(Nspins, alpha, bc):
+def getLiouv_IsingOpen(Nspins, alpha, B, nobs, J=1.0):
     # Create coupling strength
-    J = 0
-    for j in range(Nspins):
-        for i in range(j+1, Nspins):
-            Jij = np.abs(i-j)**(-alpha)
-            J += Jij / (Nspins-1)
-    B = J/bc # Magnetic field
+    Nalpha = getNormCoef(Nspins, alpha)
+
     X = sigmax()
     Z = sigmaz()
     I = identity(2)
@@ -44,12 +48,10 @@ def getLiouv_IsingOpen(Nspins, alpha, bc):
     
     for i in range(Nspins):
         H0 = H0 - B * Szs[i] # Hamiltonian for the magnetic field
-        for j in range(Nspins):
-            if i != j:
-                hij = np.abs(i-j)**(-alpha) / J
-                H1 = H1 - hij * Sxs[i] * Sxs[j] # Interaction Hamiltonian
-    
-    nobs = Nspins - 1
+        for j in range(i+1, Nspins):
+            hij = J * np.abs(i-j)**(-alpha) / Nalpha
+            H1 = H1 - hij * Sxs[i] * Sxs[j] # Interaction Hamiltonian
+
     Mx = getSci(I, 0, nobs) * 0.0
     Mz = getSci(I, 0, nobs) * 0.0
     for i in range(nobs):

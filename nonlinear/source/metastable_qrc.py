@@ -28,9 +28,9 @@ if __name__  == '__main__':
     parser.add_argument('--Tsteps', type=int, default=100, help='Number of time steps')
     parser.add_argument('--Ntrials', type=int, default=10, help='Number of trials')
     parser.add_argument('--alpha', type=float, default=0.2, help='Alpha of coupled strength')
-    parser.add_argument('--bcoef', type=float, default=0.42)
+    parser.add_argument('--bcoef', type=float, default=1.0)
 
-    parser.add_argument('--savedir', type=str, default='metaqrc')
+    parser.add_argument('--savedir', type=str, default='metaqrc2')
     parser.add_argument('--basename', type=str, default='qrc')
     parser.add_argument('--plot', type=int, default=1, help='Flag to plot')
     parser.add_argument('--seed', type=int, default=0, help='Seed for random')

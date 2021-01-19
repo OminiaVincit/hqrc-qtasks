@@ -46,7 +46,8 @@ if __name__  == '__main__':
     parser.add_argument('--rho', type=int, default=0)
     parser.add_argument('--beta', type=float, default=1e-14)
     
-    parser.add_argument('--nondiag', type=float, default=0.42, help='Nonlinear term (non-diagonal term)')
+    parser.add_argument('--alpha', type=float, default=0.2, help='Alpha of coupled strength, 0 for random coupling')
+    parser.add_argument('--bcoef', type=float, default=0.42, help='bcoeff nonlinear term (non-diagonal term)')
     parser.add_argument('--dynamic', type=str, default='ion_trap')
 
     parser.add_argument('--buffer', type=int, default=100)
@@ -58,12 +59,18 @@ if __name__  == '__main__':
     parser.add_argument('--strengths', type=str, default='0.0')
     parser.add_argument('--virtuals', type=str, default='1')
 
-    parser.add_argument('--basename', type=str, default='qrc_echo2')
-    parser.add_argument('--savedir', type=str, default='res_echo2')
+    parser.add_argument('--tmax', type=float, default=25.0, help='Maximum of tauB')
+    parser.add_argument('--ntaus', type=int, default=125, help='Number of tausB')
+    parser.add_argument('--nproc', type=int, default=50)
+
+    parser.add_argument('--basename', type=str, default='qrc_echo')
+    parser.add_argument('--savedir', type=str, default='echo_repeated')
     args = parser.parse_args()
     print(args)
 
-    n_units, max_energy, beta, g = args.units, args.coupling, args.beta, args.nondiag
+    n_units, max_energy, beta, alpha, bcoef = args.units, args.coupling, args.beta, args.alpha, args.bcoef
+    tmax, ntaus = args.tmax, args.ntaus
+
     dynamic = args.dynamic
     buffer = args.buffer
     length = buffer + 1000
@@ -75,11 +82,14 @@ if __name__  == '__main__':
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
         os.mkdir(savedir)
 
-    tx = list(np.arange(-7, 7.1, 0.02))
-    #tx = list(np.arange(0, 14.1, 0.02))
-    
-    taudeltas = [2**x for x in tx]
-    
+    bindir = os.path.join(savedir, 'binary')
+    if os.path.isdir(bindir) == False:
+            os.mkdir(bindir)
+
+    B = max_energy / bcoef
+    taudeltas = list(np.linspace(0.0, tmax, ntaus + 1) / B)
+    taudeltas = taudeltas[1:]
+
     virtuals = [int(x) for x in args.virtuals.split(',')]
     layers = [int(x) for x in args.layers.split(',')]
     strengths = [float(x) for x in args.strengths.split(',')]
@@ -88,8 +98,9 @@ if __name__  == '__main__':
     timestamp = int(time.time() * 1000.0)
     now = datetime.datetime.now()
     datestr = now.strftime('{0:%Y-%m-%d-%H-%M-%S}'.format(now))
-    outbase = os.path.join(savedir, '{}_{}_{}_J_{}_strength_{}_V_{}_layers_{}_T_{}_{}_esp_trials_{}_{}'.format(\
-        basename, dynamic, datestr, max_energy,\
+
+    outbase = os.path.join(bindir, '{}_{}_nspins_{}_a_{}_bc_{}_tmax_{}_ntaus_{}_J_{}_strength_{}_V_{}_layers_{}_T_{}_{}_esp_trials_{}_{}'.format(\
+        basename, dynamic, n_units, alpha, bcoef, tmax, ntaus, max_energy,\
             '_'.join([str(s) for s in strengths]), \
             '_'.join([str(v) for v in virtuals]), \
             '_'.join([str(l) for l in layers]), \
@@ -102,7 +113,7 @@ if __name__  == '__main__':
                 for V in virtuals:
                     for tau_delta in taudeltas:
                         recv_end, send_end = multiprocessing.Pipe(False)
-                        qparams = QRCParams(n_units=n_units, max_energy=max_energy, non_diag=g,\
+                        qparams = QRCParams(n_units=n_units, max_energy=max_energy, non_diag=bcoef, alpha=alpha,\
                             beta=beta, virtual_nodes=V, tau=tau_delta, init_rho=init_rho, dynamic=dynamic)
                         p = multiprocessing.Process(target=esp_job, \
                             args=(qparams, nqrc, layer_strength, buffer, length, net_trials, state_trials, send_end))
@@ -129,10 +140,11 @@ if __name__  == '__main__':
         with open('{}_setting.txt'.format(outbase), 'w') as sfile:
             sfile.write('length={}, buffer={}\n'.format(length, buffer))
             sfile.write('n_units={}\n'.format(n_units))
-            sfile.write('max_energy={},g={}\n'.format(max_energy, g))
+            sfile.write('max_energy={},bcoef={},alpha={}\n'.format(max_energy, bcoef, alpha))
             sfile.write('beta={}\n'.format(beta))
             sfile.write('dynamic={}\n'.format(dynamic))
             sfile.write('layers={}\n'.format(' '.join([str(l) for l in layers])))
             sfile.write('Vs={}\n'.format(' '.join([str(v) for v in virtuals])))
             sfile.write('strengths={}\n'.format(' '.join([str(s) for s in strengths])))
             sfile.write('net_trials={}, state_trials={}\n'.format(net_trials, state_trials))
+            sfile.write('tmax={}, ntaus={}\n'.format(tmax, ntaus))

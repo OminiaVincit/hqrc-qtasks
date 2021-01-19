@@ -4,9 +4,10 @@
 """
 import sys
 import numpy as np
-import math
+import math, os
 from scipy.stats import unitary_group
 from scipy.special import softmax
+from qutip import *
 
 LINEAR_PINV = 'linear_pinv'
 RIDGE_PINV  = 'ridge_pinv'
@@ -18,16 +19,31 @@ RIDGE_SPARSE = 'sparse_cg'
 RIDGE_SAG = 'sag'
 
 DYNAMIC_FULL_RANDOM = 'full_random'
+DYNAMIC_HALF_RANDOM = 'half_random'
 DYNAMIC_FULL_CONST_TRANS = 'full_const_trans'
 DYNAMIC_FULL_CONST_COEFF = 'full_const_coeff'
 DYNAMIC_ION_TRAP = 'ion_trap'
 
+def getSci(sc, i, Nspins):
+    iop = identity(2)
+    sci = iop
+    if i == 0:
+        sci = sc
+    for j in range(1, Nspins):
+        tmp = iop
+        if j == i:
+            tmp = sc
+        sci = tensor(sci, tmp)
+    return sci
+
 class QRCParams():
-    def __init__(self, n_units, max_energy, non_diag, beta, virtual_nodes, tau, init_rho, \
+    def __init__(self, n_units, n_envs, max_energy, non_diag, alpha, beta, virtual_nodes, tau, init_rho, \
         solver=LINEAR_PINV, dynamic=DYNAMIC_FULL_CONST_TRANS):
         self.n_units = n_units
+        self.n_envs = n_envs
         self.max_energy = max_energy
         self.non_diag = non_diag
+        self.alpha = alpha
         self.beta = beta
         self.virtual_nodes = virtual_nodes
         self.tau = tau
@@ -36,8 +52,8 @@ class QRCParams():
         self.dynamic = dynamic
 
     def info(self):
-        print('units={},J={},non_diag={},V={},t={},init_rho={}'.format(\
-            self.n_units, self.max_energy, self.non_diag,
+        print('units={},n_envs={},J={},non_diag={},alpha={},V={},t={},init_rho={}'.format(\
+            self.n_units, self.n_envs, self.max_energy, self.non_diag, self.alpha,
             self.virtual_nodes, self.tau, self.init_rho))
 
 def solfmax_layer(states):
@@ -85,6 +101,25 @@ def make_data_for_narma(length, orders):
         Y[:,j] = y
     return xs, Y
 
+# Generate MNIST dataset with appropriate size
+def gen_mnist_dataset(mnist_dir, mnist_size):
+    import gzip
+    import _pickle as cPickle
+
+    f = gzip.open(os.path.join(mnist_dir, 'mnist_{}.pkl.gz'.format(mnist_size)),'rb')
+    data = cPickle.load(f, encoding='latin1')
+    f.close()
+    train_set, valid_set, test_set = data
+
+    xs_train, ys_train = train_set
+    xs_test, ys_test = test_set
+    xs_val, ys_val = valid_set
+
+    xs_train = xs_train / 255.0
+    xs_test = xs_test / 255.0
+    xs_val  = xs_val / 255.0
+
+    return xs_train, ys_train, xs_test, ys_test, xs_val, ys_val
 
 # Generate sparse matrix with row norm <= gamma
 # sparse matrix with elements between [-1, 1]
