@@ -220,7 +220,7 @@ class HQRC(object):
             local_rhos[i] = rho
         return local_rhos
 
-    def __feed_forward(self, input_seq, predict, use_lastrho):
+    def feed_forward(self, input_seq, predict, use_lastrho):
         input_dim, input_length = input_seq.shape
         nqrc = self.nqrc
         assert(input_dim == nqrc)
@@ -253,7 +253,7 @@ class HQRC(object):
         Nout = output_seq.shape[1]
         self.W_out = np.random.rand(self.__get_comput_nodes() + 1, Nout)
 
-        _, state_list = self.__feed_forward(input_seq, predict=False, use_lastrho=False)
+        _, state_list = self.feed_forward(input_seq, predict=False, use_lastrho=False)
 
         state_list = np.array(state_list)
         state_list = state_list[buffer:, :]
@@ -287,17 +287,17 @@ class HQRC(object):
         self.__train(input_seq, output_seq, buffer, qparams.beta)
 
     def predict(self, input_seq, output_seq, buffer, use_lastrho):
-        prediction_seq, _ = self.__feed_forward(input_seq, predict=True, use_lastrho=use_lastrho)
+        prediction_seq, _ = self.feed_forward(input_seq, predict=True, use_lastrho=use_lastrho)
         pred = prediction_seq[buffer:, :]
         out  = output_seq[buffer:, :]
         loss = np.sum((pred - out)**2) / np.sum(pred**2)
         return prediction_seq, loss
-
+    
     def init_forward(self, qparams, input_seq, init_rs, ranseed):
         self.__reset_states()
         if init_rs == True:
             self.__init_reservoir(qparams, ranseed)
-        _, state_list =  self.__feed_forward(input_seq, predict=False, use_lastrho=False)
+        _, state_list =  self.feed_forward(input_seq, predict=False, use_lastrho=False)
         return state_list
 
 def get_loss(qparams, buffer, train_input_seq, train_output_seq, \

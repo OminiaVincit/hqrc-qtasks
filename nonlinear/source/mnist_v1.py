@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Separate spiral data in nonlinear map
+Perform sequential MNIST
 """
 
 import sys
@@ -30,12 +30,14 @@ from loginit import get_module_logger
 import utils
 from utils import *
 
-MNIST_DIR = "../data/mnist"
+MNIST_DIR = "/data/zoro/qrep/mnist"
+SAVE_DIR  = "/data/zoro/qrep/mnist/results"
+
 LABEL1 = 3
 LABEL2 = 5
 
-def gen_mnist_dataset():
-    f = gzip.open(os.path.join(MNIST_DIR, 'mnist_10x10.pkl.gz'),'rb')
+def gen_mnist_dataset(size=10):
+    f = gzip.open(os.path.join(MNIST_DIR, 'mnist_{0}x{0}.pkl.gz'.format(size)),'rb')
     data = cPickle.load(f, encoding='latin1')
     f.close()
     print(type(data), len(data))
@@ -152,20 +154,22 @@ if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--nqrs', type=int, default=1, help='Number of QRs')
-    parser.add_argument('--units', type=int, default=6, help='Number of the hidden units')
+    parser.add_argument('--spins', type=int, default=6, help='Number of spins')
     parser.add_argument('--rho', type=int, default=0, help='Flag for initializing the density matrix')
-    parser.add_argument('--coupling', type=float, default=1.0)
+    parser.add_argument('--max_energy', type=float, default=1.0)
     parser.add_argument('--beta', type=float, default=1e-14)
 
     parser.add_argument('--nproc', type=int, default=50)
     parser.add_argument('--ntrials', type=int, default=1)
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--virtuals', type=str, default='1')
-    parser.add_argument('--tau', type=float, default=14.0, help='Input interval')
+    parser.add_argument('--tauB', type=float, default=22.0, help='Input interval')
     parser.add_argument('--usecorr', type=int, default=0)
 
-    parser.add_argument('--nondiag', type=float, default=0.42, help='Nonlinear term (non-diagonal term)')
-    parser.add_argument('--dynamic', type=str, default='ion_trap', help='full_random,full_const_trans,full_const_coeff,ion_trap')
+    parser.add_argument('--alpha', type=float, default=0.2, help='Alpha of coupled strength, 0 for random coupling')
+    parser.add_argument('--bcoef', type=float, default=0.42, help='bcoeff nonlinear term (non-diagonal term)')
+
+    parser.add_argument('--dynamic', type=str, default='ion_trap', help='full_random,half_random,full_const_trans,full_const_coeff,ion_trap')
     parser.add_argument('--basename', type=str, default='qrc')
     parser.add_argument('--savedir', type=str, default='res_mnist')
     parser.add_argument('--neval', type=int, default=1)

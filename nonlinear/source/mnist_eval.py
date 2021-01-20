@@ -29,9 +29,10 @@ from loginit import get_module_logger
 import utils
 from utils import *
 
-MNIST_DIR = "../data/mnist"
-TAU_MNIST_DIR = "../data/mnist/taudata"
-MNIST_SIZE = '10x10'
+MNIST_DIR = "/data/zoro/qrep/mnist"
+TAU_MNIST_DIR = "/data/zoro/qrep/mnist/taudata"
+RES_MNIST_DIR = "results"
+MNIST_SIZE="10x10"
 
 def get_acc(predict, out_lb):
     pred_lb = np.argmax(predict, axis=1)
@@ -42,31 +43,38 @@ if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--nqrs', type=int, default=1, help='Number of QRs')
-    parser.add_argument('--units', type=int, default=6, help='Number of the hidden units')
+    parser.add_argument('--spins', type=int, default=5, help='Number of spins')
     parser.add_argument('--ntrials', type=int, default=1)
     parser.add_argument('--virtuals', type=str, default='1')
     parser.add_argument('--beta', type=float, default=1e-14)
-    parser.add_argument('--tau', type=float, default=14.0, help='Input interval')
+    parser.add_argument('--tau', type=float, default=22.0, help='Input interval')
+
     parser.add_argument('--uselinear', type=int, default=0)
     parser.add_argument('--usecorr', type=int, default=0)
     parser.add_argument('--full', type=int, default=1)
     parser.add_argument('--label1', type=int, default=3)
     parser.add_argument('--label2', type=int, default=6)
     
+    parser.add_argument('--alpha', type=float, default=0.2, help='Alpha of coupled strength, 0 for random coupling')
+    parser.add_argument('--bcoef', type=float, default=1.0, help='bcoeff nonlinear term (non-diagonal term)')
+
     parser.add_argument('--dynamic', type=str, default='ion_trap', help='full_random,full_const_trans,full_const_coeff,ion_trap')
     parser.add_argument('--basename', type=str, default='qrc')
-    parser.add_argument('--savedir', type=str, default='res_mnist')
+    parser.add_argument('--savedir', type=str, default=RES_MNIST_DIR)
+    parser.add_argument('--tau_mnist_dir', type=str, default=TAU_MNIST_DIR)
+    parser.add_argument('--mnist_dir', type=str, default=MNIST_DIR)
+    parser.add_argument('--mnist_size', type=str, default=MNIST_SIZE)
 
     args = parser.parse_args()
     print(args)
 
-    n_qrs, n_units, beta = args.nqrs, args.units, args.beta
+    n_qrs, n_spins, beta, alpha, bcoef = args.nqrs, args.spins, args.beta, args.alpha, args.bcoef
     dynamic = args.dynamic
     tau_delta = args.tau
     use_linear, use_corr, full_mnist = args.uselinear, args.usecorr, args.full
     label1, label2 = args.label1, args.label2
+    ntrials, basename, savedir, mnist_dir, tau_mnist_dir, mnist_size = args.ntrials, args.basename, args.savedir, args.mnist_dir, args.tau_mnist_dir, args.mnist_size
 
-    ntrials, basename, savedir = args.ntrials, args.basename, args.savedir
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
         os.mkdir(savedir)
 
@@ -83,7 +91,7 @@ if __name__  == '__main__':
     if os.path.isdir(figdir) == False:
         os.mkdir(figdir)
 
-    basename = '{}_{}_units_{}'.format(basename, dynamic, n_units)
+    basename = '{}_{}_nspins_{}_a_{}_bc_{}'.format(basename, dynamic, n_spins, alpha, bcoef)
     log_filename = os.path.join(logdir, '{}_V_{}.log'.format(basename, args.virtuals))
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
@@ -91,7 +99,7 @@ if __name__  == '__main__':
     virtuals = [int(x) for x in args.virtuals.split(',')]
     taudeltas = [tau_delta]
     
-    x_train, y_train_lb, x_test, y_test_lb = gen_mnist_dataset(MNIST_DIR, MNIST_SIZE)
+    x_train, y_train_lb, x_test, y_test_lb = gen_mnist_dataset(mnist_dir, mnist_size)
 
     if full_mnist > 0:
         Y_train = np.identity(10)[y_train_lb]
@@ -120,8 +128,8 @@ if __name__  == '__main__':
     for V in virtuals:
         for tau_delta in taudeltas:
             # get data
-            train_file = os.path.join(TAU_MNIST_DIR, 'train_{}_{}_tau_{:.3f}_V_{}_flip_True.binaryfile'.format(MNIST_SIZE, basename, tau_delta, V))
-            test_file = os.path.join(TAU_MNIST_DIR, 'test_{}_{}_tau_{:.3f}_V_{}_flip_True.binaryfile'.format(MNIST_SIZE, basename, tau_delta, V))
+            train_file = os.path.join(tau_mnist_dir, 'train_{}_{}_tauB_{:.3f}_V_{}_flip_True.binaryfile'.format(mnist_size, basename, tau_delta, V))
+            test_file = os.path.join(tau_mnist_dir, 'test_{}_{}_tauB_{:.3f}_V_{}_flip_True.binaryfile'.format(mnist_size, basename, tau_delta, V))
             
             if os.path.isfile(train_file) == False or os.path.isfile(test_file) == False:
                 continue
