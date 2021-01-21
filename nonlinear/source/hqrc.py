@@ -6,7 +6,7 @@
 import sys
 import numpy as np
 import scipy as sp
-from scipy import sparse as sparse
+from scipy import sparse
 from scipy.sparse import linalg as splinalg
 from scipy.linalg import pinv2 as scipypinv2
 from IPC import *
@@ -65,7 +65,7 @@ class HQRC(object):
         W_feed = np.zeros((n_nodes, nqrc))
         if nqrc > 1:
             for i in range(0, nqrc):
-                smat = sparse.random(n_nodes, 1, density = self.sparsity).data
+                smat = scipy.sparse.random(n_nodes, 1, density = self.sparsity).data
                 smat *= (self.sigma_input / n_nodes) * (smat * 2.0 - 1.0)
                 W_feed[:, i] = smat.ravel()
         self.W_feed = W_feed
@@ -204,7 +204,7 @@ class HQRC(object):
             for v in range(self.virtual_nodes):
                 # Time evolution of density matrix
                 rho = Uop @ rho @ Uop.T.conj()
-                for qindex in range(1, self.n_qubits):
+                for qindex in range(self.n_envs, self.n_qubits):
                     expectation_value = np.real(np.trace(self.Zop[qindex] @ rho))
                     current_state.append(expectation_value)
                 
