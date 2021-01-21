@@ -49,8 +49,8 @@ if __name__  == '__main__':
     parser.add_argument('--beta', type=float, default=1e-14)
     parser.add_argument('--tau', type=float, default=22.0, help='Input interval')
 
-    parser.add_argument('--uselinear', type=int, default=0)
-    parser.add_argument('--usecorr', type=int, default=0)
+    parser.add_argument('--linear_reg', type=int, default=0)
+    parser.add_argument('--use_corr', type=int, default=0)
     parser.add_argument('--full', type=int, default=1)
     parser.add_argument('--label1', type=int, default=3)
     parser.add_argument('--label2', type=int, default=6)
@@ -71,7 +71,7 @@ if __name__  == '__main__':
     n_qrs, n_spins, beta, alpha, bcoef = args.nqrs, args.spins, args.beta, args.alpha, args.bcoef
     dynamic = args.dynamic
     tau_delta = args.tau
-    use_linear, use_corr, full_mnist = args.uselinear, args.usecorr, args.full
+    linear_reg, use_corr, full_mnist = args.linear_reg, args.use_corr, args.full
     label1, label2 = args.label1, args.label2
     ntrials, basename, savedir, mnist_dir, tau_mnist_dir, mnist_size = args.ntrials, args.basename, args.savedir, args.mnist_dir, args.tau_mnist_dir, args.mnist_size
 
@@ -91,7 +91,7 @@ if __name__  == '__main__':
     if os.path.isdir(figdir) == False:
         os.mkdir(figdir)
 
-    basename = '{}_{}_nspins_{}_a_{}_bc_{}'.format(basename, dynamic, n_spins, alpha, bcoef)
+    basename = '{}_{}_{}_nspins_{}_a_{}_bc_{}'.format(mnist_size, basename, dynamic, n_spins, alpha, bcoef)
     log_filename = os.path.join(logdir, '{}_V_{}.log'.format(basename, args.virtuals))
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
@@ -99,8 +99,8 @@ if __name__  == '__main__':
     virtuals = [int(x) for x in args.virtuals.split(',')]
     taudeltas = [tau_delta]
     
-    x_train, y_train_lb, x_test, y_test_lb = gen_mnist_dataset(mnist_dir, mnist_size)
-
+    x_train, y_train_lb, x_test, y_test_lb, x_val, y_val = gen_mnist_dataset(mnist_dir, mnist_size)
+    
     if full_mnist > 0:
         Y_train = np.identity(10)[y_train_lb]
         Y_test  = np.identity(10)[y_test_lb]
@@ -127,55 +127,57 @@ if __name__  == '__main__':
     #jobs, pipels = [], []
     for V in virtuals:
         for tau_delta in taudeltas:
-            # get data
-            train_file = os.path.join(tau_mnist_dir, 'train_{}_{}_tauB_{:.3f}_V_{}_flip_True.binaryfile'.format(mnist_size, basename, tau_delta, V))
-            test_file = os.path.join(tau_mnist_dir, 'test_{}_{}_tauB_{:.3f}_V_{}_flip_True.binaryfile'.format(mnist_size, basename, tau_delta, V))
-            
-            if os.path.isfile(train_file) == False or os.path.isfile(test_file) == False:
-                continue
-            
-            if use_linear > 0:
-                X_train = np.array(x_train)
-            else:
-                # Training
-                with open(train_file, 'rb') as rrs:
-                    X_train = pickle.load(rrs)
-                    if use_corr == 0:
-                        ids = np.array(range(X_train.shape[1]))
-                        ids = ids[ids % 15 < 5]
-                        X_train = X_train[:, ids]
-                    if full_mnist == 0:
-                        X_train = X_train[train_ids, :]
+            for flip in ['True', 'False']:
+                # get data
+                pfix = '{}_tauB_{:.3f}_V_{}_buf_100_flip_{}'.format(basename, tau_delta, V, flip)
+                train_file = os.path.join(tau_mnist_dir, 'train_{}.binaryfile'.format(pfix))
+                test_file = os.path.join(tau_mnist_dir, 'test_{}.binaryfile'.format(pfix))
+                
+                if os.path.isfile(train_file) == False or os.path.isfile(test_file) == False:
+                    continue
+                
+                if linear_reg > 0:
+                    X_train = np.array(x_train)
+                else:
+                    # Training
+                    with open(train_file, 'rb') as rrs:
+                        X_train = pickle.load(rrs)
+                        if use_corr == 0:
+                            ids = np.array(range(X_train.shape[1]))
+                            ids = ids[ids % 15 < 5]
+                            X_train = X_train[:, ids]
+                        if full_mnist == 0:
+                            X_train = X_train[train_ids, :]
 
-            X_train = np.hstack( [X_train, np.ones([X_train.shape[0], 1]) ] )
-            logger.info('V={}, tau={}, X_train shape = {}'.format(V, tau_delta, X_train.shape))
+                X_train = np.hstack( [X_train, np.ones([X_train.shape[0], 1]) ] )
+                logger.info('V={}, tauB={}, flip={}, X_train shape={}'.format(V, tau_delta, flip, X_train.shape))
 
-            XTX = X_train.T @ X_train
-            XTY = X_train.T @ Y_train
-            I = np.identity(np.shape(XTX)[1])	
-            pinv_ = scipypinv2(XTX + beta * I)
-            W_out = pinv_ @ XTY
-            logger.info('Wout shape={}'.format(W_out.shape))
-            train_acc = get_acc(X_train @ W_out, y_train_lb)
-            logger.info('Train acc={}'.format(train_acc))
+                XTX = X_train.T @ X_train
+                XTY = X_train.T @ Y_train
+                I = np.identity(np.shape(XTX)[1])	
+                pinv_ = scipypinv2(XTX + beta * I)
+                W_out = pinv_ @ XTY
+                logger.info('Wout shape={}'.format(W_out.shape))
+                train_acc = get_acc(X_train @ W_out, y_train_lb)
+                logger.info('Train acc={}'.format(train_acc))
 
-            # Testing
-            if use_linear > 0:
-                X_test = np.array(x_test)
-            else:
-                with open(test_file, 'rb') as rrs:
-                    X_test = pickle.load(rrs)
-                    if use_corr == 0:
-                        ids = np.array(range(X_test.shape[1]))
-                        ids = ids[ids % 15 < 5]
-                        X_test = X_test[:, ids]
-                    if full_mnist == 0:
-                        X_test = X_test[test_ids, :]
+                # Testing
+                if linear_reg > 0:
+                    X_test = np.array(x_test)
+                else:
+                    with open(test_file, 'rb') as rrs:
+                        X_test = pickle.load(rrs)
+                        if use_corr == 0:
+                            ids = np.array(range(X_test.shape[1]))
+                            ids = ids[ids % 15 < 5]
+                            X_test = X_test[:, ids]
+                        if full_mnist == 0:
+                            X_test = X_test[test_ids, :]
 
-            X_test = np.hstack( [X_test, np.ones([X_test.shape[0], 1]) ] )
-            logger.info('V={}, tau={}, X_test shape = {}'.format(V, tau_delta, X_test.shape))
-            test_acc = get_acc(X_test @ W_out, y_test_lb)
-            logger.info('Test acc={}'.format(test_acc))
+                X_test = np.hstack( [X_test, np.ones([X_test.shape[0], 1]) ] )
+                logger.info('V={}, tau={}, X_test shape = {}'.format(V, tau_delta, X_test.shape))
+                test_acc = get_acc(X_test @ W_out, y_test_lb)
+                logger.info('Test acc={}'.format(test_acc))
 
 
     # # Start the process
