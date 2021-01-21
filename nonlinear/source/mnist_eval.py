@@ -91,7 +91,8 @@ if __name__  == '__main__':
     if os.path.isdir(figdir) == False:
         os.mkdir(figdir)
 
-    basename = '{}_{}_{}_nspins_{}_a_{}_bc_{}'.format(mnist_size, basename, dynamic, n_spins, alpha, bcoef)
+    basename = '{}_{}_{}_nqrs_{}_nspins_{}_a_{}_bc_{}'.format(mnist_size, basename, dynamic, \
+        n_qrs, n_spins, alpha, bcoef)
     log_filename = os.path.join(logdir, '{}_V_{}.log'.format(basename, args.virtuals))
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
@@ -142,10 +143,10 @@ if __name__  == '__main__':
                     # Training
                     with open(train_file, 'rb') as rrs:
                         X_train = pickle.load(rrs)
-                        if use_corr == 0:
-                            ids = np.array(range(X_train.shape[1]))
-                            ids = ids[ids % 15 < 5]
-                            X_train = X_train[:, ids]
+                        # if use_corr == 0:
+                        #     ids = np.array(range(X_train.shape[1]))
+                        #     ids = ids[ids % 15 < 5]
+                        #     X_train = X_train[:, ids]
                         if full_mnist == 0:
                             X_train = X_train[train_ids, :]
 
@@ -167,10 +168,10 @@ if __name__  == '__main__':
                 else:
                     with open(test_file, 'rb') as rrs:
                         X_test = pickle.load(rrs)
-                        if use_corr == 0:
-                            ids = np.array(range(X_test.shape[1]))
-                            ids = ids[ids % 15 < 5]
-                            X_test = X_test[:, ids]
+                        # if use_corr == 0:
+                        #     ids = np.array(range(X_test.shape[1]))
+                        #     ids = ids[ids % 15 < 5]
+                        #     X_test = X_test[:, ids]
                         if full_mnist == 0:
                             X_test = X_test[test_ids, :]
 

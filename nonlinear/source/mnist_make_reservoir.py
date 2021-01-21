@@ -118,8 +118,8 @@ if __name__  == '__main__':
     Xs_train, Ys_train, Xs_test, Ys_test, Xs_val, Ys_val = gen_mnist_dataset(mnist_dir, mnist_size)
     
     for tau_delta in taudeltas:
-        basename = '{}_{}_{}_nspins_{}_a_{}_bc_{}_tauB_{:.3f}_V_{}_buf_{}'.format(mnist_size, \
-            args.basename, dynamic, n_spins, alpha, bcoef, tau_delta, V, buffer)
+        basename = '{}_{}_{}_nqrs_{}_nspins_{}_a_{}_bc_{}_tauB_{:.3f}_V_{}_buf_{}'.format(mnist_size, \
+            args.basename, dynamic, n_qrs, n_spins, alpha, bcoef, tau_delta, V, buffer)
         log_filename = os.path.join(logdir, '{}.log'.format(basename))
         logger = get_module_logger(__name__, log_filename)
         logger.info(log_filename)
@@ -131,22 +131,23 @@ if __name__  == '__main__':
             model = hqrc.HQRC(nqrc=n_qrs, gamma=0.0, sparsity=1.0, sigma_input=1.0, type_input=0.0, use_corr=0)
             model.init_reservoir(qparams, ranseed=0)
 
-            for lb in ['train', 'test', 'val']:
-                if lb == 'train':
-                    X = Xs_train
-                elif lb == 'test':
-                    X = Xs_test
-                else:
-                    X = Xs_val
-                
-                # get reservoir states
-                tx = list(range(X.shape[0]))
-                #tx = list(range(10))
-                
-                nproc = min(len(tx), args.nproc)
-                lst = np.array_split(tx, nproc)
+            for flip in [False, True]:
+                for lb in ['train', 'test', 'val']:
+                    if lb == 'train':
+                        X = Xs_train
+                    elif lb == 'test':
+                        X = Xs_test
+                    else:
+                        X = Xs_val
+                    
+                    # get reservoir states
+                    tx = list(range(X.shape[0]))
+                    #tx = list(range(10))
+                    
+                    nproc = min(len(tx), args.nproc)
+                    lst = np.array_split(tx, nproc)
 
-                for flip in [False, True]:
+                if True:
                     jobs, pipels = [], []
                     tmp_files = []
                     for pid in range(nproc):
@@ -181,7 +182,7 @@ if __name__  == '__main__':
                         # Delete file
                         os.remove(filename)
                     zarr = np.array(zarr)
-                    logger.info('{}_{}'.format(lb, zarr.shape))
+                    logger.info('Flip_{}_{}_{}'.format(flip, lb, zarr.shape))
 
                     filename = os.path.join(savedir, '{}_{}_flip_{}.binaryfile'.format(lb, basename, flip))
                     with open(filename, 'wb') as wrs:
