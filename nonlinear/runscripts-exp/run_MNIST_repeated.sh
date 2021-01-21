@@ -17,7 +17,7 @@ TAUS='22.0'
 
 for NSPINS in 5
 do
-for V in 1 5
+for V in 1
 do
 for alpha in 0.2
 do
