@@ -3,7 +3,7 @@
 export OMP_NUM_THREADS=1
 
 EXE=../source/mc_quanrc.py
-SAVE=../qcapa_rep
+SAVE=/home/zoro/Workspace/data/hqrc-qtasks/quan_capacity
 DYNAMIC=ion_trap
 
 NSPINS=5
