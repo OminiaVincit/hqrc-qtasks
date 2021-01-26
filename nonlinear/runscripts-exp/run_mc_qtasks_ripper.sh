@@ -9,11 +9,11 @@ DYNAMIC=ion_trap
 NSPINS=5
 NEV=1
 NPROC=126
-NTRIALS=10
+NTRIALS=5
 
-TMIN=0.0
+TMIN=19.0
 TMAX=25.0
-NTAUS=25
+NTAUS=6
 
 MIND=0
 MAXD=250
@@ -27,7 +27,7 @@ for alpha in 0.2
 do
 for bc in 1.0
 do
-python $EXE --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --mind $MIND --maxd $MAXD --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
+python $EXE --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --mind $MIND --maxd $MAXD --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
 done
 done
 done

@@ -132,12 +132,14 @@ def check_density(mat):
 
 def cal_fidelity_two_mats(matA, matB):
     if check_density(matA) == False or check_density(matB) == False:
-        #print('Not density matrix')
+        # print('Not density matrix')
         fidval = 0.0
     else:
         stateA = Qobj(matA)
         stateB = Qobj(matB)
         fidval = fidelity(stateA, stateB)
+    # if fidval < 0 or fidval > 1:
+    #     fidval = 0
     return fidval
 
 def cal_distance_two_mats(matA, matB, distype='angle'):
