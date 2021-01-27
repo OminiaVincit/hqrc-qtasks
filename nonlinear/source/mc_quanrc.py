@@ -173,9 +173,11 @@ if __name__  == '__main__':
                         MFd_ls.extend(MFds)
                         dlist.extend(dsmall)
                     MFd_n = np.vstack((np.array(dlist), np.array(MFd_ls))).T
-                    #print('Mfd_n', MFd_n.shape)
                     MFd_arr.append(MFd_n)
-                    capacity.append(np.sum(MFd_n[:, 1]))
+                    local_capa = np.sum(MFd_n[:, 1])
+                    capacity.append(local_capa)
+                    logger.debug('Trial={}, capa={}'.format(n, local_capa))
+                    #print('Mfd_n', MFd_n.shape)
 
                 MFd_arr = np.array(MFd_arr)
                 #print('MFd_arr', MFd_arr.shape)
