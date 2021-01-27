@@ -19,12 +19,23 @@ import quanrc as qrc
 from loginit import get_module_logger
 from utils import *
 from qutils import *
+from qutip import *
 from IPC import IPCParams
 
 def generate_qtasks_delay(n_envs, ranseed, length, delay):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
     np.random.seed(seed=ranseed + 1)
-    coeffs = np.random.rand(delay + 1) 
+    
+    # Returns a superoperator acting on vectorized dim × dim density operators, 
+    # sampled from the BCSZ distribution.
+    sup_ops = []
+    for d in range(delay+1):
+        sop = rand_super_bcsz(N=2**n_envs, enforce_tp=True)
+        #sop = rand_unitary(N=2**n_envs)
+        sup_ops.append(sop)
+    # generate coefficients
+    #coeffs = np.random.rand(delay + 1) 
+    coeffs = np.ones(delay+1)
     coeffs = coeffs / np.sum(coeffs)
     coeffs = coeffs.astype(complex)
 
@@ -36,13 +47,21 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay):
     idrho = np.zeros((2**n_envs, 2**n_envs)).astype(complex)
     idrho[0, 0] = 1
     output_data = [idrho] * length
-    # for n in range(delay, length):
-        # outstate = np.zeros((2**n_envs, 2**n_envs)).astype(complex)
-        # for d in range(delay+1):
-        #     outstate += coeffs[d] * input_data[n - d]
-        # output_data[n] = outstate
+    for n in range(delay, length):
+        outstate = None
+        for d in range(delay+1):
+            mstate = Qobj(input_data[n - d])
+            mstate = operator_to_vector(mstate)
+            #mstate = sup_ops[d] * mstate * sup_ops[d].dag()
+            #outstate = mstate
+            if outstate is not None:
+                outstate += coeffs[d] * mstate
+            else:
+                outstate = coeffs[d] * mstate
+        #print('Shape outstate', is_trace_one(outstate), is_hermitian(outstate), is_positive_semi(outstate))
+        output_data[n] = np.array(vector_to_operator(outstate))
     
-    output_data[delay:] = input_data[:(length-delay)]
+    #output_data[delay:] = input_data[:(length-delay)]
     
     return input_data, output_data
 
@@ -68,7 +87,7 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
             #val_fid_avg, val_fid_std = np.mean(val_fidls), np.std(val_fidls)
             train_rmean_square_fid = np.sqrt(np.mean(np.array(train_fidls)**2))
             val_rmean_square_fid = np.sqrt(np.mean(np.array(val_fidls)**2))
-            print(n, tauB, train_rmean_square_fid, val_rmean_square_fid)
+            print('Fidelity at ', n, tauB, train_rmean_square_fid, val_rmean_square_fid)
     
 if __name__  == '__main__':
     # Check for command line arguments

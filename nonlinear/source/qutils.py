@@ -120,11 +120,11 @@ def is_positive_semi(mat, tol=1e-9):
     E = np.linalg.eigvalsh(mat)
     return np.all(np.real(E) > -tol)
 
-def is_hermitian(mat):
-    return np.all(mat == mat.conj().T)
+def is_hermitian(mat, tol=1e-9):
+    return np.all(np.abs(mat - mat.conj().T) < tol)
 
 def is_trace_one(mat, tol=1e-9):
-    err = np.abs(np.real(np.trace(mat)) - 1.0)
+    err = np.abs(np.abs(np.trace(mat)) - 1.0)
     return (err < tol)
 
 def check_density(mat):
