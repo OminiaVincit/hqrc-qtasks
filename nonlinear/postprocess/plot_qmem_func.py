@@ -38,7 +38,7 @@ if __name__  == '__main__':
         memfile = os.path.join(folder, '{}_tauB_{:.3f}_{}.txt'.format(prefix, tauB, posfix))
         arr = np.loadtxt(memfile)
         print('read {} with shape'.format(memfile), arr.shape)
-        ax.plot(arr[:,0], arr[:,1], linewidth=2, markersize=12, \
+        ax.plot(arr[:,0], arr[:,1], linewidth=2, markersize=3, marker='o',alpha=0.8,\
                     label='$\\tau B$ = {}'.format(tauB))
         
     ax.set_xlabel('$d$', fontsize=14)
