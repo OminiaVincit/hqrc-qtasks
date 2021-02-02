@@ -94,6 +94,91 @@ def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform'):
         rhos.append(rho)
     return rhos
 
+def is_positive_semi(mat, tol=1e-10):
+    E = np.linalg.eigvalsh(mat)
+    return np.all(np.real(E) > -tol)
+
+def is_hermitian(mat, tol=1e-10):
+    return np.all(np.abs(mat - mat.conj().T) < tol)
+
+def is_trace_one(mat, tol=1e-10):
+    err = np.abs(np.abs(np.trace(mat)) - 1.0)
+    return (err < tol)
+
+def check_density(mat):
+    return (is_hermitian(mat) and is_trace_one(mat) and is_positive_semi(mat))
+
+def eps(z):
+    """Equivalent to MATLAB eps
+    """
+    zre = np.real(z)
+    zim = np.imag(z)
+    return np.spacing(np.max([zre, zim]))
+
+def nearest_psd(A, method):
+    # % The nearest (in Frobenius norm) symmetric Positive Semi-Definite matrix to A
+    # % Matrix A may be real or complex
+    # %
+    # % From Higham: "The nearest symmetric positive semidefinite matrix in the
+    # % Frobenius norm to an arbitrary real matrix A is shown to be (B + H)/2,
+    # % where H is the symmetric polar factor of B = (A + A')/2."
+    # %
+    # % See for proof of method SVD
+    # % Higham NJ. Computing a nearest symmetric positive semidefinite matrix. 
+    # % Linear algebra and its applications. 1988 May 1;103:103-18.
+    # %  (http://www.sciencedirect.com/science/article/pii/0024379588902236)
+    # %
+    # % arguments: (input)
+    # %  A - square matrix, which will be converted to the nearest Symmetric
+    # %    Positive Definite Matrix.
+    # %
+    # %  method - 'svd' or eig', [Optional, default= 'svd']
+    # %             'svd' is the method of Higham using the symmetric polar factor.
+    # %             'eig' rectifies the eigvalues and recomposes the matrix.
+    # %             While theorically equivalent, method 'svd' is more numerically stable
+    # %             especially in cases of high co-linearity, and tends to returns an
+    # %             Ahat slightly closer to A than method 'eig'. Therefore, while method 'eig' executes
+    # %             faster, it is not recomended.
+    # %
+    # % Output:
+    # %  Ahat - The matrix chosen as the nearest PSD matrix to A.
+
+    # Fist check A is psd
+    if is_positive_semi(A):
+        return A
+    B = (A + A.conj().T) / 2.0
+    if method == 'eig':
+        eigval, eigvec = np.linalg.eig(B)
+        eigval[np.real(eigval) < 0] = 0
+        Ahat = np.dot(eigvec, np.dot(np.diag(eigval), eigvec.conj().T))
+    else:
+        # SVD
+        u, s, vh = np.linalg.svd(B, full_matrices=True)
+        H = np.dot(vh.conj().T, np.dot(np.diag(s), vh)) # is PSD
+        Ahat = (B + H) / 2.0
+    
+    # Make Ahat Hermitian
+    Ahat = (Ahat + Ahat.conj().T) / 2.0
+
+    # Test Ahat is PSD, if not, then modify just a bit
+    psd = False
+    k = 0
+    tol = 1e-10
+    while psd == False:
+        E = np.linalg.eigvalsh(Ahat)
+        #print(np.real(E))
+        k += 1
+        if np.all(np.real(E) > -tol):
+            psd = True
+        if psd == False:
+            mineig = np.min(np.real(E))
+            # adding a tiny multiple of an identity matrix.
+            Ahat = Ahat + ( - (mineig*k)**2 + eps(mineig)) * np.eye(A.shape[0])
+        if k > 10:
+            print('May be it is a bug for taking too long time')
+    Ahat = Ahat / np.trace(Ahat)
+    return Ahat
+
 def convert_density_to_features(rho_ls):
     fevec = []
     for rho in rho_ls:
@@ -113,24 +198,10 @@ def convert_features_to_density(fevec):
         real_rho = np.array(local_vec[:Nbase_sq]).reshape(Nbase, Nbase)
         imag_rho = np.array(local_vec[Nbase_sq:]).reshape(Nbase, Nbase)
         full_rho = real_rho + imag_rho * 1j
-
+        full_rho = nearest_psd(full_rho, method='svd')
         rho_ls.append(full_rho)
     rho_ls = np.array(rho_ls)
     return rho_ls
-
-def is_positive_semi(mat, tol=1e-9):
-    E = np.linalg.eigvalsh(mat)
-    return np.all(np.real(E) > -tol)
-
-def is_hermitian(mat, tol=1e-9):
-    return np.all(np.abs(mat - mat.conj().T) < tol)
-
-def is_trace_one(mat, tol=1e-9):
-    err = np.abs(np.abs(np.trace(mat)) - 1.0)
-    return (err < tol)
-
-def check_density(mat):
-    return (is_hermitian(mat) and is_trace_one(mat) and is_positive_semi(mat))
 
 def cal_fidelity_two_mats(matA, matB):
     if check_density(matA) == False or check_density(matB) == False:

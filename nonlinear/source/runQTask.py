@@ -22,7 +22,7 @@ from qutils import *
 from qutip import *
 from IPC import IPCParams
 
-def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname):
+def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
     np.random.seed(seed=ranseed + 1)
     D = 2**n_envs
@@ -36,9 +36,16 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname):
         sup_ops.append(sop)
     
     # generate coefficients
-    # coeffs = np.random.rand(delay + 1) 
-    coeffs = np.ones(delay+1)
+    coeffs = np.random.rand(delay + 1) 
     #coeffs[-1] = 1.0
+    if 'delay' in taskname:
+        coeffs = np.zeros(delay+1)
+        coeffs[-1] = 1.0
+    elif 'wma' in taskname: # weighted moving average filter
+        coeffs = np.flip(np.arange(1, delay+2))
+    elif 'sma' in taskname:
+        coeffs = np.ones(delay+1)
+    #print('Coeffs', coeffs)
     coeffs = coeffs / np.sum(coeffs)
     coeffs = coeffs.astype(complex)
 
@@ -51,22 +58,22 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname):
     idrho = np.zeros((D, D)).astype(complex)
     idrho[0, 0] = 1
     output_data = [idrho] * length
-    if taskname == 'combi':
+    if taskname == 'sma-rand' or taskname == 'wsma-rand':
         for n in range(delay, length):
             outstate = None
             for d in range(delay+1):
                 mstate = Qobj(input_data[n - d])
                 mstate = operator_to_vector(mstate)
-                #mstate = sup_ops[d] * mstate * sup_ops[d].dag()
-                #outstate = mstate
+                mstate = sup_ops[d] * mstate * sup_ops[d].dag()
                 if outstate is not None:
                     outstate += coeffs[d] * mstate
                 else:
                     outstate = coeffs[d] * mstate
             #print('Shape outstate', is_trace_one(outstate), is_hermitian(outstate), is_positive_semi(outstate))
             output_data[n] = np.array(vector_to_operator(outstate))
-    elif taskname == 'depolar':
-        _, data_noise = make_data_for_narma(length=length, orders=[5])
+    elif taskname == 'sma-depolar' or taskname == 'wsma-depolar':
+        print('Make NARMA data for depolar task')
+        _, data_noise = make_data_for_narma(length=length, orders=[order])
         pnoise = data_noise[:, 0].ravel()
         idmat = np.eye(D)
         for n in range(delay, length):
@@ -82,6 +89,7 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname):
         output_data[delay:] = input_data[:(length-delay)]
     else:
         output_data = input_data
+    
     return input_data, output_data
 
 def convert_seq(input_seq):
@@ -139,19 +147,23 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     bx.set_ylabel('Fidelity', color=nicered, fontsize=fsize)
     #bx.set_ylim([0.8, 1.01])
 
-    for ftype in ['png']:
-        plt.savefig('{}.{}'.format(fig_path, ftype), bbox_inches='tight', transparent=False, dpi=600)
+    for ftype in ['png', 'svg']:
+        transparent = True
+        if ftype == 'png':
+            transparent = False
+        plt.savefig('{}.{}'.format(fig_path, ftype), bbox_inches='tight', transparent=transparent, dpi=600)
     plt.show()
 
-def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname):
+def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order):
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
     length = buffer + train_len + val_len
     basename = log_filename.replace('.log', '')
     for tauB in tBs:
         qparams.tau = tauB / B
+        train_rmean_ls, val_rmean_ls = [], []
         for n in range(ntrials):
-            input_data, output_data = generate_qtasks_delay(qparams.n_envs, ranseed=n, length=length, delay=delay, taskname=taskname)
+            input_data, output_data = generate_qtasks_delay(qparams.n_envs, ranseed=n, length=length, delay=delay, taskname=taskname, order=order)
             train_input_seq = np.array(input_data[  : (buffer + train_len)])
             train_output_seq = np.array(output_data[  : (buffer + train_len)])
             
@@ -166,11 +178,18 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
             #val_fid_avg, val_fid_std = np.mean(val_fidls), np.std(val_fidls)
             train_rmean_square_fid = np.sqrt(np.mean(np.array(train_fidls)**2))
             val_rmean_square_fid = np.sqrt(np.mean(np.array(val_fidls)**2))
-            res_title = 'Fidelity at n={}, tauB={:.3f}, train={:.4f}, val={:.4f}'.format(n, tauB, train_rmean_square_fid, val_rmean_square_fid)
+            res_title = 'Root mean square Fidelity at n={}, tauB={:.3f}, train={:.4f}, val={:.4f}'.format(n, tauB, train_rmean_square_fid, val_rmean_square_fid)
             logger.debug(res_title)
-            plot_result(fig_path, res_title, train_input_seq[buffer:], train_output_seq[buffer:], \
-                val_input_seq, val_output_seq, train_pred_seq, val_pred_seq,\
-                train_fidls, val_fidls)
+            
+            train_rmean_ls.append(train_rmean_square_fid)
+            val_rmean_ls.append(val_rmean_square_fid)
+            if n == 0:
+                plot_result(fig_path, res_title, train_input_seq[buffer:], train_output_seq[buffer:], \
+                    val_input_seq, val_output_seq, train_pred_seq, val_pred_seq,\
+                    train_fidls, val_fidls)
+        
+        avg_train, avg_val = np.mean(train_rmean_ls), np.mean(val_rmean_ls)
+        logger.info('Average RMSF with ntrials={}, tauB={:.3f}, train={:.4f}, val={:.4f}'.format(ntrials, tauB, avg_train, avg_val))
             
     
 if __name__  == '__main__':
@@ -201,7 +220,8 @@ if __name__  == '__main__':
     parser.add_argument('--basename', type=str, default='qtasks')
     parser.add_argument('--taskname', type=str, default='delay')
     parser.add_argument('--savedir', type=str, default='QTasks_repeated')
-    
+    parser.add_argument('--order', type=int, default=5, help='Order of nonlinear in depolarizing channel')
+
     parser.add_argument('--tmax', type=float, default=25, help='Maximum of tauB')
     parser.add_argument('--tmin', type=float, default=0, help='Minimum of tauB')
     parser.add_argument('--ntaus', type=int, default=125, help='Number of tausB')
@@ -214,7 +234,7 @@ if __name__  == '__main__':
 
     dynamic = args.dynamic
     train_len, val_len, buffer, delay = args.trainlen, args.vallen, args.buffer, args.delay
-    ntrials, basename, savedir, taskname = args.ntrials, args.basename, args.savedir, args.taskname
+    ntrials, basename, savedir, taskname, order = args.ntrials, args.basename, args.savedir, args.taskname, args.order
     virtuals = [int(x) for x in args.virtuals.split(',')]
 
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
@@ -227,8 +247,8 @@ if __name__  == '__main__':
     if os.path.isdir(logdir) == False:
         os.mkdir(logdir)
     
-    basename = '{}_{}_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}'.format(\
-        basename, taskname, dynamic, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
+    basename = '{}_{}_od_{}_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}'.format(\
+        basename, taskname, order, dynamic, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
         '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, delay, ntrials)
     
     log_filename = os.path.join(logdir, '{}.log'.format(basename))
@@ -257,7 +277,7 @@ if __name__  == '__main__':
                 qparams = QRCParams(n_units=n_spins-n_envs, n_envs=n_envs, max_energy=max_energy, non_diag=bcoef,alpha=alpha,\
                             beta=beta, virtual_nodes=V, tau=0.0, init_rho=init_rho, dynamic=dynamic)
                 p = multiprocessing.Process(target=fidelity_compute, \
-                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname))
+                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order))
                 jobs.append(p)
                 #pipels.append(recv_end)
 
