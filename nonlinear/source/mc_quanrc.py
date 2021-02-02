@@ -126,7 +126,7 @@ if __name__  == '__main__':
     if os.path.isfile(savedir) == False:
         for tauB in taudeltas:
             for V in virtuals:
-                outfile = '{}_{}_nspins_{}_{}_a_{}_bc_{}_tauB_{:.3f}_V_{}_len_{}_{}_{}_trials_{}'.format(\
+                outfile = '{}_{}_nspins_{}_{}_a_{}_bc_{}_tauB_{:.3f}_V_{}_len_{}_{}_{}_trials_{}.txt'.format(\
                     bname, dynamic, n_spins, n_envs, alpha, bcoef, \
                     tauB, V, buffer, train_len, val_len, ntrials)
                 outfile = os.path.join(savedir, outfile)

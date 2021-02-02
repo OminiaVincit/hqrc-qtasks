@@ -3,13 +3,13 @@
 export OMP_NUM_THREADS=1
 
 EXE=../source/runQTask.py
-TASKNAME=combi
+TASKNAME=depolar
 DYNAMIC=ion_trap
 
-NSPINS=7
-NEV=2
+NSPINS=5
+NEV=1
 
-SAVE=/data/zoro/qrep/reconstruct_7_2_$TASKNAME
+SAVE=/data/zoro/qrep/deleme_$TASKNAME
 
 NPROC=125
 NTRIALS=1
@@ -22,7 +22,7 @@ BUFFER=1000
 TRAINLEN=500
 VALEN=500
 
-DELAY=5
+DELAY=2
 
 for V in 1 5
 do

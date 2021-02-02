@@ -22,63 +22,142 @@ from qutils import *
 from qutip import *
 from IPC import IPCParams
 
-def generate_qtasks_delay(n_envs, ranseed, length, delay):
+def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
     np.random.seed(seed=ranseed + 1)
-    
+    D = 2**n_envs
     # Returns a superoperator acting on vectorized dim × dim density operators, 
     # sampled from the BCSZ distribution.
     sup_ops = []
+    
     for d in range(delay+1):
-        sop = rand_super_bcsz(N=2**n_envs, enforce_tp=True)
+        sop = rand_super_bcsz(N=D, enforce_tp=True)
         #sop = rand_unitary(N=2**n_envs)
         sup_ops.append(sop)
+    
     # generate coefficients
-    #coeffs = np.random.rand(delay + 1) 
+    # coeffs = np.random.rand(delay + 1) 
     coeffs = np.ones(delay+1)
+    #coeffs[-1] = 1.0
     coeffs = coeffs / np.sum(coeffs)
     coeffs = coeffs.astype(complex)
 
-    if n_envs == 1:
-        input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
-    else:
-        input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
-
-    idrho = np.zeros((2**n_envs, 2**n_envs)).astype(complex)
+    # if n_envs == 1:
+    #     input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
+    # else:
+    #     input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
+    input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
+    
+    idrho = np.zeros((D, D)).astype(complex)
     idrho[0, 0] = 1
     output_data = [idrho] * length
-    for n in range(delay, length):
-        outstate = None
-        for d in range(delay+1):
-            mstate = Qobj(input_data[n - d])
-            mstate = operator_to_vector(mstate)
-            #mstate = sup_ops[d] * mstate * sup_ops[d].dag()
-            #outstate = mstate
-            if outstate is not None:
-                outstate += coeffs[d] * mstate
-            else:
-                outstate = coeffs[d] * mstate
-        #print('Shape outstate', is_trace_one(outstate), is_hermitian(outstate), is_positive_semi(outstate))
-        output_data[n] = np.array(vector_to_operator(outstate))
-    
-    #output_data[delay:] = input_data[:(length-delay)]
-    
+    if taskname == 'combi':
+        for n in range(delay, length):
+            outstate = None
+            for d in range(delay+1):
+                mstate = Qobj(input_data[n - d])
+                mstate = operator_to_vector(mstate)
+                #mstate = sup_ops[d] * mstate * sup_ops[d].dag()
+                #outstate = mstate
+                if outstate is not None:
+                    outstate += coeffs[d] * mstate
+                else:
+                    outstate = coeffs[d] * mstate
+            #print('Shape outstate', is_trace_one(outstate), is_hermitian(outstate), is_positive_semi(outstate))
+            output_data[n] = np.array(vector_to_operator(outstate))
+    elif taskname == 'depolar':
+        _, data_noise = make_data_for_narma(length=length, orders=[5])
+        pnoise = data_noise[:, 0].ravel()
+        idmat = np.eye(D)
+        for n in range(delay, length):
+            outstate = None
+            for d in range(delay+1):
+                mstate = pnoise[n-d] * idmat / D + (1.0 - pnoise[n-d]) * input_data[n - d]
+                if outstate is not None:
+                    outstate += coeffs[d] * mstate
+                else:
+                    outstate = coeffs[d] * mstate
+                output_data[n] = outstate
+    elif taskname == 'delay':
+        output_data[delay:] = input_data[:(length-delay)]
+    else:
+        output_data = input_data
     return input_data, output_data
 
-def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay):
+def convert_seq(input_seq):
+    ma = np.real(input_seq).reshape((input_seq.shape[0], -1))
+    mb = np.imag(input_seq).reshape((input_seq.shape[0], -1))
+    return np.hstack((ma, mb)).transpose()
+
+def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_input_seq, val_output_seq, \
+    train_pred_seq, val_pred_seq, train_fidls, val_fidls):
+    input_seq = np.vstack((train_input_seq, val_input_seq))
+    output_seq = np.vstack((train_output_seq, val_output_seq))
+    pred_seq = np.vstack((train_pred_seq, val_pred_seq))
+    #print('shape1', input_seq.shape, output_seq.shape)
+    input_seq = convert_seq(input_seq)
+    output_seq = convert_seq(output_seq)
+    pred_seq = convert_seq(pred_seq)
+    err_seq = np.abs(output_seq - pred_seq)
+    #print('shape2', input_seq.shape, output_seq.shape)
+
+    fidls = np.array([train_fidls, val_fidls]).ravel()
+    #matplotlib.style.use('seaborn')
+    cmap = plt.get_cmap("RdBu")
+    #cmap = plt.get_cmap("rainbow")
+    
+    ecmap = plt.get_cmap("summer_r")
+    plt.rc('font', family='serif')
+    plt.rc('mathtext', fontset='cm')
+    plt.rcParams['font.size']=10
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+    #print('\n'.join(color for color in colors))  
+    fig, axs = plt.subplots(4, 1, figsize=(20, 16), sharey=True)
+    fig.subplots_adjust(hspace=0.4, wspace = 0.4)
+    # Plotting the contour plot
+    fsize = 14
+    vmin, vmax = input_seq.min(), input_seq.max()
+    vmin_error, vmax_error = err_seq.min(), err_seq.max()
+    vmin = min(vmin, output_seq.min())
+    vmin = min(vmin, pred_seq.min())
+    vmax = max(vmax, output_seq.max())
+    vmax = max(vmax, pred_seq.max())
+    
+    #print(vmin, vmax)
+    axs = axs.ravel()
+    for ax in axs:
+        ax.set_ylabel('Index', fontsize=fsize)
+        ax.set_xlabel('Time', fontsize=fsize)
+        
+    mp0 = plotContour(fig, axs[0], input_seq, "Input", fsize, vmin, vmax, cmap)
+    mp1 = plotContour(fig, axs[1], output_seq, "Output", fsize, vmin, vmax, cmap)
+    mp2 = plotContour(fig, axs[2], pred_seq, "Target", fsize, vmin, vmax, cmap)
+    mp3 = plotContour(fig, axs[3], err_seq, "Diff. and {}".format(res_title), fsize, vmin_error, vmax_error, ecmap)
+    bx = axs[3].twinx()
+    nicered = (0.769, 0.306, 0.322)
+    bx.plot(fidls, 'o', linestyle ='-', marker='o', color=nicered, alpha=0.8)
+    bx.set_ylabel('Fidelity', color=nicered, fontsize=fsize)
+    #bx.set_ylim([0.8, 1.01])
+
+    for ftype in ['png']:
+        plt.savefig('{}.{}'.format(fig_path, ftype), bbox_inches='tight', transparent=False, dpi=600)
+    plt.show()
+
+def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname):
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
     length = buffer + train_len + val_len
-
+    basename = log_filename.replace('.log', '')
     for tauB in tBs:
         qparams.tau = tauB / B
         for n in range(ntrials):
-            input_data, output_data = generate_qtasks_delay(qparams.n_envs, ranseed=n, length=length, delay=delay)
+            input_data, output_data = generate_qtasks_delay(qparams.n_envs, ranseed=n, length=length, delay=delay, taskname=taskname)
             train_input_seq = np.array(input_data[  : (buffer + train_len)])
             train_output_seq = np.array(output_data[  : (buffer + train_len)])
             
             val_input_seq   = np.array(input_data[(buffer + train_len) : length])
             val_output_seq = np.array(output_data[(buffer + train_len) : length])
+            fig_path = '{}_tauB_{:.3f}_{}'.format(basename, tauB, n)
 
             train_pred_seq, train_fidls, val_pred_seq, val_fidls = \
                 qrc.get_fidelity(qparams, buffer, train_input_seq, train_output_seq, val_input_seq, val_output_seq, ranseed=n)
@@ -87,7 +166,12 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
             #val_fid_avg, val_fid_std = np.mean(val_fidls), np.std(val_fidls)
             train_rmean_square_fid = np.sqrt(np.mean(np.array(train_fidls)**2))
             val_rmean_square_fid = np.sqrt(np.mean(np.array(val_fidls)**2))
-            print('Fidelity at ', n, tauB, train_rmean_square_fid, val_rmean_square_fid)
+            res_title = 'Fidelity at n={}, tauB={:.3f}, train={:.4f}, val={:.4f}'.format(n, tauB, train_rmean_square_fid, val_rmean_square_fid)
+            logger.debug(res_title)
+            plot_result(fig_path, res_title, train_input_seq[buffer:], train_output_seq[buffer:], \
+                val_input_seq, val_output_seq, train_pred_seq, val_pred_seq,\
+                train_fidls, val_fidls)
+            
     
 if __name__  == '__main__':
     # Check for command line arguments
@@ -101,12 +185,12 @@ if __name__  == '__main__':
     parser.add_argument('--alpha', type=float, default=0.2, help='Alpha of coupled strength, 0 for random coupling')
     parser.add_argument('--bcoef', type=float, default=0.42, help='bcoeff nonlinear term (non-diagonal term)')
     parser.add_argument('--dynamic', type=str, default='ion_trap')
-    parser.add_argument('--solver', type=str, default=LINEAR_PINV, \
+    parser.add_argument('--solver', type=str, default=RIDGE_PINV, \
         help='regression solver by linear_pinv,ridge_pinv,auto,svd,cholesky,lsqr,sparse_cg,sag')
 
     parser.add_argument('--virtuals', type=str, default='1')
 
-    parser.add_argument('--trainlen', type=int, default=100)
+    parser.add_argument('--trainlen', type=int, default=200)
     parser.add_argument('--vallen', type=int, default=100)
     parser.add_argument('--buffer', type=int, default=100)
     parser.add_argument('--delay', type=int, default=5)
@@ -115,6 +199,7 @@ if __name__  == '__main__':
     parser.add_argument('--ntrials', type=int, default=1)
 
     parser.add_argument('--basename', type=str, default='qtasks')
+    parser.add_argument('--taskname', type=str, default='delay')
     parser.add_argument('--savedir', type=str, default='QTasks_repeated')
     
     parser.add_argument('--tmax', type=float, default=25, help='Maximum of tauB')
@@ -129,7 +214,7 @@ if __name__  == '__main__':
 
     dynamic = args.dynamic
     train_len, val_len, buffer, delay = args.trainlen, args.vallen, args.buffer, args.delay
-    ntrials, basename, savedir = args.ntrials, args.basename, args.savedir
+    ntrials, basename, savedir, taskname = args.ntrials, args.basename, args.savedir, args.taskname
     virtuals = [int(x) for x in args.virtuals.split(',')]
 
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
@@ -142,8 +227,8 @@ if __name__  == '__main__':
     if os.path.isdir(logdir) == False:
         os.mkdir(logdir)
     
-    basename = '{}_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}'.format(\
-        basename, dynamic, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
+    basename = '{}_{}_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}'.format(\
+        basename, taskname, dynamic, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
         '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, delay, ntrials)
     
     log_filename = os.path.join(logdir, '{}.log'.format(basename))
@@ -172,7 +257,7 @@ if __name__  == '__main__':
                 qparams = QRCParams(n_units=n_spins-n_envs, n_envs=n_envs, max_energy=max_energy, non_diag=bcoef,alpha=alpha,\
                             beta=beta, virtual_nodes=V, tau=0.0, init_rho=init_rho, dynamic=dynamic)
                 p = multiprocessing.Process(target=fidelity_compute, \
-                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay))
+                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname))
                 jobs.append(p)
                 #pipels.append(recv_end)
 
