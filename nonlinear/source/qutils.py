@@ -211,8 +211,8 @@ def cal_fidelity_two_mats(matA, matB):
         stateA = Qobj(matA)
         stateB = Qobj(matB)
         fidval = fidelity(stateA, stateB)
-    # if fidval < 0 or fidval > 1:
-    #     fidval = 0
+    fidval = max(0.0, fidval)
+    fidval = min(1.0, fidval)
     return fidval
 
 def cal_distance_two_mats(matA, matB, distype='angle'):
