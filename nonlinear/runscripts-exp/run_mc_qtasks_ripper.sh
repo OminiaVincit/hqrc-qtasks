@@ -11,9 +11,9 @@ NEV=1
 NPROC=126
 NTRIALS=5
 
-TMIN=10.0
+TMIN=0.0
 TMAX=25.0
-NTAUS=15
+NTAUS=25
 
 MIND=0
 MAXD=250
@@ -23,11 +23,11 @@ VALEN=1000
 
 for V in 1
 do
-for alpha in 0.2
+for alpha in 1.0
 do
-for bc in 1.0
+for bc in 2.0
 do
-python $EXE --rho 1 --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --mind $MIND --maxd $MAXD --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
+python $EXE --alpha $alpha --bcoef $bc --rho 1 --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --mind $MIND --maxd $MAXD --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
 done
 done
 done
