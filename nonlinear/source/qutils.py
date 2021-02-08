@@ -84,12 +84,16 @@ def generate_one_qubit_states(ranseed, Nitems):
         rhos.append(rho)
     return rhos
 
-def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform'):
+def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform', add=None):
     rhos = []
     density_arrs = np.random.uniform(size=Nitems)
-
+    D = 2**Nbase
+    pertur_mat = np.eye(D) / D
     for n in range(Nitems):
-        rho = np.array(rand_dm(2**Nbase, density=density_arrs[n]))
+        rho = np.array(rand_dm(D, density=density_arrs[n]))
+        if add == 'sin':
+            beta = np.sin(n)**2
+            rho = beta * pertur_mat + (1.0 - beta) * rho
         #print(n, rho)
         rhos.append(rho)
     return rhos
@@ -198,7 +202,7 @@ def convert_features_to_density(fevec):
         real_rho = np.array(local_vec[:Nbase_sq]).reshape(Nbase, Nbase)
         imag_rho = np.array(local_vec[Nbase_sq:]).reshape(Nbase, Nbase)
         full_rho = real_rho + imag_rho * 1j
-        full_rho = nearest_psd(full_rho, method='svd')
+        full_rho = nearest_psd(full_rho, method='eig')
         rho_ls.append(full_rho)
     rho_ls = np.array(rho_ls)
     return rho_ls

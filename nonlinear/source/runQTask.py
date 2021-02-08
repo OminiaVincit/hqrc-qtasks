@@ -21,6 +21,7 @@ from utils import *
 from qutils import *
 from qutip import *
 from IPC import IPCParams
+import colorcet as cc
 
 def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
@@ -49,30 +50,31 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order):
     coeffs = coeffs / np.sum(coeffs)
     coeffs = coeffs.astype(complex)
 
-    # if n_envs == 1:
-    #     input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
-    # else:
-    #     input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
-    input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
+    if n_envs == 1:
+        input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
+    else:
+        input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
+    #input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
     
     idrho = np.zeros((D, D)).astype(complex)
     idrho[0, 0] = 1
     output_data = [idrho] * length
-    if taskname == 'sma-rand' or taskname == 'wsma-rand':
+    if taskname == 'sma-rand' or taskname == 'wma-rand':
+        print('Task {}'.format(taskname))
         for n in range(delay, length):
             outstate = None
             for d in range(delay+1):
                 mstate = Qobj(input_data[n - d])
                 mstate = operator_to_vector(mstate)
-                mstate = sup_ops[d] * mstate * sup_ops[d].dag()
+                mstate = sup_ops[d] * mstate
                 if outstate is not None:
                     outstate += coeffs[d] * mstate
                 else:
                     outstate = coeffs[d] * mstate
             #print('Shape outstate', is_trace_one(outstate), is_hermitian(outstate), is_positive_semi(outstate))
             output_data[n] = np.array(vector_to_operator(outstate))
-    elif taskname == 'sma-depolar' or taskname == 'wsma-depolar':
-        print('Make NARMA data for depolar task')
+    elif taskname == 'sma-depolar' or taskname == 'wma-depolar' or taskname == 'delay-depolar':
+        print('Make NARMA data for depolar task {}'.format(taskname))
         _, data_noise = make_data_for_narma(length=length, orders=[order])
         pnoise = data_noise[:, 0].ravel()
         idmat = np.eye(D)
@@ -85,8 +87,15 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order):
                 else:
                     outstate = coeffs[d] * mstate
                 output_data[n] = outstate
-    elif taskname == 'delay':
+    elif taskname == 'delay-id':
+        print('Task {}'.format(taskname))
         output_data[delay:] = input_data[:(length-delay)]
+    elif taskname == 'delay-rand':
+        for n in range(delay, length):
+            mstate = Qobj(input_data[n - delay])
+            mstate = operator_to_vector(mstate)
+            mstate = sup_ops[delay] * mstate
+            output_data[n] = np.array(vector_to_operator(mstate))    
     else:
         output_data = input_data
     
@@ -112,7 +121,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     fidls = np.array([train_fidls, val_fidls]).ravel()
     #matplotlib.style.use('seaborn')
     cmap = plt.get_cmap("RdBu")
-    #cmap = plt.get_cmap("rainbow")
+    #cmap = plt.get_cmap("tab20c_r")
     
     ecmap = plt.get_cmap("summer_r")
     plt.rc('font', family='serif')
@@ -154,7 +163,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
         plt.savefig('{}.{}'.format(fig_path, ftype), bbox_inches='tight', transparent=transparent, dpi=600)
     plt.show()
 
-def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order):
+def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order, flagplot):
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
     length = buffer + train_len + val_len
@@ -178,18 +187,20 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
             #val_fid_avg, val_fid_std = np.mean(val_fidls), np.std(val_fidls)
             train_rmean_square_fid = np.sqrt(np.mean(np.array(train_fidls)**2))
             val_rmean_square_fid = np.sqrt(np.mean(np.array(val_fidls)**2))
-            res_title = 'Root mean square Fidelity at n={}, tauB={:.3f}, train={:.4f}, val={:.4f}'.format(n, tauB, train_rmean_square_fid, val_rmean_square_fid)
+            res_title = 'Root mean square Fidelity at n={}, tauB={:.3f}, train={:.6f}, val={:.6f}'.format(n, tauB, train_rmean_square_fid, val_rmean_square_fid)
             logger.debug(res_title)
             
             train_rmean_ls.append(train_rmean_square_fid)
             val_rmean_ls.append(val_rmean_square_fid)
-            if n == 0:
+            if flagplot > 0 and n == 0:
                 plot_result(fig_path, res_title, train_input_seq[buffer:], train_output_seq[buffer:], \
                     val_input_seq, val_output_seq, train_pred_seq, val_pred_seq,\
                     train_fidls, val_fidls)
         
         avg_train, avg_val = np.mean(train_rmean_ls), np.mean(val_rmean_ls)
-        logger.info('Average RMSF with ntrials={}, tauB={:.3f}, train={:.4f}, val={:.4f}'.format(ntrials, tauB, avg_train, avg_val))
+        std_train, std_val = np.std(train_rmean_ls), np.std(val_rmean_ls)
+        logger.info('Average RMSF with ntrials={}, tauB={:.3f}, avg-train={:.6f}, avg-val={:.6f}, std-train={:.6f}, std-val={:.6f}'.format(\
+            ntrials, tauB, avg_train, avg_val, std_train, std_val))
             
     
 if __name__  == '__main__':
@@ -225,12 +236,14 @@ if __name__  == '__main__':
     parser.add_argument('--tmax', type=float, default=25, help='Maximum of tauB')
     parser.add_argument('--tmin', type=float, default=0, help='Minimum of tauB')
     parser.add_argument('--ntaus', type=int, default=125, help='Number of tausB')
+    parser.add_argument('--plot', type=int, default=0, help='Flag to plot')
 
     args = parser.parse_args()
     print(args)
 
     n_spins, n_envs, max_energy, beta, alpha, bcoef, init_rho = args.spins, args.envs, args.max_energy, args.beta, args.alpha, args.bcoef, args.rho
     tmin, tmax, ntaus = args.tmin, args.tmax, args.ntaus
+    flagplot = args.plot
 
     dynamic = args.dynamic
     train_len, val_len, buffer, delay = args.trainlen, args.vallen, args.buffer, args.delay
@@ -277,7 +290,7 @@ if __name__  == '__main__':
                 qparams = QRCParams(n_units=n_spins-n_envs, n_envs=n_envs, max_energy=max_energy, non_diag=bcoef,alpha=alpha,\
                             beta=beta, virtual_nodes=V, tau=0.0, init_rho=init_rho, dynamic=dynamic)
                 p = multiprocessing.Process(target=fidelity_compute, \
-                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order))
+                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order, flagplot))
                 jobs.append(p)
                 #pipels.append(recv_end)
 
