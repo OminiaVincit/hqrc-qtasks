@@ -7,7 +7,7 @@ TASKNAME=delay-depolar
 DYNAMIC=ion_trap
 
 NPROC=125
-NTRIALS=10
+NTRIALS=1
 
 TMIN=0.0
 TMAX=25.0
@@ -15,15 +15,15 @@ NTAUS=125
 
 BUFFER=500
 TRAINLEN=500
-VALEN=500
+VALEN=200
 
 NEV=1
 ORDER=10
-PLOT=0
+PLOT=1
 
-for DELAY in 1 2 3 4
+for DELAY in 5
 do
-for NSPINS in 2 3 4 5 6
+for NSPINS in 5
 do
 for V in 1 5
 do
@@ -31,7 +31,7 @@ for alpha in 1.0
 do
 for bc in 2.0
 do
-SAVE=/data/zoro/qrep/eig_a_$alpha\_bc_$bc\_$NSPINS\_$NEV\_od_$ORDER\_dl\_$DELAY\_$TASKNAME
+SAVE=/data/zoro/qrep/draw_a_$alpha\_bc_$bc\_$NSPINS\_$NEV\_od_$ORDER\_dl\_$DELAY\_$TASKNAME
 
 python $EXE --alpha $alpha --bcoef $bc --plot $PLOT --rho 1 --order $ORDER --taskname $TASKNAME --delay $DELAY --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
 done

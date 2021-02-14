@@ -27,7 +27,7 @@ if __name__  == '__main__':
 
     cmap = plt.get_cmap("viridis")
     fig, ax = plt.subplots(figsize=(16, 6))
-    ax
+    
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')

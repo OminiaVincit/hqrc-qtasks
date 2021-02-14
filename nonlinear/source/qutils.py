@@ -84,12 +84,16 @@ def generate_one_qubit_states(ranseed, Nitems):
         rhos.append(rho)
     return rhos
 
-def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform'):
+def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform', add=None):
     rhos = []
     density_arrs = np.random.uniform(size=Nitems)
-
+    D = 2**Nbase
+    pertur_mat = np.eye(D) / D
     for n in range(Nitems):
-        rho = np.array(rand_dm(2**Nbase, density=density_arrs[n]))
+        rho = np.array(rand_dm(D, density=density_arrs[n]))
+        if add == 'sin':
+            beta = np.sin(n)**2
+            rho = beta * pertur_mat + (1.0 - beta) * rho
         #print(n, rho)
         rhos.append(rho)
     return rhos
@@ -114,6 +118,42 @@ def eps(z):
     zre = np.real(z)
     zim = np.imag(z)
     return np.spacing(np.max([zre, zim]))
+
+def proj_spectrahedron(A):
+    # To obtain a density matrix, the vector of eigenvalues of the matrix A is projected 
+    # onto a standard simplex (non-negative numbers with unit sum)
+    # project a matrix onto the spectrahedron
+    # returns a positive semidefinite matrix X such that 
+    # the trace of X is equal to 1 and the Frobenius norm between X and Hermitian matrix A is minimized
+    
+    # Fist check A is psd
+    if is_positive_semi(A):
+        return A
+    # to ensure the Hermitian matrix
+    B = (A + A.conj().T) / 2.0
+
+    # perform eigenvalue decomposition and remove the imaginary components
+    # that arise from numerical precision errors
+    eigval, eigvec = np.linalg.eig(B)
+    rval = np.real(eigval)
+
+    # project the eigenvalues onto the probability simplex
+    u = np.sort(rval)[::-1]
+    sv = np.cumsum(u)
+    Lu = np.array(np.arange(1, len(u) + 1))
+    b = (sv - 1.0) / Lu
+    rho = np.argwhere( u > b )[-1][0]
+    # if rho == 0:
+    #     theta_ = sv[rho] - 1
+    # else:
+    theta_ = (sv[rho] - 1) / (rho + 1)
+    w = rval - theta_
+    w[w < 0] = 0
+    w = np.sqrt(w).reshape(len(w), 1)
+    # reconstitue the matrix while ensuring positive semidefinite
+    X = eigvec * w
+    X = np.dot(X, X.conj().T)
+    return X
 
 def nearest_psd(A, method):
     # % The nearest (in Frobenius norm) symmetric Positive Semi-Definite matrix to A
@@ -198,14 +238,15 @@ def convert_features_to_density(fevec):
         real_rho = np.array(local_vec[:Nbase_sq]).reshape(Nbase, Nbase)
         imag_rho = np.array(local_vec[Nbase_sq:]).reshape(Nbase, Nbase)
         full_rho = real_rho + imag_rho * 1j
-        full_rho = nearest_psd(full_rho, method='svd')
+        full_rho = nearest_psd(full_rho, method='eig')
+        #full_rho = proj_spectrahedron(full_rho)
         rho_ls.append(full_rho)
     rho_ls = np.array(rho_ls)
     return rho_ls
 
 def cal_fidelity_two_mats(matA, matB):
     if check_density(matA) == False or check_density(matB) == False:
-        # print('Not density matrix')
+        print('Not density matrix')
         fidval = 0.0
     else:
         stateA = Qobj(matA)
