@@ -15,7 +15,7 @@ if __name__  == '__main__':
     parser.add_argument('--taus', type=str, default='3.0')
     parser.add_argument('--ymin', type=float, default='0.0')
     parser.add_argument('--ymax', type=float, default='1.0')
-    parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins_5_1_a_0.2_bc_1.0')
+    parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins_5_1_a_1.0_bc_2.0')
     parser.add_argument('--posfix', type=str, default='V_1_len_1000_3000_1000_trials_5')
     
     args = parser.parse_args()
