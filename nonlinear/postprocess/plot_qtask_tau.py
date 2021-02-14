@@ -10,11 +10,20 @@ import matplotlib.pyplot as plt
 import re
 import colorcet as cc
 
+def plotContour(fig, ax, data, title, fontsize, vmin, vmax, cmap):
+    ax.set_title(title, fontsize=fontsize)
+    t, s = np.meshgrid(np.arange(data.shape[0]), np.arange(data.shape[1]))
+    mp = ax.contourf(s, t, np.transpose(data), 15, cmap=cmap, levels=np.linspace(vmin, vmax, 60), extend="both", zorder=-20)
+    #fig.colorbar(mp, ax=ax)
+    ax.set_rasterization_zorder(-10)
+    #ax.set_xlabel(r"Time", fontsize=fontsize)
+    return mp
+
 if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder', type=str, default='qrep')
-    parser.add_argument('--prefix', type=str, default='res')
+    parser.add_argument('--prefix', type=str, default='eig_a_1.0_bc_1.0')
     parser.add_argument('--posfix', type=str, default='od_10_dl_0_delay-depolar')
     parser.add_argument('--Vs', type=str, default='1,5')
     parser.add_argument('--Nenv', type=int, default=2)
@@ -27,6 +36,7 @@ if __name__  == '__main__':
     print(args)
 
     folder, prefix, posfix, ptype = args.folder, args.prefix, args.posfix, args.ptype
+    
     Nenv = args.Nenv
 
     Vs = [int(x) for x in args.Vs.split(',')]
@@ -41,8 +51,7 @@ if __name__  == '__main__':
         cmap = plt.get_cmap("Spectral")
     else:
         cmap = plt.get_cmap("PRGn")
-    
-    fig, axs = plt.subplots(M, 1, figsize=(18, 6*M))
+    fig, axs = plt.subplots(M, 1, figsize=(20, 6*M), sharex=True)
     axs = np.array(axs).ravel()
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
@@ -58,13 +67,13 @@ if __name__  == '__main__':
         V = Vs[j]
         ax = axs[j]
         ax.set_xlabel('$\\tau B$', fontsize=24)
-        if ptype > 0:
+        if ptype == 1:
             ax.set_ylabel('RMSF', fontsize=16)
         else:
             ax.set_ylabel('$N_m$', fontsize=24)
         if ptype > 0 and ymin < ymax:
             ax.set_ylim([ymin, ymax])
-        ax.set_title('$V$={}, {}'.format(V, ntitle), fontsize=16)
+        ax.set_title('$M$={}, {}'.format(V, ntitle), fontsize=16)
         if ptype > 0:
             ax.grid(True, which="major", ls="-", color='0.65')
         fidarr = []
@@ -94,20 +103,26 @@ if __name__  == '__main__':
                 xs, ys, zs = xs[sids], ys[sids], zs[sids]
                 fidarr.append(ys)
                 # Plot
-                if ptype > 0:
+                if ptype == 1:
                     ax.plot(xs, ys, alpha = 0.8, linewidth=3.0, marker='o', markersize=6, mec='k', mew=0.5, label='$N_m$={}'.format(Nspin - Nenv))
                 # ax.errorbar(xs, ys, yerr=zs, alpha = 0.8, marker='o', elinewidth=2, linewidth=2, markersize=6, \
                 #     mec='k', mew=0.5, label='$N_m$={}'.format(Nspin - Nenv))
         fidarr = np.array(fidarr)
+        print('Fidarr shape', fidarr.shape)
         scale = 3
         extent = [lo, hi, 0, 10]
         print(extent)
-        if ptype == 0:
-            im = ax.imshow(fidarr, origin='lower', cmap=cmap, vmin=ymin, vmax=ymax, extent=extent)
+        if ptype is not 1:
+            if len(fidarr) > 0:
+                if ptype == 3:
+                    im = plotContour(fig, ax, fidarr, 'Ne={}, Multiplexity = {}'.format(Nenv, V), 16, ymin, ymax, cmap)
+                else:
+                    im = ax.imshow(fidarr, origin='lower', cmap=cmap, vmin=ymin, vmax=ymax, extent=extent)
             
             urange = np.linspace(1, 9, len(Ns))
             vrange = ['{}'.format(x-Nenv) for x in Ns]
-            ax.set_yticks(urange)
+            if ptype == 0:
+                ax.set_yticks(urange)
             ax.set_yticklabels(vrange, fontsize=16)
         else:
             ax.legend()
@@ -115,6 +130,8 @@ if __name__  == '__main__':
         xticklist = np.linspace(0, 25.0, num=26)
         ax.set_xticks(xticklist)
         ax.set_xticklabels(labels=['{:.0f}'.format(x) for x in  xticklist], fontsize=16)
+        ax.set_xlim([0.0, 25.0])
+        ax.set_title('Ne={}, Multiplexity = {}'.format(Nenv, V))
     outbase = '{}/{}'.format(folder, ntitle)
     #plt.suptitle(outbase, fontsize=12)
     plt.tight_layout()

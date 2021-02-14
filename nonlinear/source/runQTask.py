@@ -25,7 +25,7 @@ import colorcet as cc
 
 def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
-    np.random.seed(seed=ranseed + 1)
+    np.random.seed(seed=ranseed + 1987)
     D = 2**n_envs
     # Returns a superoperator acting on vectorized dim × dim density operators, 
     # sampled from the BCSZ distribution.
@@ -108,9 +108,14 @@ def convert_seq(input_seq):
 
 def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_input_seq, val_output_seq, \
     train_pred_seq, val_pred_seq, train_fidls, val_fidls):
-    input_seq = np.vstack((train_input_seq, val_input_seq))
-    output_seq = np.vstack((train_output_seq, val_output_seq))
-    pred_seq = np.vstack((train_pred_seq, val_pred_seq))
+    # input_seq = np.vstack((train_input_seq, val_input_seq))
+    # output_seq = np.vstack((train_output_seq, val_output_seq))
+    # pred_seq = np.vstack((train_pred_seq, val_pred_seq))
+
+    input_seq = val_input_seq
+    output_seq = val_output_seq
+    pred_seq = val_pred_seq
+    
     #print('shape1', input_seq.shape, output_seq.shape)
     input_seq = convert_seq(input_seq)
     output_seq = convert_seq(output_seq)
@@ -118,9 +123,11 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     err_seq = np.abs(output_seq - pred_seq)
     #print('shape2', input_seq.shape, output_seq.shape)
 
-    fidls = np.array([train_fidls, val_fidls]).ravel()
+    # fidls = np.array([train_fidls, val_fidls]).ravel()
+    fidls = np.array(val_fidls).ravel()
     #matplotlib.style.use('seaborn')
-    cmap = plt.get_cmap("RdBu")
+    #cmap = plt.get_cmap("RdBu")
+    cmap = plt.get_cmap("twilight_shifted")
     #cmap = plt.get_cmap("tab20c_r")
     
     ecmap = plt.get_cmap("summer_r")
@@ -129,7 +136,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     plt.rcParams['font.size']=10
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     #print('\n'.join(color for color in colors))  
-    fig, axs = plt.subplots(4, 1, figsize=(20, 16), sharey=True)
+    fig, axs = plt.subplots(4, 1, figsize=(20, 12), sharey=True)
     fig.subplots_adjust(hspace=0.4, wspace = 0.4)
     # Plotting the contour plot
     fsize = 14
@@ -147,14 +154,14 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
         ax.set_xlabel('Time', fontsize=fsize)
         
     mp0 = plotContour(fig, axs[0], input_seq, "Input", fsize, vmin, vmax, cmap)
-    mp1 = plotContour(fig, axs[1], output_seq, "Output", fsize, vmin, vmax, cmap)
-    mp2 = plotContour(fig, axs[2], pred_seq, "Target", fsize, vmin, vmax, cmap)
+    mp1 = plotContour(fig, axs[1], output_seq, "Target", fsize, vmin, vmax, cmap)
+    mp2 = plotContour(fig, axs[2], pred_seq, "Prediction", fsize, vmin, vmax, cmap)
     mp3 = plotContour(fig, axs[3], err_seq, "Diff. and {}".format(res_title), fsize, vmin_error, vmax_error, ecmap)
     bx = axs[3].twinx()
     nicered = (0.769, 0.306, 0.322)
-    bx.plot(fidls, 'o', linestyle ='-', marker='o', color=nicered, alpha=0.8)
+    bx.plot(fidls, 'o', linestyle ='-', linewidth=2, marker='o', color=nicered, alpha=0.8)
     bx.set_ylabel('Fidelity', color=nicered, fontsize=fsize)
-    #bx.set_ylim([0.8, 1.01])
+    bx.set_ylim([0.8, 1.01])
 
     for ftype in ['png', 'svg']:
         transparent = True
