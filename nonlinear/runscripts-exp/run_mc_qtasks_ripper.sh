@@ -20,9 +20,9 @@ BUFFER=1000
 TRAINLEN=3000
 VALEN=1000
 
-for NSPINS in 5 6 4 3 2
+for NSPINS in 3 2
 do
-for V in 5
+for V in 1
 do
 for alpha in 1.0
 do
