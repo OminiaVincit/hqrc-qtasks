@@ -23,7 +23,8 @@ if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder', type=str, default='qrep')
-    parser.add_argument('--prefix', type=str, default='eig_a_1.0_bc_1.0')
+    parser.add_argument('--taskname', type=str, default='delay_tasks')
+    parser.add_argument('--prefix', type=str, default='eig_a_1.0_bc_2.0')
     parser.add_argument('--posfix', type=str, default='od_10_dl_0_delay-depolar')
     parser.add_argument('--Vs', type=str, default='1,5')
     parser.add_argument('--Nenv', type=int, default=2)
@@ -35,7 +36,7 @@ if __name__  == '__main__':
     args = parser.parse_args()
     print(args)
 
-    folder, prefix, posfix, ptype = args.folder, args.prefix, args.posfix, args.ptype
+    folder, prefix, posfix, ptype, taskname = args.folder, args.prefix, args.posfix, args.ptype, args.taskname
     
     Nenv = args.Nenv
 
@@ -51,14 +52,14 @@ if __name__  == '__main__':
         cmap = plt.get_cmap("Spectral")
     else:
         cmap = plt.get_cmap("PRGn")
-    fig, axs = plt.subplots(M, 1, figsize=(20, 6*M), sharex=True)
+    fig, axs = plt.subplots(M, 1, figsize=(20, 4*M), sharex=True)
     axs = np.array(axs).ravel()
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')
     plt.rcParams['font.size']=16
 
-    ntitle = '{}_Nspins_{}_Nenv_{}_Vs_{}_{}'.format(prefix,\
+    ntitle = 'single_{}_Nspins_{}_Nenv_{}_Vs_{}_{}'.format(prefix,\
         '_'.join([str(x) for x in Ns]), Nenv,\
         '_'.join([str(x) for x in Vs]), posfix)
 
@@ -78,7 +79,8 @@ if __name__  == '__main__':
             ax.grid(True, which="major", ls="-", color='0.65')
         fidarr = []
         for Nspin in Ns:
-            subfolder = os.path.join(folder, '{}_{}_{}_{}'.format(prefix, Nspin, Nenv, posfix))
+            subfolder = os.path.join(folder, taskname)
+            subfolder = os.path.join(subfolder, '{}_{}_{}_{}'.format(prefix, Nspin, Nenv, posfix))
             subfolder = os.path.join(subfolder, 'log')
             print(subfolder)
             if os.path.isdir(subfolder) == False:
@@ -110,12 +112,12 @@ if __name__  == '__main__':
         fidarr = np.array(fidarr)
         print('Fidarr shape', fidarr.shape)
         scale = 3
-        extent = [lo, hi, 0, 10]
+        extent = [2*lo, 2*hi, 0, 10]
         print(extent)
         if ptype is not 1:
             if len(fidarr) > 0:
                 if ptype == 3:
-                    im = plotContour(fig, ax, fidarr, 'Ne={}, Multiplexity = {}'.format(Nenv, V), 16, ymin, ymax, cmap)
+                    im = plotContour(fig, ax, fidarr, '$N_e = {}, M = {}$'.format(Nenv, V), 16, ymin, ymax, cmap)
                 else:
                     im = ax.imshow(fidarr, origin='lower', cmap=cmap, vmin=ymin, vmax=ymax, extent=extent)
             
@@ -127,19 +129,24 @@ if __name__  == '__main__':
         else:
             ax.legend()
         ax.tick_params('both', length=10, width=1, which='major')
-        xticklist = np.linspace(0, 25.0, num=26)
+        xticklist = np.linspace(0, 50.0, num=26)
         ax.set_xticks(xticklist)
-        ax.set_xticklabels(labels=['{:.0f}'.format(x) for x in  xticklist], fontsize=16)
-        ax.set_xlim([0.0, 25.0])
-        ax.set_title('Ne={}, Multiplexity = {}'.format(Nenv, V))
-    outbase = '{}/{}'.format(folder, ntitle)
+        ax.set_xticklabels(labels=['{:.0f}'.format(x/2) for x in  xticklist], fontsize=16)
+        ax.set_xlim([0.0, 50.0])
+        ax.set_title('$N_e = {}$, Multiplex = ${}$'.format(Nenv, V), fontsize=24)
+    
+    fig_folder = os.path.join(folder, 'figs')
+    if os.path.isdir(fig_folder) == False:
+        os.mkdir(fig_folder)
+
+    outbase = '{}/{}'.format(fig_folder, ntitle)
     #plt.suptitle(outbase, fontsize=12)
     plt.tight_layout()
 
     if ptype == 0:
         fig.colorbar(im, ax=axs, orientation="vertical")
     
-    for ftype in ['png', 'svg']:
+    for ftype in ['png', 'svg', 'pdf']:
         transparent = True
         if ftype == 'png':
             transparent = False

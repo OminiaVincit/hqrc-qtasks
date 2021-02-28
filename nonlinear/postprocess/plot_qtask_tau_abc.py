@@ -14,11 +14,12 @@ if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder', type=str, default='qrep')
+    parser.add_argument('--taskname', type=str, default='delay_tasks')
     parser.add_argument('--prefix', type=str, default='eig')
-    parser.add_argument('--posfix', type=str, default='od_10_dl_0_delay-depolar')
+    parser.add_argument('--posfix', type=str, default='od_10_dl_1_delay-depolar')
     parser.add_argument('--V', type=int, default=1)
-    parser.add_argument('--Nenv', type=int, default=2)
-    parser.add_argument('--Nspins', type=str, default='3,4,5,6,7')
+    parser.add_argument('--Nenv', type=int, default=1)
+    parser.add_argument('--Nspins', type=str, default='2,3,4,5,6')
     
     parser.add_argument('--ymin', type=float, default=0.0)
     parser.add_argument('--ymax', type=float, default=1.0)
@@ -26,7 +27,7 @@ if __name__  == '__main__':
     args = parser.parse_args()
     print(args)
 
-    folder, prefix, posfix, ptype = args.folder, args.prefix, args.posfix, args.ptype
+    folder, prefix, posfix, ptype, taskname = args.folder, args.prefix, args.posfix, args.ptype, args.taskname
     V, Nenv = args.V, args.Nenv
 
     As = [0.2, 0.5, 1.0, 2.0]
@@ -65,12 +66,13 @@ if __name__  == '__main__':
                 ax.set_ylabel('$N_m$', fontsize=24)
             if ptype > 0 and ymin < ymax:
                 ax.set_ylim([ymin, ymax])
-            ax.set_title('$a$={}, $bc$={}'.format(a, bc), fontsize=16)
+            ax.set_title('$\\alpha$={}, $J_b/B$={}'.format(a, bc), fontsize=24)
             if ptype > 0:
                 ax.grid(True, which="major", ls="-", color='0.65')
             fidarr = []
             for Nspin in Ns:
-                subfolder = os.path.join(folder, '{}_a_{}_bc_{}_{}_{}_{}'.format(prefix, a, bc, Nspin, Nenv, posfix))
+                subfolder = os.path.join(folder, taskname)
+                subfolder = os.path.join(subfolder, '{}_a_{}_bc_{}_{}_{}_{}'.format(prefix, a, bc, Nspin, Nenv, posfix))
                 subfolder = os.path.join(subfolder, 'log')
                 print(subfolder)
                 if os.path.isdir(subfolder) == False:
@@ -89,6 +91,8 @@ if __name__  == '__main__':
                                 ys.append(avg_val_fid)
                                 zs.append(std_val_fid)
                     xs, ys, zs = np.array(xs), np.array(ys), np.array(zs)
+                    if len(xs) == 0:
+                        continue
                     lo = min(lo, np.min(xs))
                     hi = max(hi, np.max(xs))
                     sids = np.argsort(xs)
@@ -99,6 +103,8 @@ if __name__  == '__main__':
                         ax.plot(xs, ys, alpha = 0.8, linewidth=3.0, marker='o', markersize=6, mec='k', mew=0.5, label='$N_m$={}'.format(Nspin - Nenv))
                     # ax.errorbar(xs, ys, yerr=zs, alpha = 0.8, marker='o', elinewidth=2, linewidth=2, markersize=6, \
                     #     mec='k', mew=0.5, label='$N_m$={}'.format(Nspin - Nenv))
+            if len(fidarr) == 0:
+                continue
             fidarr = np.array(fidarr)
             scale = 3
             extent = [lo, hi, 0, 10]
@@ -117,14 +123,19 @@ if __name__  == '__main__':
             ax.set_xlim([0, 25.0])
             ax.set_xticks(xticklist)
             ax.set_xticklabels(labels=['{:.0f}'.format(x) for x in  xticklist], fontsize=16)
-    outbase = '{}/{}'.format(folder, ntitle)
+    
+    fig_folder = os.path.join(folder, 'figs')
+    if os.path.isdir(fig_folder) == False:
+        os.mkdir(fig_folder)
+    
+    outbase = '{}/{}'.format(fig_folder, ntitle)
     #plt.suptitle(outbase, fontsize=12)
     plt.tight_layout()
 
     if ptype == 0:
         fig.colorbar(im, ax=axs, orientation="vertical")
     
-    for ftype in ['png', 'svg']:
+    for ftype in ['png', 'svg', 'pdf']:
         transparent = True
         if ftype == 'png':
             transparent = False
