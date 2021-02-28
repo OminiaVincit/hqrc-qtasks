@@ -33,36 +33,45 @@ def getLiouv_IsingOpen(Nspins, alpha, B, nobs, J=1.0):
     Nalpha = getNormCoef(Nspins, alpha)
 
     X = sigmax()
+    Y = sigmay()
     Z = sigmaz()
     I = identity(2)
 
     # Create Hamiltonian
     H0 = getSci(I, 0, Nspins) * 0.0
     H1 = getSci(I, 0, Nspins) * 0.0
-    Sxs, Szs = [], []
+    Sxs, Sys, Szs = [], [], []
     for i in range(Nspins):
         Sxi = getSci(X, i, Nspins)
+        Syi = getSci(Y, i, Nspins)
         Szi = getSci(Z, i, Nspins)
         Sxs.append(Sxi)
+        Sys.append(Syi)
         Szs.append(Szi)
     
     for i in range(Nspins):
         H0 = H0 - B * Szs[i] # Hamiltonian for the magnetic field
         for j in range(i+1, Nspins):
-            hij = J * np.abs(i-j)**(-alpha) / Nalpha
+            if alpha > 0:
+                hij = J * np.abs(i-j)**(-alpha) / Nalpha
+            else:
+                hij = J * (np.random.rand() - 0.5)
             H1 = H1 - hij * Sxs[i] * Sxs[j] # Interaction Hamiltonian
 
     Mx = getSci(I, 0, nobs) * 0.0
+    My = getSci(I, 0, nobs) * 0.0
     Mz = getSci(I, 0, nobs) * 0.0
     for i in range(nobs):
         Pxi = getSci(X, i, nobs)
+        Pyi = getSci(Y, i, nobs)
         Pzi = getSci(Z, i, nobs)
         Mx += Pxi / nobs
+        My += Pyi / nobs
         Mz += Pzi / nobs
         
     H = H0 + H1 # Total Hamiltonian
     L = liouvillian(H, [])
-    return L, Mx, Mz
+    return L, Mx, My, Mz
 
 def generate_one_qubit_states(ranseed, Nitems):
     np.random.seed(seed=ranseed)
