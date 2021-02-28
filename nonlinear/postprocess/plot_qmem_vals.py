@@ -82,11 +82,15 @@ if __name__  == '__main__':
     for val in vals:
         if alpha == 0.0:
             valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, val, bc, tauBs[0], posfix)
+            #if os.path.isfile(os.path.join(folder, valbase)) == False:
+            #    valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, val, bc, tauBs[0], posfix)
         elif bc == 0.0:
             valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, alpha, val, tauBs[0], posfix)
         else:
             valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, alpha, bc, val, posfix)
         memfile = os.path.join(folder, valbase)
+        if os.path.isfile(memfile) == False:
+            continue
         arr = np.loadtxt(memfile)
         print('read {} with shape'.format(memfile), arr.shape)
         loc_arr = arr[:, 1]
