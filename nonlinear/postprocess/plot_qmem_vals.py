@@ -119,7 +119,7 @@ if __name__  == '__main__':
         bt = memarr[:i].reshape(i, -1)
         bt = np.sum(bt, axis=0).ravel()
         ax.bar(ts, memarr[i], bottom=bt, width=width, label='d={}'.format(i), color=d_colors[i], edgecolor='k')
-
+    ax.set_xlim(vals[0], vals[-1])
     #ax.set_ylabel('$d$', fontsize=24)
     #ax.set_xlabel(vlabel, fontsize=24)
     #ax.set_ylim([0, 5])
@@ -143,12 +143,12 @@ if __name__  == '__main__':
             lb = 'QMC'
         ax2 = axs[i]
         ax2.set_ylabel(lb, fontsize=24)
-        ax2.set_xlabel(vlabel, fontsize=24)
+        #ax2.set_xlabel(vlabel, fontsize=24)
         #ax2.barh(ts, mcs, height=1.0, edgecolor='k', alpha=0.8)
         ax2.plot(ts, mcs, alpha=0.8, marker='o', markeredgecolor='k', \
             markersize=10, linewidth=3, markerfacecolor=plu.VERMILLION)
         ax2.set_xlim(vals[0], vals[-1])
-        ax2.set_xticks(xticks2)
+        #ax2.set_xticks(xticks2)
     
 
     for bx in axs:
