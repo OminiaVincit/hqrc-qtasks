@@ -17,6 +17,17 @@ def plotContour(fig, ax, data, title, fontsize, vmin, vmax, cmap):
     #ax.set_xlabel(r"Time", fontsize=fontsize)
     return mp
 
+    
+d_colors = ['#777777',
+            '#2166ac',
+            '#fee090',
+            '#fdbb84',
+            '#fc8d59',
+            '#e34a33',
+            '#b30000',
+            '#00706c'
+            ]
+
 if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
@@ -30,10 +41,11 @@ if __name__  == '__main__':
     parser.add_argument('--bcoef', type=float, default=2.0)
     parser.add_argument('--thres', type=float, default=1e-2)
     parser.add_argument('--V', type=int, default=1)
+    parser.add_argument('--width', type=float, default=1.0)
     parser.add_argument('--nspins', type=int, default=5)
     parser.add_argument('--nenvs', type=int, default=1)
     parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins')
-    parser.add_argument('--posfix', type=str, default='len_1000_3000_100_trials_5')
+    parser.add_argument('--posfix', type=str, default='len_500_500_100_trials_5')
     
     args = parser.parse_args()
     print(args)
@@ -43,7 +55,7 @@ if __name__  == '__main__':
     posfix = 'V_{}_{}'.format(args.V, posfix)
     ymin, ymax = args.ymin, args.ymax
     tmin, tmax, ntaus = args.tmin, args.tmax, args.ntaus
-    alpha, bc = args.alpha, args.bcoef
+    alpha, bc, width = args.alpha, args.bcoef, args.width
     tauBs = list(np.linspace(tmin, tmax, ntaus + 1))
     tauBs = tauBs[1:]
 
@@ -51,26 +63,26 @@ if __name__  == '__main__':
         # variable = a
         vals = np.arange(0.1, 2.1, 0.1)
         vlabel = '$\\alpha$'
-        yticks = np.arange(1, 20, 2)
-        yticklabels = ['{:.1f}'.format((t+1)/10) for t in yticks]
-        yticks2 = np.arange(0.0, 2.1, 0.2)
+        xticks = np.arange(1, 20, 2)
+        xticklabels = ['{:.1f}'.format((t+1)/10) for t in xticks]
+        xticks2 = np.arange(0.0, 2.1, 0.2)
     elif bc == 0.0:
         #vals = np.arange(0.2, 5.1, 0.2)
         #yticks = [4, 9, 14, 19]
         #yticklabels = ['{:.1f}'.format((t+1)/5) for t in yticks]
         vals = np.arange(0.1, 5.1, 0.1)
         vlabel = '$J_b/B$'
-        yticks = [4, 9, 14, 19, 24, 29, 34, 39, 44, 49]
-        yticklabels = ['{:.1f}'.format((t+1)/10) for t in yticks]
-        yticks2 = np.arange(0.0, 5.1, 0.5)
+        xticks = [4, 9, 14, 19, 24, 29, 34, 39, 44, 49]
+        xticklabels = ['{:.1f}'.format((t+1)/10) for t in xticks]
+        xticks2 = np.arange(0.0, 5.1, 0.5)
     else:
         vals = tauBs
         vlabel = '$\\tau B$'
-        yticks = [4, 9, 14, 19, 24]
-        yticklabels = ['{}'.format(t+1) for t in yticks]
-        yticks2 = np.arange(0.0, 25.1, 5.0)
+        xticks = range(0, ntaus, 5)
+        xticklabels = ['{}'.format(t/5) for t in xticks]
+        xticks2 = np.arange(0.0, 25.1, 5.0)
     cmap = plt.get_cmap("twilight")
-    fig, axs = plt.subplots(1, 3, figsize=(20, 6), gridspec_kw={'width_ratios': [3, 1, 1]})
+    fig, axs = plt.subplots(3, 1, figsize=(20, 12), gridspec_kw={'height_ratios': [3, 2, 2]})
     ax = axs[0]
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
@@ -94,24 +106,29 @@ if __name__  == '__main__':
         arr = np.loadtxt(memfile)
         print('read {} with shape'.format(memfile), arr.shape)
         loc_arr = arr[:, 1]
-        memarr.append(np.log10(loc_arr))
+        memarr.append(loc_arr)
         loc_arr = loc_arr - np.min(loc_arr)
         loc_arr[loc_arr < args.thres] = 0.0
         mcs.append(np.sum(loc_arr))
         ts.append(val)
-    memarr = np.array(memarr)
+    memarr = np.array(memarr).T
     ymin, ymax = np.min(memarr), np.max(memarr)
-    im = plotContour(fig, ax, memarr, '{}'.format(ntitle), 16, ymin, ymax, cmap)
-    
-    ax.set_xlabel('$d$', fontsize=24)
-    ax.set_ylabel(vlabel, fontsize=24)
-    ax.set_xlim([0, 30])
+    #im = plotContour(fig, ax, memarr.T, '{}'.format(ntitle), 16, ymin, ymax, cmap)
+    ax.bar(ts, memarr[0], width=width, color=d_colors[0], edgecolor='k', label='d=0')
+    for i in range(1, len(d_colors)):
+        bt = memarr[:i].reshape(i, -1)
+        bt = np.sum(bt, axis=0).ravel()
+        ax.bar(ts, memarr[i], bottom=bt, width=width, label='d={}'.format(i), color=d_colors[i], edgecolor='k')
+
+    #ax.set_ylabel('$d$', fontsize=24)
+    #ax.set_xlabel(vlabel, fontsize=24)
+    #ax.set_ylim([0, 5])
     #ax.set_ylim([np.min(avg_tests)/2, 2*np.max(avg_tests)])
     #ax.set_yscale('log')
     #ax.set_ylim([5*10**(-2), 10**0])
     
-    ax.set_yticks(yticks)
-    ax.set_yticklabels(labels=yticklabels)
+    #ax.set_xticks(xticks)
+    #ax.set_xticklabels(labels=xticklabels)
     #ax.set_yticklabels(labels='')
     #ax.set_title('{}'.format(ntitle), fontsize=12)
     #ax.grid(True, which="both", ls="-", color='0.65')
@@ -125,13 +142,13 @@ if __name__  == '__main__':
         else:
             lb = 'QMC'
         ax2 = axs[i]
-        ax2.set_xlabel(lb, fontsize=24)
-        ax2.set_ylabel(vlabel, fontsize=24)
+        ax2.set_ylabel(lb, fontsize=24)
+        ax2.set_xlabel(vlabel, fontsize=24)
         #ax2.barh(ts, mcs, height=1.0, edgecolor='k', alpha=0.8)
-        ax2.plot(mcs, ts, alpha=0.8, marker='o', markeredgecolor='k', \
+        ax2.plot(ts, mcs, alpha=0.8, marker='o', markeredgecolor='k', \
             markersize=10, linewidth=3, markerfacecolor=plu.VERMILLION)
-        ax2.set_ylim(vals[0], vals[-1])
-        ax2.set_yticks(yticks2)
+        ax2.set_xlim(vals[0], vals[-1])
+        ax2.set_xticks(xticks2)
     
 
     for bx in axs:
@@ -146,7 +163,7 @@ if __name__  == '__main__':
     outbase = '{}/{}'.format(fig_folder, ntitle)
     #plt.suptitle(outbase, fontsize=12)
     plt.tight_layout()
-    fig.colorbar(im, ax=ax, orientation="vertical")
+    #fig.colorbar(im, ax=ax, orientation="horizontal")
     for ftype in ['png', 'pdf', 'svg']:
         print('Save file {}'.format(outbase))
         plt.savefig('{}_func.{}'.format(outbase, ftype), bbox_inches='tight')

@@ -130,6 +130,9 @@ if __name__  == '__main__':
                     bname, dynamic, n_spins, n_envs, alpha, bcoef, \
                     tauB, V, buffer, train_len, val_len, ntrials)
                 outfile = os.path.join(savedir, outfile)
+                if os.path.isfile(outfile) == True:
+                    print('File existed {}'.format(outfile))
+                    continue
                 qparams = QRCParams(n_units=n_spins-n_envs, n_envs=n_envs, max_energy=max_energy, non_diag=bcoef, alpha=alpha,\
                     beta=beta, virtual_nodes=V, tau=tauB/B, init_rho=init_rho, dynamic=dynamic, solver=solver)
                 
