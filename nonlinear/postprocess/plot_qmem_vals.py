@@ -45,7 +45,7 @@ if __name__  == '__main__':
     parser.add_argument('--nspins', type=int, default=5)
     parser.add_argument('--nenvs', type=int, default=1)
     parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins')
-    parser.add_argument('--posfix', type=str, default='len_500_500_100_trials_5')
+    parser.add_argument('--posfix', type=str, default='len_1000_3000_100_trials_5')
     
     args = parser.parse_args()
     print(args)
@@ -63,18 +63,18 @@ if __name__  == '__main__':
         # variable = a
         vals = np.arange(0.1, 2.1, 0.1)
         vlabel = '$\\alpha$'
-        xticks = np.arange(1, 20, 2)
-        xticklabels = ['{:.1f}'.format((t+1)/10) for t in xticks]
+        xticks = np.linspace(0.0, 2.0, 21)
+        xticklabels = ['{:.1f}'.format(t) for t in xticks]
         xticks2 = np.arange(0.0, 2.1, 0.2)
     elif bc == 0.0:
         #vals = np.arange(0.2, 5.1, 0.2)
         #yticks = [4, 9, 14, 19]
         #yticklabels = ['{:.1f}'.format((t+1)/5) for t in yticks]
-        vals = np.arange(0.1, 5.1, 0.1)
+        vals = np.arange(0.02, 2.21, 0.02)
         vlabel = '$J_b/B$'
-        xticks = [4, 9, 14, 19, 24, 29, 34, 39, 44, 49]
-        xticklabels = ['{:.1f}'.format((t+1)/10) for t in xticks]
-        xticks2 = np.arange(0.0, 5.1, 0.5)
+        xticks = np.linspace(0, 2.2, 23)
+        xticklabels = ['{:.1f}'.format(t) for t in xticks]
+        xticks2 = np.arange(0, 2.2, 23)
     else:
         vals = tauBs
         vlabel = '$\\tau B$'
@@ -94,22 +94,25 @@ if __name__  == '__main__':
     memarr, ts, mcs = [], [], []
     for val in vals:
         if alpha == 0.0:
-            valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, val, bc, tauBs[0], posfix)
-            #if os.path.isfile(os.path.join(folder, valbase)) == False:
-            #    valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, val, bc, tauBs[0], posfix)
+            valbase = '{}_a_{:.2f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, val, bc, tauBs[0], posfix)
+            if os.path.isfile(os.path.join(folder, valbase)) == False:
+                valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, val, bc, tauBs[0], posfix)
         elif bc == 0.0:
-            valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, alpha, val, tauBs[0], posfix)
+            valbase = '{}_a_{:.1f}_bc_{:.2f}_tauB_{:.3f}_{}.txt'.format(prefix, alpha, val, tauBs[0], posfix)
+            if os.path.isfile(os.path.join(folder, valbase)) == False:
+                valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, alpha, val, tauBs[0], posfix)
         else:
             valbase = '{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, alpha, bc, val, posfix)
         memfile = os.path.join(folder, valbase)
         if os.path.isfile(memfile) == False:
+            print('Not found {}'.format(memfile))
             continue
         arr = np.loadtxt(memfile)
         print('read {} with shape'.format(memfile), arr.shape)
         loc_arr = arr[:, 1]
         memarr.append(loc_arr)
         # loc_arr = loc_arr - np.min(loc_arr)
-        # loc_arr[loc_arr < args.thres] = 0.0
+        loc_arr[loc_arr < args.thres] = 0.0
         mcs.append(np.sum(loc_arr))
         ts.append(val)
     memarr = np.array(memarr).T
@@ -120,6 +123,7 @@ if __name__  == '__main__':
         bt = memarr[:i].reshape(i, -1)
         bt = np.sum(bt, axis=0).ravel()
         ax.bar(ts, memarr[i], bottom=bt, width=width, label='d={}'.format(i), color=d_colors[i], edgecolor='k', alpha=0.7)
+    
     ax.set_xlim(vals[0], vals[-1])
     ax.legend(loc='upper right')
     #ax.set_ylabel('QMC', fontsize=24)

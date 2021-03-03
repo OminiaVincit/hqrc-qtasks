@@ -21,7 +21,7 @@ for alpha in 1.0
 do
 for tauB in 10.0
 do
-SAVE=/home/zoro/Workspace/data/hqrc-qtasks/spectral/eig_a_$alpha\_tauB_$tauB\_$NSPINS\_$NEV
+SAVE=/data/zoro/qrep/spectral/eig_a_$alpha\_tauB_$tauB\_$NSPINS\_$NEV
 
 python $EXE --alpha $alpha --tauB $tauB --plot $PLOT --bgidx $BG --edidx $ED --savedir $SAVE --nspins $NSPINS --nenvs $NEV --nproc $NPROC --bcmin $BCMIN --bcmax $BCMAX --nbcs $NBCS
 done
