@@ -23,9 +23,9 @@ if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder', type=str, default='qrep')
-    parser.add_argument('--taskname', type=str, default='delay_tasks')
+    parser.add_argument('--taskname', type=str, default='delay_tasks2')
     parser.add_argument('--prefix', type=str, default='eig_a_1.0_bc_2.0')
-    parser.add_argument('--posfix', type=str, default='od_10_dl_0_delay-depolar')
+    parser.add_argument('--posfix', type=str, default='od_10_dl_1_delay-depolar')
     parser.add_argument('--Vs', type=str, default='1,5')
     parser.add_argument('--Nenv', type=int, default=2)
     parser.add_argument('--Nspins', type=str, default='3,4,5,6,7')
@@ -112,7 +112,7 @@ if __name__  == '__main__':
         fidarr = np.array(fidarr)
         print('Fidarr shape', fidarr.shape)
         scale = 3
-        extent = [2*lo, 2*hi, 0, 10]
+        extent = [10*lo, 10*hi, 0, 10]
         print(extent)
         if ptype is not 1:
             if len(fidarr) > 0:
@@ -125,17 +125,18 @@ if __name__  == '__main__':
             vrange = ['{}'.format(x-Nenv) for x in Ns]
             if ptype == 0:
                 ax.set_yticks(urange)
-            ax.set_yticklabels(vrange, fontsize=16)
+            ax.set_yticklabels(vrange, fontsize=20)
+            xticklist = np.linspace(0, 50.0, num=26)
+            ax.set_xticks(xticklist)
+            ax.set_xticklabels(labels=['{:.1f}'.format(x/10) for x in  xticklist], fontsize=18)
+            ax.set_xlim([0.0, 50.0])
         else:
             ax.legend()
         ax.tick_params('both', length=10, width=1, which='major')
-        xticklist = np.linspace(0, 50.0, num=26)
-        ax.set_xticks(xticklist)
-        ax.set_xticklabels(labels=['{:.0f}'.format(x/2) for x in  xticklist], fontsize=16)
-        ax.set_xlim([0.0, 50.0])
         ax.set_title('$N_e = {}$, Multiplex = ${}$'.format(Nenv, V), fontsize=24)
     
-    fig_folder = os.path.join(folder, 'figs')
+    fig_folder = os.path.join(folder, taskname)
+    fig_folder = os.path.join(fig_folder, 'figs')
     if os.path.isdir(fig_folder) == False:
         os.mkdir(fig_folder)
 
