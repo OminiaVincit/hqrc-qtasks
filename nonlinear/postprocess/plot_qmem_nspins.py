@@ -32,7 +32,7 @@ if __name__  == '__main__':
     parser.add_argument('--thres', type=float, default=0.0)
     parser.add_argument('--V', type=int, default=1)
     parser.add_argument('--width', type=float, default=1.0)
-    parser.add_argument('--Nspins', type=str, default='3,4,5,6')
+    parser.add_argument('--Nspins', type=str, default='3,4,5,6,7')
     parser.add_argument('--nenv', type=int, default=2)
     parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins')
     parser.add_argument('--posfix', type=str, default='len_1000_3000_100_trials_5')
