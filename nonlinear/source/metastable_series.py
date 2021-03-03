@@ -22,7 +22,8 @@ GREEN= [x/255.0 for x in [0, 158, 115]]
 if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--nspins', type=int, default=5, help='Number of spins')
+    parser.add_argument('--nspins', type=int, default=5, help='Number of total spins')
+    parser.add_argument('--nenvs', type=int, default=1, help='Number of env spins')
     parser.add_argument('--binary', type=int, default=0, help='Binary input or not')
     parser.add_argument('--strength', type=float, default=1.0, help='Input strength')
     parser.add_argument('--pstate', type=float, default=2.0, help='Mixed coefficient in the swap state, in [0, 1], -1 is random')
@@ -40,11 +41,11 @@ if __name__  == '__main__':
     args = parser.parse_args()
     print(args)
 
-    Nspins, alpha, bc, J, Ntrials = args.nspins, args.alpha, args.bcoef, args.max_energy, args.Ntrials
+    Nspins, Nenvs, alpha, bc, J, Ntrials = args.nspins, args.nenvs, args.alpha, args.bcoef, args.max_energy, args.Ntrials
     tauB, T, pstate, strength = args.tauB, args.Tsteps, args.pstate, args.strength
     savedir, seed, binary = args.savedir, args.seed, args.binary
-    basename = '{}_spins_{}_trials_{}_seed_{}_strength_{}_pstate_{:.2f}_a_{}_bc_{}_tauB_{}_T_{}_bin_{}'.format(args.basename, \
-        Nspins, Ntrials, seed, strength, pstate, alpha, bc, tauB, T, binary)
+    basename = '{}_spins_{}_envs_{}_trials_{}_seed_{}_strength_{}_pstate_{:.2f}_a_{}_bc_{}_tauB_{}_T_{}_bin_{}'.format(args.basename, \
+        Nspins, Nenvs, Ntrials, seed, strength, pstate, alpha, bc, tauB, T, binary)
     
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
         os.mkdir(savedir)
@@ -56,12 +57,13 @@ if __name__  == '__main__':
         log_filename = os.path.join(logdir, '{}.log'.format(basename))
         logger = get_module_logger(__name__, log_filename)
         logger.info(log_filename)
-        logger.info('Nspins={},pstate={},binary={},strength={},alpha={},bcoef={},tauB={},Tsteps={},Ntrials={},seed={}'.format(Nspins, \
+        logger.info('Nspins={},Nenvs={},pstate={},binary={},strength={},alpha={},bcoef={},tauB={},Tsteps={},Ntrials={},seed={}'.format(\
+            Nspins, Nenvs,\
             pstate, binary, strength, alpha, bc, tauB, T, Ntrials, seed))
 
         B = J/bc # Magnetic field
         tau = tauB/B
-        L, Mx, My, Mz  = getLiouv_IsingOpen(Nspins, alpha, B, Nspins-1, J)
+        L, Mx, My, Mz  = getLiouv_IsingOpen(Nspins, alpha, B, Nspins-Nenvs, J)
         S = (tau*L).expm()
 
         # swap with environment
@@ -69,9 +71,15 @@ if __name__  == '__main__':
         q1 = getSci(basis(2, 1), 0, Nspins)
         s0 = sprepost(q0, q0.dag())
         s1 = sprepost(q1, q1.dag())
-        tc = tensor_contract(S, (0, Nspins))
-        
-        nobs = Nspins - 1
+        if Nenvs == 1:
+            tc = tensor_contract(S, (0, Nspins))
+        elif Nenvs == 2:
+            tc = tensor_contract(S, (0, Nspins), (1, Nspins + 1))
+        elif Nenvs == 3:
+            tc = tensor_contract(S, (0, Nspins), (1, Nspins + 1), (2, Nspins + 2))
+        else:
+            tc = tensor_contract(S, (0, Nspins))
+        nobs = Nspins - Nenvs
         
         # Create two basis density matrix
         sp = (basis(2, 0)).unit()
@@ -98,9 +106,12 @@ if __name__  == '__main__':
         
         rstates = []
         for n in range(T):
-            rket = rand_ket(2)
-            rstates.append(rket)
+            rkets = []
+            for m in range(Nenvs):
+                rkets.append(rand_ket(2))
+            rstates.append(rkets)
 
+        iop = identity(2)
         for i in range(Ntrials):
             if seed >= 0:
                 rho = rand_dm(2**nobs, density=0.2, dims=rho_sp.dims)
@@ -125,8 +136,13 @@ if __name__  == '__main__':
                 # if v < 0 or v > 1:
                 #     v = us[n]
                 # s_prep = v * s0 + (1.0 - v) * s1
-                rket = rstates[n]
-                q = getSci(rket, 0, Nspins)
+                rkets = rstates[n]
+                q = rkets[0]
+                for j in range(Nenvs - 1):
+                    q = tensor(q, rkets[j+1])
+                for j in range(Nspins - Nenvs):
+                    q = tensor(q, iop)
+                
                 s_prep = sprepost(q, q.dag())
                 ts = tc * s_prep
                 if i == 0:
@@ -179,9 +195,9 @@ if __name__  == '__main__':
     if args.plot > 0:
         plt.rc('font', family='serif')
         plt.rc('mathtext', fontset='cm')
-        # plt.rcParams["font.size"] = 16 # 全体のフォントサイズが変更されます
-        # plt.rcParams['xtick.labelsize'] = 14 # 軸だけ変更されます
-        # plt.rcParams['ytick.labelsize'] = 14 # 軸だけ変更されます
+        plt.rcParams["font.size"] = 20 # 全体のフォントサイズが変更されます
+        plt.rcParams['xtick.labelsize'] = 24 # 軸だけ変更されます
+        plt.rcParams['ytick.labelsize'] = 24 # 軸だけ変更されます
         fig = plt.figure(figsize=(30, 3), dpi=600)
         outbase = os.path.join(savedir, basename)
         xs = list(range(1, T+1))

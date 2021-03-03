@@ -5,7 +5,7 @@ SAVE=/data/zoro/qrep/quan_capa_tau2
 EXE=../source/mc_quanrc.py
 DYNAMIC=ion_trap
 
-NEV=2
+NEV=1
 NPROC=101
 NTRIALS=5
 
@@ -15,13 +15,13 @@ NTAUS=100
 
 MIND=0
 MAXD=100
-BUFFER=500
-TRAINLEN=500
+BUFFER=1000
+TRAINLEN=3000
 VALEN=100
 
 #vals=$(seq 0.1 0.1 5.0)
 vals=$(seq 0.05 0.05 2.0)
-for NSPINS in 6 5 4 3 7
+for NSPINS in 6 5 4 3 2 7
 do
 for V in 1
 do
