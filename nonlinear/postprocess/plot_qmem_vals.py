@@ -78,8 +78,9 @@ if __name__  == '__main__':
     else:
         vals = tauBs
         vlabel = '$\\tau B$'
-        xticks = range(0, ntaus, 5)
-        xticklabels = ['{}'.format(t/5) for t in xticks]
+        #xticks = range(0, ntaus, 5)
+        xticks = np.linspace(0, 5, 26)
+        xticklabels = ['{:.1f}'.format(t) for t in xticks]
         xticks2 = np.arange(0.0, 25.1, 5.0)
     cmap = plt.get_cmap("twilight")
     fig, axs = plt.subplots(3, 1, figsize=(20, 12), gridspec_kw={'height_ratios': [3, 2, 2]})
@@ -107,8 +108,8 @@ if __name__  == '__main__':
         print('read {} with shape'.format(memfile), arr.shape)
         loc_arr = arr[:, 1]
         memarr.append(loc_arr)
-        loc_arr = loc_arr - np.min(loc_arr)
-        loc_arr[loc_arr < args.thres] = 0.0
+        # loc_arr = loc_arr - np.min(loc_arr)
+        # loc_arr[loc_arr < args.thres] = 0.0
         mcs.append(np.sum(loc_arr))
         ts.append(val)
     memarr = np.array(memarr).T
@@ -118,17 +119,18 @@ if __name__  == '__main__':
     for i in range(1, len(d_colors)):
         bt = memarr[:i].reshape(i, -1)
         bt = np.sum(bt, axis=0).ravel()
-        ax.bar(ts, memarr[i], bottom=bt, width=width, label='d={}'.format(i), color=d_colors[i], edgecolor='k')
+        ax.bar(ts, memarr[i], bottom=bt, width=width, label='d={}'.format(i), color=d_colors[i], edgecolor='k', alpha=0.7)
     ax.set_xlim(vals[0], vals[-1])
-    #ax.set_ylabel('$d$', fontsize=24)
-    #ax.set_xlabel(vlabel, fontsize=24)
+    ax.legend(loc='upper right')
+    #ax.set_ylabel('QMC', fontsize=24)
+    ax.set_xlabel(vlabel, fontsize=24)
     #ax.set_ylim([0, 5])
     #ax.set_ylim([np.min(avg_tests)/2, 2*np.max(avg_tests)])
     #ax.set_yscale('log')
     #ax.set_ylim([5*10**(-2), 10**0])
     
-    #ax.set_xticks(xticks)
-    #ax.set_xticklabels(labels=xticklabels)
+    ax.set_xticks(xticks)
+    ax.set_xticklabels(labels=xticklabels)
     #ax.set_yticklabels(labels='')
     #ax.set_title('{}'.format(ntitle), fontsize=12)
     #ax.grid(True, which="both", ls="-", color='0.65')
