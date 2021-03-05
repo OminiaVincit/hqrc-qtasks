@@ -17,7 +17,7 @@ PLOT=0
 
 for NSPINS in 6
 do
-for alpha in 1.0
+for alpha in 0.3 0.4 0.6 0.7 0.8 0.9 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9
 do
 for tauB in 10.0
 do
