@@ -94,6 +94,7 @@ def generate_one_qubit_states(ranseed, Nitems):
     return rhos
 
 def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform', add=None):
+    np.random.seed(seed=ranseed)
     rhos = []
     density_arrs = np.random.uniform(size=Nitems)
     D = 2**Nbase
