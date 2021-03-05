@@ -19,39 +19,38 @@ if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder', type=str, required=True)
-    parser.add_argument('--nspins', type=int, default=5, help='Number of spins')
-    parser.add_argument('--nenvs', type=int, default=1, help='Number of env spins')
-    parser.add_argument('--tmax', type=float, default=5.0, help='Maximum tau')
-    parser.add_argument('--tmin', type=float, default=0.0, help='Minimum tau')
-    parser.add_argument('--ntaus', type=int, default=100, help='Number of tau')
+    parser.add_argument('--nspins', type=int, default=6, help='Number of spins')
+    parser.add_argument('--nenvs', type=int, default=2, help='Number of env spins')
+    parser.add_argument('--bcmax', type=float, default=2.5, help='Maximum bc')
+    parser.add_argument('--bcmin', type=float, default=0.0, help='Minimum bc')
+    parser.add_argument('--nbcs', type=int, default=125, help='Number of bc')
     parser.add_argument('--prefix', type=str, default='spec')
-    parser.add_argument('--seltaus', type=str, default='1.0,2.0,3.0,4.0,5.0')
+    parser.add_argument('--selbcs', type=str, default='0.1, 0.2, 0.5, 1.0, 2.0')
     parser.add_argument('--alpha', type=float, default=1.0)
-    parser.add_argument('--bcoef', type=float, default=2.0)
-    parser.add_argument('--posfix', type=str, default='eig_id_99')
-    parser.add_argument('--ptype', type=int, default=0, help='Plot type, 0:spectral, 1:line')
+    parser.add_argument('--tauB', type=float, default=10.0)
+    parser.add_argument('--posfix', type=str, default='eig_id_124')
+    parser.add_argument('--ptype', type=int, default=1, help='Plot type, 0:spectral, 1:line')
     
     args = parser.parse_args()
     print(args)
     folder, prefix, posfix, ptype = args.folder, args.prefix, args.posfix, args.ptype
     binfolder = os.path.join(folder, 'binary')
-    Nspins, Nenvs, alpha, bc = args.nspins, args.nenvs, args.alpha, args.bcoef
-    tmin, tmax, ntaus = args.tmin, args.tmax, args.ntaus
-    posfix = 'tmin_{}_tmax_{}_ntaus_{}_{}'.format(tmin, tmax, ntaus, posfix)
-    pstates = [i/100 for i in range(101)]
+    Nspins, Nenvs, alpha, tauB = args.nspins, args.nenvs, args.alpha, args.tauB
+    bcmin, bcmax, nbcs = args.bcmin, args.bcmax, args.nbcs
+    posfix = 'bcmin_{}_bcmax_{}_nbcs_{}_tauB_{}_{}'.format(bcmin, bcmax, nbcs, tauB, posfix)
     ild2, ld23 = [], []
 
-    sel_taus = [float(x) for x in args.seltaus.split(',')]
+    sel_bcs = [float(x) for x in args.selbcs.split(',')]
     eigs = dict()
-    for taub in sel_taus:
-        eigs[taub] = []
+    for bc in sel_bcs:
+        eigs[bc] = []
     
-    M = len(sel_taus)
-    lo, hi = tmin, tmax
+    M = len(sel_bcs)
+    lo, hi = bcmin, bcmax
     for p in range(100):
         t1, t2 = [], []
-        filename = os.path.join(binfolder, '{}_nspins_{}_nenvs_{}_a_{}_bc_{}_{}_tot_{}.binaryfile'.format(\
-            prefix, Nspins, Nenvs, alpha, bc, posfix, p))
+        filename = os.path.join(binfolder, '{}_nspins_{}_nenvs_{}_a_{}_{}_tot_{}.binaryfile'.format(\
+            prefix, Nspins, Nenvs, alpha, posfix, p))
         if os.path.isfile(filename) == False:
             print('Not found {}'.format(filename))
             continue
@@ -59,14 +58,14 @@ if __name__  == '__main__':
             z = pickle.load(rrs)
         #print(z.keys())
         xs = []
-        for taub in z.keys():
-            if taub > hi or taub < lo:
+        for bc in z.keys():
+            if bc > hi or bc < lo:
                 continue
-            xs.append(taub)
-            egvals = z[taub]
+            xs.append(bc)
+            egvals = z[bc]
             egvals = sorted(egvals, key=abs, reverse=True)
-            if p == 0 and taub in sel_taus:
-                eigs[taub] = egvals
+            if p == 0 and bc in sel_bcs:
+                eigs[bc] = egvals
             
             la = 1.0/np.abs(egvals[1])
             
@@ -75,15 +74,14 @@ if __name__  == '__main__':
             #     salpha.append(np.abs(egvals[n]) - np.abs(egvals[n+1]))
             
             # ralpha = []
-            # for n in range(1, len(salpha)):
+            # for n in range(2, len(salpha)):
             #     minval = min(salpha[n], salpha[n-1])
             #     maxval = max(salpha[n], salpha[n-1])
-            #     if minval > 0:
-            #         ralpha.append(minval / maxval)
+            #     ralpha.append(minval / maxval)
 
             ralpha = []
             for n in range(1, len(egvals)):
-               ralpha.append(np.abs(egvals[n]) / np.abs(egvals[n-1]))
+                ralpha.append(np.abs(egvals[n]) / np.abs(egvals[n-1]))
             
             #lb = np.abs(egvals[1])/np.abs(egvals[2])
             lb = np.mean(ralpha)
@@ -145,7 +143,7 @@ if __name__  == '__main__':
         ax2.grid(which='major',color='black',linestyle='-', axis='x', linewidth=1.0, alpha=0.5)
         
     for ax in [ax1, ax2]:
-        ax.set_xlabel('$\\tau B$', fontsize=24)
+        ax.set_xlabel('$J/B$', fontsize=24)
         if ptype == 0:
             ax.set_yticks(urange)
             ax.set_yticklabels(vrange)
@@ -159,12 +157,12 @@ if __name__  == '__main__':
         p = PatchCollection([circle], cmap=matplotlib.cm.jet, alpha=0.1)
         ax.add_collection(p)
         ax.axis('equal')
-        w = eigs[sel_taus[i]]
+        w = eigs[sel_bcs[i]]
         if len(w) == 0:
             continue
         for xi, yi in zip(np.real(w), np.imag(w)):
             ax.plot(xi, yi, 'o', color='k', alpha=0.7)
-        ax.set_title('$\\tau B$={}'.format(sel_taus[i]), fontsize=24)
+        ax.set_title('$J/B$={}'.format(sel_bcs[i]), fontsize=24)
         ax.set_xlabel('Re', fontsize=24)
         ax.set_ylabel('Im', fontsize=24)
         ax.set_xlim([-1.0, 1.0])
