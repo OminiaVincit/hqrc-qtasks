@@ -329,7 +329,7 @@ def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials
             # print('Val shape', val_pred_seq.shape)
             
             MF_d = distance_correlation(val_pred_seq, val_output_seq)
-
+            MF_d = MF_d ** 2
             #print('d={}, n={}, MF={}'.format(d, n, MF_d))
 
             train_fid_ls.append(train_rmean_square_fid)

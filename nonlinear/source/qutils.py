@@ -287,7 +287,7 @@ def make_distance_mat(rhos, distype='angle'):
             distmat[i, j] = distmat[j, i]
     return distmat
 
-def distance_correlation(rhoAs, rhoBs, distype='angle'):
+def square_distance_correlation(rhoAs, rhoBs, distype='angle'):
     assert(rhoAs.shape[0] == rhoBs.shape[0])
     Nsq = rhoAs.shape[0] ** 2
     distA = make_distance_mat(rhoAs)
@@ -297,5 +297,5 @@ def distance_correlation(rhoAs, rhoBs, distype='angle'):
     dcov2_xy = (A * B).sum()/float(Nsq)
     dcov2_xx = (A * A).sum()/float(Nsq)
     dcov2_yy = (B * B).sum()/float(Nsq)
-    dcor = np.sqrt(dcov2_xy)/np.sqrt(np.sqrt(dcov2_xx) * np.sqrt(dcov2_yy))
+    dcor = dcov2_xy/np.sqrt(dcov2_xx * dcov2_yy)
     return dcor

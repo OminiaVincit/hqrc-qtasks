@@ -5,6 +5,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import plotutils as plu
+import re
 # Plot for quantum memory
 MEM_FUNC_DATA='/data/zoro/qrep/quan_capacity'
 
@@ -26,13 +27,13 @@ if __name__  == '__main__':
     parser.add_argument('--ymax', type=float, default='1.0')
     parser.add_argument('--tmin', type=float, default=0.0, help='Minimum of tauB')
     parser.add_argument('--tmax', type=float, default=5.0, help='Maximum of tauB')
-    parser.add_argument('--ntaus', type=int, default=100, help='Number of tausB')
+    parser.add_argument('--ntaus', type=int, default=50, help='Number of tausB')
     parser.add_argument('--alpha', type=float, default=1.0)
     parser.add_argument('--bcoef', type=float, default=2.0)
     parser.add_argument('--thres', type=float, default=0.0)
     parser.add_argument('--V', type=int, default=1)
     parser.add_argument('--width', type=float, default=1.0)
-    parser.add_argument('--Nspins', type=str, default='3,4,5,6,7')
+    parser.add_argument('--Nspins', type=str, default='3,4,5,6')
     parser.add_argument('--nenv', type=int, default=2)
     parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins')
     parser.add_argument('--posfix', type=str, default='len_1000_3000_100_trials_5')
@@ -73,36 +74,31 @@ if __name__  == '__main__':
         spinarr = []
 
         for nspin in Ns:
-            Vposfix = 'V_{}_{}'.format(V, posfix)
-            ts, mcs = [], []
-            for val in vals:
-                valbase = '{}_{}_{}_a_{:.1f}_bc_{:.1f}_tauB_{:.3f}_{}.txt'.format(prefix, nspin, nenv, alpha, bc, val, Vposfix)
-                memfile = os.path.join(folder, valbase)
-                if os.path.isfile(memfile) == False:
-                    continue
-                arr = np.loadtxt(memfile)
-                #print('read {} with shape'.format(memfile), arr.shape)
-                loc_arr = arr[:7, 1]
-                #loc_arr = loc_arr ** 2
-                #loc_arr = loc_arr - np.min(loc_arr)
-                loc_arr[loc_arr < args.thres] = 0.0
-                mcs.append(np.sum(loc_arr))
-                ts.append(val)
-            if len(mcs) == 0:
+            Vposfix = 'tmax_{}_tmin_{}_ntaus_{}_Vs_{}_{}'.format(tmax, tmin, ntaus, V, posfix)
+            ts, mcs_avg, mcs_std = [], [], []
+            valbase = '{}_{}_{}_a_{:.1f}_bc_{:.1f}_{}.log'.format(prefix, nspin, nenv, alpha, bc, Vposfix)
+            logfile = os.path.join(folder, 'log')
+            logfile = os.path.join(logfile, valbase)
+            if os.path.isfile(logfile) == False:
+                print('Not found {}'.format(logfile))
                 continue
-            ax.plot(ts, mcs, alpha=0.8, marker='o', markeredgecolor='k', \
+            with open(logfile, 'r') as rf:
+                lines = rf.readlines()
+                for line in lines:
+                    if 'tauB=' in line:
+                        tauB = float(re.search(r"tauB=([0-9.]+)", line).group(1))
+                        capa_avg = float(re.search(r"capa_avg=([0-9.]+)", line).group(1))
+                        capa_std = float(re.search(r"capa_std=([0-9.]+)", line).group(1))
+                        ts.append(tauB)
+                        mcs_avg.append(capa_avg)
+                        mcs_std.append(capa_std)
+            if len(mcs_avg) == 0:
+                continue
+            mcs_avg, mcs_std = np.array(mcs_avg), np.array(mcs_std)
+            ax.fill_between(ts, mcs_avg - mcs_std, mcs_avg + mcs_std, facecolor='gray', alpha=0.5)
+            ax.plot(ts, mcs_avg, alpha=0.8, marker='o', markeredgecolor='k', \
                 markersize=0, linewidth=5, label='$N_m$={}'.format(nspin - nenv))
-            spinarr.append(mcs)
-
-        if len(spinarr) == 0:
-            continue
-        spinarr = np.array(spinarr) 
-        print(nspin, spinarr.shape)
-        ymin, ymax = np.min(spinarr), np.max(spinarr)
-        
-        #im = plotContour(fig, ax, spinarr, '{}'.format(ntitle), 16, ymin, ymax, cmap)
-        #extent = [0, 50, 0, 15]
-        #im = ax.imshow(spinarr, origin='lower', cmap=cmap, vmin=ymin, vmax=ymax, extent=extent)
+            
         ax.legend()
         ax.set_xticks(xticks)
         #ax.set_xticklabels(xticklabels, fontsize=16)
