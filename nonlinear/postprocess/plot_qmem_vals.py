@@ -74,7 +74,7 @@ if __name__  == '__main__':
         vlabel = '$J_b/B$'
         xticks = np.linspace(0, 2.2, 23)
         xticklabels = ['{:.1f}'.format(t) for t in xticks]
-        xticks2 = np.arange(0, 2.2, 23)
+        xticks2 = np.linspace(0, 2.2, 23)
     else:
         vals = tauBs
         vlabel = '$\\tau B$'
@@ -154,7 +154,7 @@ if __name__  == '__main__':
         ax2.plot(ts, mcs, alpha=0.8, marker='o', markeredgecolor='k', \
             markersize=10, linewidth=3, markerfacecolor=plu.VERMILLION)
         ax2.set_xlim(vals[0], vals[-1])
-        #ax2.set_xticks(xticks2)
+        ax2.set_xticks(xticks2)
     
 
     for bx in axs:
