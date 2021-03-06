@@ -134,8 +134,8 @@ if __name__  == '__main__':
     now = datetime.datetime.now()
     # datestr = now.strftime('{0:%Y-%m-%d-%H-%M-%S}'.format(now))
 
-    basename = '{}_{}_nspins_{}_{}_Vs_{}_len_{}_{}_{}'.format(\
-        bname, dynamic, n_spins, n_envs, '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len)
+    basename = '{}_{}_nspins_{}_{}_Vs_{}_len_{}_{}_{}_dmax_{}'.format(\
+        bname, dynamic, n_spins, n_envs, '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, maxd)
 
     log_filename = os.path.join(logdir, '{}.log'.format(basename))
     logger = get_module_logger(__name__, log_filename)
