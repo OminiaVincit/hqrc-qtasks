@@ -34,16 +34,18 @@ if __name__  == '__main__':
     parser.add_argument('--folder', type=str, default=MEM_FUNC_DATA)
     parser.add_argument('--ymin', type=float, default='0.0')
     parser.add_argument('--ymax', type=float, default='1.0')
-    parser.add_argument('--tmin', type=float, default=0.0, help='Minimum of tauB')
-    parser.add_argument('--tmax', type=float, default=25.0, help='Maximum of tauB')
-    parser.add_argument('--ntaus', type=int, default=125, help='Number of tausB')
+    parser.add_argument('--valmin', type=float, default=0.0, help='Minimum of val')
+    parser.add_argument('--valmax', type=float, default=25.0, help='Maximum of val')
+    parser.add_argument('--nvals', type=int, default=125, help='Number of vals')
     parser.add_argument('--alpha', type=float, default=1.0)
     parser.add_argument('--bcoef', type=float, default=1.0)
+    parser.add_argument('--tauB', type=float, default=1.0)
     parser.add_argument('--thres', type=float, default=1e-2)
     parser.add_argument('--V', type=int, default=1)
     parser.add_argument('--width', type=float, default=1.0)
     parser.add_argument('--nspins', type=int, default=6)
     parser.add_argument('--nenvs', type=int, default=2)
+    parser.add_argument('--nticks', type=int, default=25, help='Number of xticks')
     parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins')
     parser.add_argument('--posfix', type=str, default='len_1000_3000_100_dmax_20')
     parser.add_argument('--ntrials', type=int, default=10)
@@ -54,35 +56,25 @@ if __name__  == '__main__':
     prefix = '{}_{}_{}'.format(prefix, args.nspins, args.nenvs)
     posfix = 'V_{}_{}'.format(args.V, posfix)
     ymin, ymax = args.ymin, args.ymax
-    tmin, tmax, ntaus = args.tmin, args.tmax, args.ntaus
-    alpha, bc, width = args.alpha, args.bcoef, args.width
-    ntrials = args.ntrials
-    tauBs = list(np.linspace(tmin, tmax, ntaus + 1))
-    tauBs = tauBs[1:]
+    valmin, valmax, nvals = args.valmin, args.valmax, args.nvals
+    alpha, bc, tauB, width = args.alpha, args.bcoef, args.tauB, args.width
+    ntrials, nticks = args.ntrials, args.nticks
+    vals = list(np.linspace(valmin, valmax, nvals + 1))
+    vals = vals[1:]
     binfolder = os.path.join(folder, 'binary')
     
     if alpha == 0.0:
         # variable = a
-        vals = np.arange(0.1, 2.1, 0.1)
         vlabel = '$\\alpha$'
-        xticks = np.linspace(0.0, 2.0, 21)
-        xticklabels = ['{:.1f}'.format(t) for t in xticks]
-        xticks2 = np.arange(0.0, 2.1, 0.2)
     elif bc == 0.0:
         #vals = np.arange(0.2, 5.1, 0.2)
         #yticks = [4, 9, 14, 19]
         #yticklabels = ['{:.1f}'.format((t+1)/5) for t in yticks]
-        vals = np.arange(0.02, 2.21, 0.02)
         vlabel = '$J_b/B$'
-        xticks = np.linspace(0, 2.2, 23)
-        xticklabels = ['{:.1f}'.format(t) for t in xticks]
-        xticks2 = np.linspace(0, 2.2, 23)
     else:
         vals = tauBs
         vlabel = '$\\tau B$'
         #xticks = range(0, ntaus, 5)
-        xticks = np.linspace(tmin, tmax, 26)
-        xticklabels = ['{:.1f}'.format(t) for t in xticks]
     cmap = plt.get_cmap("twilight")
     fig, axs = plt.subplots(1, 1, figsize=(20, 6), squeeze=False)
     axs = axs.ravel()
@@ -92,13 +84,13 @@ if __name__  == '__main__':
     plt.rc('mathtext', fontset='cm')
     plt.rcParams['font.size']=16
 
-    ntitle = '{}_a_{}_bc_{}_{}_thres_{}'.format(prefix, alpha, bc, posfix, args.thres)
+    ntitle = '{}_a_{}_bc_{}_tauB_{}_thres_{}'.format(prefix, alpha, bc, tauB, posfix, args.thres)
     memarr, ts = [], []
     for val in vals:
         if alpha == 0.0:
-            valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(prefix, val, bc, tauBs[0], posfix)
+            valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(prefix, val, bc, tauB, posfix)
         elif bc == 0.0:
-            valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(prefix, alpha, val, tauBs[0], posfix)
+            valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(prefix, alpha, val, tauB, posfix)
         else:
             valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(prefix, alpha, bc, val, posfix)
         loc_arr = []
@@ -140,6 +132,8 @@ if __name__  == '__main__':
 
     
     for bx in axs:
+        xticks = np.linspace(valmin, valmax, nticks+1)
+        xticklabels = ['{:.1f}'.format(t) for t in xticks]
         bx.set_xticks(xticks)
         bx.set_xticklabels(labels=xticklabels)
         #bx.tick_params(axis='both', which='major', labelsize=16)

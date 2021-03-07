@@ -29,7 +29,7 @@ for NSPINS in 6 5 4
 do
 for V in '1'
 do
-for als in 1.0
+for als in 2.0 0.2 0.5
 do
 for tauls in '2.0,5.0,10.0'
 do
