@@ -45,6 +45,7 @@ if __name__  == '__main__':
     parser.add_argument('--width', type=float, default=1.0)
     parser.add_argument('--nspins', type=str, default='3,4,5,6')
     parser.add_argument('--nenvs', type=int, default=2)
+    parser.add_argument('--dmax', type=int, default=10)
     parser.add_argument('--nticks', type=int, default=25, help='Number of xticks')
     parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins')
     parser.add_argument('--posfix', type=str, default='len_1000_3000_100_dmax_20')
@@ -56,7 +57,7 @@ if __name__  == '__main__':
     Ns = [int(x) for x in args.nspins.split(',')]
 
     posfix = 'V_{}_{}'.format(args.V, posfix)
-    ymin, ymax = args.ymin, args.ymax
+    ymin, ymax, dmax = args.ymin, args.ymax, args.dmax
     valmin, valmax, nvals = args.valmin, args.valmax, args.nvals
     alpha, bc, tauB, width = args.alpha, args.bcoef, args.tauB, args.width
     nenvs, ntrials, nticks = args.nenvs, args.ntrials, args.nticks
@@ -85,7 +86,7 @@ if __name__  == '__main__':
     plt.rc('mathtext', fontset='cm')
     plt.rcParams['font.size']=16
 
-    ntitle = '{}_nenvs_{}_a_{}_bc_{}_tauB_{}_thres_{}_{}'.format(prefix, nenvs, alpha, bc, tauB, args.thres, posfix)
+    ntitle = '{}_nenvs_{}_a_{}_bc_{}_tauB_{}_thres_{}_{}_tod_{}'.format(prefix, nenvs, alpha, bc, tauB, args.thres, posfix, dmax)
     
     ax = axs[1]
     for nspin in Ns:
@@ -109,7 +110,7 @@ if __name__  == '__main__':
                 arr = np.load(memfile)
                 print('read {} with shape'.format(memfile), arr.shape)
                 loc_arr.append(arr[:, 1])
-                loc_sum.append(np.sum(arr[:10, 1]))
+                loc_sum.append(np.sum(arr[:(dmax+1), 1]))
             loc_sum = np.array(loc_sum)
             loc_arr = np.array(loc_arr)
             avg_loc_arr = np.mean(loc_arr, axis=0)
