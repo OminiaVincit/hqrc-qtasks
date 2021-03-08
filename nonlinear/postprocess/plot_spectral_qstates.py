@@ -21,15 +21,17 @@ if __name__  == '__main__':
     parser.add_argument('--folder', type=str, required=True)
     parser.add_argument('--nspins', type=int, default=5, help='Number of spins')
     parser.add_argument('--nenvs', type=int, default=1, help='Number of env spins')
-    parser.add_argument('--tmax', type=float, default=5.0, help='Maximum tau')
+    parser.add_argument('--tmax', type=float, default=12.5, help='Maximum tau')
     parser.add_argument('--tmin', type=float, default=0.0, help='Minimum tau')
+    parser.add_argument('--tdisplay', type=float, default=10.0, help='Maximum tau to display')
     parser.add_argument('--ntaus', type=int, default=100, help='Number of tau')
     parser.add_argument('--prefix', type=str, default='spec')
     parser.add_argument('--seltaus', type=str, default='1.0,2.0,3.0,4.0,5.0')
     parser.add_argument('--alpha', type=float, default=1.0)
     parser.add_argument('--bcoef', type=float, default=2.0)
     parser.add_argument('--posfix', type=str, default='eig_id_99')
-    parser.add_argument('--ptype', type=int, default=0, help='Plot type, 0:spectral, 1:line')
+    parser.add_argument('--ptype', type=int, default=1, help='Plot type, 0:spectral, 1:line')
+    parser.add_argument('--nticks', type=int, default=25, help='Number of ticks to display')
     
     args = parser.parse_args()
     print(args)
@@ -38,6 +40,7 @@ if __name__  == '__main__':
     Nspins, Nenvs, alpha, bc = args.nspins, args.nenvs, args.alpha, args.bcoef
     tmin, tmax, ntaus = args.tmin, args.tmax, args.ntaus
     posfix = 'tmin_{}_tmax_{}_ntaus_{}_{}'.format(tmin, tmax, ntaus, posfix)
+
     pstates = [i/100 for i in range(101)]
     ild2, ld23 = [], []
 
@@ -47,7 +50,8 @@ if __name__  == '__main__':
         eigs[taub] = []
     
     M = len(sel_taus)
-    lo, hi = tmin, tmax
+    lo, hi = tmin, args.tdisplay
+
     for p in range(100):
         t1, t2 = [], []
         filename = os.path.join(binfolder, '{}_nspins_{}_nenvs_{}_a_{}_bc_{}_{}_tot_{}.binaryfile'.format(\
@@ -151,7 +155,7 @@ if __name__  == '__main__':
             ax.set_yticklabels(vrange)
         else:
             ax.set_xlim([lo, hi])
-            ax.set_xticks(np.linspace(lo, hi, 26))
+            ax.set_xticks(np.linspace(lo, hi, args.nticks+1))
     
     for i in range(M):
         ax = plt.subplot2grid((3, M), (2,i), colspan=1, rowspan=1)

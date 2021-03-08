@@ -6,21 +6,21 @@ EXE=../source/superop_spectral_ion_qstate.py
 
 NPROC=125
 BG=0
-ED=10
+ED=100
 
 TMIN=0.0
 TMAX=12.5
 NTAUS=125
 
 
-NEV=2
+NEV=1
 PLOT=0
 
-for NSPINS in 6
+for NSPINS in 5
 do
 for alpha in 1.0
 do
-for bc in 1.0
+for bc in 1.0 2.0
 do
 SAVE=/data/zoro/qrep/spectral2/eig_a_$alpha\_bc_$bc\_$NSPINS\_$NEV
 
