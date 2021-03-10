@@ -15,13 +15,14 @@ NBCS=125
 NEV=2
 PLOT=0
 
+vals=$(seq 0.1 0.1 2.0)
 for NSPINS in 6
 do
-for alpha in 0.3 0.4 0.6 0.7 0.8 0.9 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9
+for alpha in $vals
 do
-for tauB in 10.0
+for tauB in 5.0
 do
-SAVE=/data/zoro/qrep/spectral/eig_a_$alpha\_tauB_$tauB\_$NSPINS\_$NEV
+SAVE=/data/zoro/qrep/spectral2/eig_a_$alpha\_tauB_$tauB\_$NSPINS\_$NEV
 
 python $EXE --alpha $alpha --tauB $tauB --plot $PLOT --bgidx $BG --edidx $ED --savedir $SAVE --nspins $NSPINS --nenvs $NEV --nproc $NPROC --bcmin $BCMIN --bcmax $BCMAX --nbcs $NBCS
 done

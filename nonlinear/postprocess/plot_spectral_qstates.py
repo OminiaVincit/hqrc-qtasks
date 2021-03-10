@@ -82,8 +82,7 @@ if __name__  == '__main__':
             # for n in range(1, len(salpha)):
             #     minval = min(salpha[n], salpha[n-1])
             #     maxval = max(salpha[n], salpha[n-1])
-            #     if minval > 0:
-            #         ralpha.append(minval / maxval)
+            #     ralpha.append(minval / maxval)
 
             ralpha = []
             for n in range(1, len(egvals)):

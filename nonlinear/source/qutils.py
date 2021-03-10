@@ -266,9 +266,21 @@ def cal_fidelity_two_mats(matA, matB):
     fidval = min(1.0, fidval)
     return fidval
 
+def cal_trace_dist_two_mats(matA, matB):
+    matA = nearest_psd(matA, method='eig')
+    matB = nearest_psd(matB, method='eig')
+    
+    stateA = Qobj(matA)
+    stateB = Qobj(matB)
+    dtrace = tracedist(stateA, stateB)
+    return dtrace
+
 def cal_distance_two_mats(matA, matB, distype='angle'):
-    fidval = cal_fidelity_two_mats(matA, matB)
-    distance = np.arccos(fidval)
+    if distype == 'trace':
+        distance = cal_trace_dist_two_mats(matA, matB)
+    else:
+        fidval = cal_fidelity_two_mats(matA, matB)
+        distance = np.arccos(fidval)
     return distance
 
 def average_qstates(rho_ls):

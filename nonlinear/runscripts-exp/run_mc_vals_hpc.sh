@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # Script to calculate memory capacity
 export OMP_NUM_THREADS=1
-SAVE=/data/zoro/qrep/quan_capa
+SAVE=/data/zoro/qrep/quan_capa_abc
 EXE=../source/mc_quanrc_vals.py
 DYNAMIC=ion_trap
 
@@ -18,18 +18,18 @@ BCMAX=2.0
 NBCS=40
 
 MIND=0
-MAXD=20
+MAXD=10
 BUFFER=1000
 TRAINLEN=3000
 VALEN=100
 
-vals=$(seq 0.02 0.02 2.2)
+vals=$(seq 0.1 0.1 2.0)
 #vals=$(seq 0.05 0.05 2.0)
-for NSPINS in 6 5 4
+for NSPINS in 6
 do
 for V in '1'
 do
-for als in 2.0 0.2 0.5
+for als in $vals
 do
 for tauls in '2.0,5.0,10.0'
 do

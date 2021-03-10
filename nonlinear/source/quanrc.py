@@ -151,6 +151,7 @@ class QRC(object):
         # Replace the density matrix
         par_rho = partial_trace(rho, keep=[1], dims=[2**self.n_envs, 2**self.n_units], optimize=False)
         rho = np.kron(input_state, par_rho)
+
         current_state = []
         for v in range(self.virtual_nodes):
             # Time evolution of density matrix
@@ -344,34 +345,41 @@ def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials
 
     return np.array(list(zip(dlist, MFavgs, MFstds, train_avgs, val_avgs)))
 
-def esp_index(qparams, buffer, length, nqrc, gamma, sparsity, sigma_input, ranseed, state_trials):
+def esp_states(qparams, length, ranseed, state_trials):
     if ranseed >= 0:
         np.random.seed(seed=ranseed)
 
-    data = np.random.rand(length)
+    n_envs = qparams.n_envs
+    # generate data
+    if n_envs == 1:
+        data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
+    else:
+        data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
     input_seq = np.array(data)
-    input_seq = np.tile(input_seq, (nqrc, 1))
 
     # Initialize the reservoir to zero state - density matrix
-    model = HQRC(nqrc, gamma, sparsity, sigma_input)
-    x0_state_list = model.init_forward(qparams, input_seq, init_rs = True, ranseed = ranseed)
-    # Compute esp index and esp_lambda
+    model = QRC()
+    model.init_forward(qparams, input_seq, init_rs = True, ranseed = ranseed)
+    rho1_init = model.init_rho.copy()
+    rho1_last = model.last_rho.copy()
+
+    # Compute the diff states
     dP = []
     for i in range(state_trials):
         # Initialzie the reservoir to a random initial state
         # Keep same coupling configuration
-        model.gen_rand_rho(ranseed = i + 300000)
-        z0_state_list = model.init_forward(qparams, input_seq, init_rs = False, ranseed = i + 200000)
-        L, D = z0_state_list.shape
-        # L = Length of time series
-        # D = Number of layers x Number of virtual nodes x Number of qubits
-        # print('i={}, State shape'.format(i), z0_state_list.shape)
-        local_diff = 0
-        # prev, current = None, None
-        for t in range(buffer, L):
-            diff_state = x0_state_list[t, :] - z0_state_list[t, :]
-            diff = np.sqrt(np.power(diff_state, 2).sum())
-            local_diff += diff
-        local_diff = local_diff / (L-buffer)
-        dP.append(local_diff)
-    return np.mean(dP)
+        for n in range(100):
+            model.gen_rand_rho(ranseed = i + n*1000)
+            rho2_init = model.init_rho.copy()
+            dist_init = cal_distance_two_mats(rho1_init, rho2_init, distype='trace')
+            if dist_init > 0.5:
+                break
+        model.init_forward(qparams, input_seq, init_rs = False, ranseed = i + 200000)
+        rho2_last = model.last_rho.copy()
+        
+        dist_last = cal_distance_two_mats(rho1_last, rho2_last, distype='trace')
+        dist_rate = dist_last / dist_init
+        
+        dP.append(dist_rate)
+    dP = np.array(dP)
+    return dP
