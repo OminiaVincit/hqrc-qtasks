@@ -21,7 +21,7 @@ MIND=0
 MAXD=10
 BUFFER=1000
 TRAINLEN=3000
-VALEN=100
+VALEN=1000
 
 vals=$(seq 0.1 0.1 2.0)
 #vals=$(seq 0.05 0.05 2.0)
@@ -29,9 +29,9 @@ for NSPINS in 6
 do
 for V in '1'
 do
-for als in $vals
+for als in '0.2,0.5,1.0' '1.5,2.0,3.0' '0.1,0.3,0.4' '0.6,0.7,0.8' '0.9,1.1,1.2'
 do
-for tauls in '2.0,5.0,10.0'
+for tauls in '5.0'
 do
 python $EXE --als $als --tauls $tauls --rho 0 --bgidx $BG --edidx $ED --savedir $SAVE --spins $NSPINS --envs $NEV --mind $MIND --maxd $MAXD --bcmin $BCMIN --bcmax $BCMAX --nbcs $NBCS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
 done

@@ -133,7 +133,11 @@ class QRC(object):
         self.__init_reservoir(qparams, ranseed)
 
     def __get_comput_nodes(self):
-        return self.n_units * self.virtual_nodes 
+        N_obs = self.n_units
+        if self.use_corr > 0:
+            N_obs += int( (self.n_units * (self.n_units - 1)) / 2 )
+        return N_obs * self.virtual_nodes
+        
     
     def __reset_states(self):
         self.cur_states = [None]
@@ -263,8 +267,9 @@ class QRC(object):
         _, state_list =  self.feed_forward(input_seq, predict=False, use_lastrho=False)
         return state_list
 
-def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, val_input_seq, val_output_seq, ranseed):
-    model = QRC()
+def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
+    val_input_seq, val_output_seq, ranseed, use_corr):
+    model = QRC(use_corr)
 
     train_input_seq = np.array(train_input_seq)
     train_output_seq = np.array(train_output_seq)
@@ -282,7 +287,7 @@ def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, val_input_s
 
     return train_pred_seq, train_fidls, val_pred_seq, val_fidls
 
-def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials):
+def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials, usecorr):
 
     MFavgs, MFstds, train_avgs, val_avgs = [], [], [], []
     length = buffer + train_len + val_len
@@ -320,7 +325,7 @@ def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials
                 ranseed_net = (ranseed + 10000) * (n + 1)
             # Use the same ranseed the same trial
             train_pred_seq, train_fidls, val_pred_seq, val_fidls = \
-                get_fidelity(qparams, buffer, train_input_seq, train_output_seq, val_input_seq, val_output_seq, ranseed_net)
+                get_fidelity(qparams, buffer, train_input_seq, train_output_seq, val_input_seq, val_output_seq, ranseed_net, usecorr)
             
             train_rmean_square_fid = np.sqrt(np.mean(np.array(train_fidls)**2))
             val_rmean_square_fid = np.sqrt(np.mean(np.array(val_fidls)**2))
@@ -345,7 +350,7 @@ def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials
 
     return np.array(list(zip(dlist, MFavgs, MFstds, train_avgs, val_avgs)))
 
-def esp_states(qparams, length, ranseed, state_trials):
+def esp_states(qparams, length, ranseed, state_trials, use_corr):
     if ranseed >= 0:
         np.random.seed(seed=ranseed)
 
@@ -358,7 +363,7 @@ def esp_states(qparams, length, ranseed, state_trials):
     input_seq = np.array(data)
 
     # Initialize the reservoir to zero state - density matrix
-    model = QRC()
+    model = QRC(use_corr)
     model.init_forward(qparams, input_seq, init_rs = True, ranseed = ranseed)
     rho1_init = model.init_rho.copy()
     rho1_last = model.last_rho.copy()

@@ -20,9 +20,9 @@ from loginit import get_module_logger
 import utils
 from utils import *
 
-def memory_compute(outfile, qparams, train_len, val_len, buffer, dlist, trial, send_end):
+def memory_compute(outfile, qparams, train_len, val_len, buffer, dlist, trial, usecorr, send_end):
     btime = int(time.time() * 1000.0)
-    rsarr = qrc.memory_function(qparams, train_len=train_len, val_len=val_len, buffer=buffer, dlist=dlist, ranseed=trial, Ntrials=1)
+    rsarr = qrc.memory_function(qparams, train_len=train_len, val_len=val_len, buffer=buffer, dlist=dlist, ranseed=trial, Ntrials=1, usecorr=usecorr)
     np.save(outfile, rsarr)
     etime = int(time.time() * 1000.0)
     bcoef = qparams.non_diag
@@ -81,13 +81,15 @@ if __name__  == '__main__':
 
     parser.add_argument('--basename', type=str, default='quanrc') 
     parser.add_argument('--savedir', type=str, default='capa_repeated')
+    parser.add_argument('--usecorr', type=int, default=0, help='Use correlator operators')
+
     args = parser.parse_args()
     print(args)
 
     n_spins, n_envs, beta = args.spins, args.envs, args.beta
     train_len, val_len, buffer = args.trainlen, args.vallen, args.buffer
     nproc, init_rho, solver, dynamic = args.nproc, args.rho, args.solver, args.dynamic
-    max_energy = args.max_energy
+    max_energy, usecorr = args.max_energy, args.usecorr
     
     bgidx, edidx = args.bgidx, args.edidx
     amin, amax, nas = args.amin, args.amax, args.nas
@@ -133,9 +135,13 @@ if __name__  == '__main__':
     timestamp = int(time.time() * 1000.0)
     now = datetime.datetime.now()
     # datestr = now.strftime('{0:%Y-%m-%d-%H-%M-%S}'.format(now))
-
-    basename = '{}_{}_nspins_{}_{}_Vs_{}_len_{}_{}_{}_dmax_{}'.format(\
-        bname, dynamic, n_spins, n_envs, '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, maxd)
+    if usecorr > 0:
+        corr = '_corr_{}'.format(usecorr)
+    else:
+        corr = ''
+    
+    basename = '{}_{}{}_nspins_{}_{}_Vs_{}_len_{}_{}_{}_dmax_{}'.format(\
+        bname, dynamic, corr, n_spins, n_envs, '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, maxd)
 
     log_filename = os.path.join(logdir, '{}.log'.format(basename))
     logger = get_module_logger(__name__, log_filename)
@@ -148,8 +154,8 @@ if __name__  == '__main__':
                 for bcoef in bcls:
                     for tauB in tauls:
                         for V in virtuals:
-                            outfile = '{}_{}_nspins_{}_{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_V_{}_len_{}_{}_{}_dmax_{}_trial_{}.npy'.format(\
-                                bname, dynamic, n_spins, n_envs, alpha, bcoef, tauB, V, buffer, train_len, val_len, maxd, idx)
+                            outfile = '{}_{}{}_nspins_{}_{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_V_{}_len_{}_{}_{}_dmax_{}_trial_{}.npy'.format(\
+                                bname, dynamic, corr, n_spins, n_envs, alpha, bcoef, tauB, V, buffer, train_len, val_len, maxd, idx)
                             outfile = os.path.join(bindir, outfile)
                             if os.path.isfile(outfile) == True:
                                 print('File existed {}'.format(outfile))
@@ -159,7 +165,7 @@ if __name__  == '__main__':
                                 beta=beta, virtual_nodes=V, tau=tauB/B, init_rho=init_rho, dynamic=dynamic, solver=solver)
                             recv_end, send_end = multiprocessing.Pipe(False)
                             p = multiprocessing.Process(target=memory_compute, \
-                                args=(outfile, qparams, train_len, val_len, buffer, dlist, idx, send_end))
+                                args=(outfile, qparams, train_len, val_len, buffer, dlist, idx, usecorr, send_end))
                             jobs.append(p)
                             pipels.append(recv_end)
                             

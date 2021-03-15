@@ -24,7 +24,7 @@ if __name__  == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder', type=str, default='qrep')
     parser.add_argument('--taskname', type=str, default='delay_tasks2')
-    parser.add_argument('--prefix', type=str, default='eig_a_1.0_bc_2.0')
+    parser.add_argument('--prefix', type=str, default='eig_a_1.0_bc_1.0')
     parser.add_argument('--posfix', type=str, default='od_10_dl_1_delay-depolar')
     parser.add_argument('--Vs', type=str, default='1,5')
     parser.add_argument('--Nenv', type=int, default=2)
@@ -126,9 +126,9 @@ if __name__  == '__main__':
             if ptype == 0:
                 ax.set_yticks(urange)
             ax.set_yticklabels(vrange, fontsize=20)
-            xticklist = np.linspace(0, 50.0, num=26)
+            xticklist = np.linspace(0, 50.0, num=21)
             ax.set_xticks(xticklist)
-            ax.set_xticklabels(labels=['{:.1f}'.format(x/10) for x in  xticklist], fontsize=18)
+            ax.set_xticklabels(labels=['{:.1f}'.format(x/5) for x in  xticklist], fontsize=18)
             ax.set_xlim([0.0, 50.0])
         else:
             ax.legend()

@@ -20,7 +20,7 @@ for NSPINS in 6
 do
 for alpha in $vals
 do
-for tauB in 5.0
+for tauB in 2.0
 do
 SAVE=/data/zoro/qrep/spectral2/eig_a_$alpha\_tauB_$tauB\_$NSPINS\_$NEV
 

@@ -131,7 +131,7 @@ if __name__  == '__main__':
     fig = plt.figure(figsize=(30, 15), dpi=600)
     #vmin, vmax = 1.0, np.max(ild2)
     vmin, vmax = 1.0, 1.7
-    extent = [lo, hi, 0, 4.0]
+    extent = [lo, hi, 0, 4]
     fig.suptitle(os.path.basename(filename), fontsize=16, horizontalalignment='left')
 
     # Plot the second largest eigenvectors
