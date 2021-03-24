@@ -34,6 +34,7 @@ if __name__  == '__main__':
     parser.add_argument('--width', type=float, default=1.0)
     parser.add_argument('--Nspins', type=str, default='3,4,5,6,7')
     parser.add_argument('--nenv', type=int, default=2)
+    parser.add_argument('--nticks', type=int, default=20)
     parser.add_argument('--prefix', type=str, default='quanrc_ion_trap_nspins')
     parser.add_argument('--posfix', type=str, default='len_1000_3000_100_trials_5')
     
@@ -48,9 +49,6 @@ if __name__  == '__main__':
     vals = tauBs[1:]
 
     Ns = [int(x) for x in args.Nspins.split(',')]
-
-    xticks = np.linspace(0, 5, 26)
-    xticklabels = ['{:.1f}'.format(t) for t in xticks]
     cmap = plt.get_cmap("nipy_spectral")
     Vs = [1]
     fig, axs = plt.subplots(len(Vs), 1, figsize=(20, 6), squeeze=False)
@@ -64,7 +62,7 @@ if __name__  == '__main__':
     #xticks = range(4, ntaus, 5)
     #xticklabels = ['{:.2f}'.format((x+1)/20) for x in xticks]
     
-    xticks = np.linspace(tmin, tmax, 25+1)
+    xticks = np.linspace(tmin, tmax, args.nticks+1)
     xticklabels = ['{:.1f}'.format(x) for x in xticks]
     
     for i in range(len(Vs)):

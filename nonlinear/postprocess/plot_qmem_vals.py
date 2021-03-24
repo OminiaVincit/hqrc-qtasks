@@ -79,12 +79,12 @@ if __name__  == '__main__':
     else:
         exit(1)
     cmap = plt.get_cmap("twilight")
-    fig, axs = plt.subplots(2, 1, figsize=(20, 10), squeeze=False)
+    fig, axs = plt.subplots(2, 1, figsize=(20, 12), squeeze=False)
     axs = axs.ravel()
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')
-    plt.rcParams['font.size']=16
+    plt.rcParams['font.size']=20
 
     ntitle = '{}_nenvs_{}_a_{}_bc_{}_tauB_{}_thres_{}_{}_tod_{}'.format(prefix, nenvs, alpha, bc, tauB, args.thres, posfix, dmax)
     
@@ -163,7 +163,7 @@ if __name__  == '__main__':
         bx.set_xticklabels(labels=xticklabels)
         #bx.tick_params(axis='both', which='major', labelsize=16)
         #bx.tick_params(axis='both', which='minor', labelsize=12)
-        bx.tick_params('both', length=10, width=1.0, which='major', labelsize=20)
+        bx.tick_params('both', length=10, width=1.0, which='major', labelsize=24)
         bx.set_xlim([valmin, valmax])
 
     fig_folder = os.path.join(folder, 'figs')
