@@ -23,7 +23,7 @@ from qutip import *
 from IPC import IPCParams
 import colorcet as cc
 
-def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order):
+def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order, Nreps=1):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
     np.random.seed(seed=ranseed + 1987)
     D = 2**n_envs
@@ -49,9 +49,9 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order):
     #print('Coeffs', coeffs)
     coeffs = coeffs / np.sum(coeffs)
     coeffs = coeffs.astype(complex)
-
+    Nitems = int(length / Nreps)
     if n_envs == 1:
-        input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
+        input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=Nitems, Nreps=Nreps)
     else:
         input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
     #input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
@@ -147,6 +147,8 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     vmax = max(vmax, output_seq.max())
     vmax = max(vmax, pred_seq.max())
     
+    vmin, vmax = -0.3, 0.9
+    vmin_error, vmax_error = 0.0, 0.4
     #print(vmin, vmax)
     axs = axs.ravel()
     for ax in axs:
@@ -171,7 +173,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     plt.show()
 
 def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, \
-    B, tBs, delay, taskname, order, flagplot, use_corr):
+    B, tBs, delay, taskname, order, flagplot, use_corr, Nreps):
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
     length = buffer + train_len + val_len
@@ -180,7 +182,7 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
         qparams.tau = tauB / B
         train_rmean_ls, val_rmean_ls = [], []
         for n in range(ntrials):
-            input_data, output_data = generate_qtasks_delay(qparams.n_envs, ranseed=n, length=length, delay=delay, taskname=taskname, order=order)
+            input_data, output_data = generate_qtasks_delay(qparams.n_envs, ranseed=n, length=length, delay=delay, taskname=taskname, order=order, Nreps=Nreps)
             train_input_seq = np.array(input_data[  : (buffer + train_len)])
             train_output_seq = np.array(output_data[  : (buffer + train_len)])
             
@@ -233,6 +235,7 @@ if __name__  == '__main__':
     parser.add_argument('--vallen', type=int, default=100)
     parser.add_argument('--buffer', type=int, default=100)
     parser.add_argument('--delay', type=int, default=5)
+    parser.add_argument('--nreps', type=int, default=1, help='The input signal jumps into new random states every nreps')
 
     parser.add_argument('--nproc', type=int, default=125)
     parser.add_argument('--ntrials', type=int, default=1)
@@ -252,7 +255,7 @@ if __name__  == '__main__':
     print(args)
 
     n_spins, n_envs, max_energy, beta, alpha, bcoef, init_rho = args.spins, args.envs, args.max_energy, args.beta, args.alpha, args.bcoef, args.rho
-    tmin, tmax, ntaus = args.tmin, args.tmax, args.ntaus
+    tmin, tmax, ntaus, nreps = args.tmin, args.tmax, args.ntaus, args.nreps
     flagplot, usecorr = args.plot, args.usecorr
 
     dynamic = args.dynamic
@@ -270,9 +273,9 @@ if __name__  == '__main__':
     if os.path.isdir(logdir) == False:
         os.mkdir(logdir)
     
-    basename = '{}_{}_od_{}_{}_corr_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}'.format(\
+    basename = '{}_{}_od_{}_{}_corr_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}_reps_{}'.format(\
         basename, taskname, order, dynamic, usecorr, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
-        '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, delay, ntrials)
+        '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, delay, ntrials, nreps)
     
     log_filename = os.path.join(logdir, '{}.log'.format(basename))
     logger = get_module_logger(__name__, log_filename)
@@ -300,7 +303,7 @@ if __name__  == '__main__':
                 qparams = QRCParams(n_units=n_spins-n_envs, n_envs=n_envs, max_energy=max_energy, non_diag=bcoef,alpha=alpha,\
                             beta=beta, virtual_nodes=V, tau=0.0, init_rho=init_rho, dynamic=dynamic)
                 p = multiprocessing.Process(target=fidelity_compute, \
-                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order, flagplot, usecorr))
+                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order, flagplot, usecorr, nreps))
                 jobs.append(p)
                 #pipels.append(recv_end)
 

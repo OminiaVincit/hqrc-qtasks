@@ -49,7 +49,7 @@ if __name__  == '__main__':
     if Nenv == 1:
         cmap = plt.get_cmap("RdBu")
     elif Nenv == 2:
-        cmap = plt.get_cmap("Spectral")
+        cmap = plt.get_cmap("nipy_spectral")
     else:
         cmap = plt.get_cmap("PRGn")
     fig, axs = plt.subplots(M, 1, figsize=(20, 4*M), sharex=True)
@@ -119,7 +119,7 @@ if __name__  == '__main__':
                 if ptype == 3:
                     im = plotContour(fig, ax, fidarr, '$N_e = {}, M = {}$'.format(Nenv, V), 16, ymin, ymax, cmap)
                 else:
-                    im = ax.imshow(fidarr, origin='lower', cmap=cmap, vmin=ymin, vmax=ymax, extent=extent)
+                    im = ax.imshow(fidarr, origin='lower', cmap=cmap, vmin=ymin, vmax=ymax, extent=extent, alpha=0.9)
             
             urange = np.linspace(1, 9, len(Ns))
             vrange = ['{}'.format(x-Nenv) for x in Ns]
@@ -145,7 +145,7 @@ if __name__  == '__main__':
     plt.tight_layout()
 
     if ptype == 0:
-        fig.colorbar(im, ax=axs, orientation="vertical")
+        fig.colorbar(im, ax=axs, orientation="vertical", format='%.2f')
     
     for ftype in ['png', 'svg', 'pdf']:
         transparent = True

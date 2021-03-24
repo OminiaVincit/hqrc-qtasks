@@ -383,8 +383,9 @@ def esp_states(qparams, length, ranseed, state_trials, use_corr):
         rho2_last = model.last_rho.copy()
         
         dist_last = cal_distance_two_mats(rho1_last, rho2_last, distype='trace')
-        dist_rate = dist_last / dist_init
-        
+        #print('distlast', dist_last)
+        dist_rate = dist_last / dist_init + 1e-10
+        #dist_rate = dist_last
         dP.append(dist_rate)
     dP = np.array(dP)
     return dP

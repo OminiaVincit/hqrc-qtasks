@@ -73,7 +73,7 @@ def getLiouv_IsingOpen(Nspins, alpha, B, nobs, J=1.0):
     L = liouvillian(H, [])
     return L, Mx, My, Mz
 
-def generate_one_qubit_states(ranseed, Nitems):
+def generate_one_qubit_states(ranseed, Nitems, Nreps=1):
     np.random.seed(seed=ranseed)
 
     I = np.array([[1, 0], [0, 1]])
@@ -90,7 +90,8 @@ def generate_one_qubit_states(ranseed, Nitems):
         s3 = r * np.sqrt(1-x**2) * np.sqrt(1 - y**2)
         rho = 0.5 * (I + s1 * SigmaX + s2 * SigmaY + s3 * SigmaZ)
         #rho = np.array(rand_dm(2, density=0.5))
-        rhos.append(rho)
+        for i in range(Nreps):
+            rhos.append(rho)
     return rhos
 
 def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform', add=None):

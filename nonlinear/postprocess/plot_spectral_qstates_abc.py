@@ -62,6 +62,9 @@ if __name__  == '__main__':
     lo, hi = bcmin, 2.0
     ld2_abc, ld23_abc = [], []
     cmap2 = plt.get_cmap("RdBu")
+    cmap2 = plt.get_cmap("rainbow")
+    cmap2 = plt.get_cmap("CMRmap")
+    
     cmap1 = plt.get_cmap("PRGn")
 
     for alpha in als:
@@ -128,31 +131,35 @@ if __name__  == '__main__':
     plt.rcParams["font.size"] = 20 # 全体のフォントサイズが変更されます
     plt.rcParams['xtick.labelsize'] = 20 # 軸だけ変更されます
     plt.rcParams['ytick.labelsize'] = 20 # 軸だけ変更されます
-    fig = plt.figure(figsize=(30, 15), dpi=600)
+    #fig = plt.figure(figsize=(24, 6), dpi=600)
     #vmin, vmax = 1.0, np.max(ild2)
     vmin, vmax = 1.0, 1.7
     extent = [lo, hi, 0, 4]
-    fig.suptitle(os.path.basename(filename), fontsize=16, horizontalalignment='left')
+    # fig.suptitle(os.path.basename(filename), fontsize=16, horizontalalignment='left')
 
-    # Plot the second largest eigenvectors
-    ax1 = plt.subplot2grid((2,1), (0,0), colspan=1, rowspan=1)
-    ax1.set_title('$1 / |\lambda_2|$', fontsize=24)
-    if ptype == 0:
-        im1 = ax1.imshow(ld2_abc, origin='lower', vmin=vmin, vmax=vmax, extent=extent)
-        ax1.set_ylabel('Index', fontsize=16)
-        ax1.set_xticks(list(range(extent[0], extent[1] + 1)))
-        urange = np.linspace(extent[2], extent[3], 6)
-        vrange = ['{:.1f}'.format(x) for x in np.linspace(0, 1, 6)]
-    elif ptype == 1:
-        for i in range(len(ld2_abc)):
-            ax1.plot(xs, ld2_abc[i], color=GREEN, alpha=0.8, linestyle='dashdot')
-    else:
-        im = plotContour(fig, ax1, ld2_abc, '$1 / |\lambda_2|$', 24, None, None, cmap1)
-        fig.colorbar(im, ax=ax1, orientation="vertical")
+    if False:
+        # Plot the second largest eigenvectors
+        ax1 = plt.subplot2grid((2,1), (0,0), colspan=1, rowspan=1)
+        ax1.set_title('$1 / |\lambda_2|$', fontsize=24)
+        if ptype == 0:
+            im1 = ax1.imshow(ld2_abc, origin='lower', vmin=vmin, vmax=vmax, extent=extent)
+            ax1.set_ylabel('Index', fontsize=16)
+            ax1.set_xticks(list(range(extent[0], extent[1] + 1)))
+            urange = np.linspace(extent[2], extent[3], 6)
+            vrange = ['{:.1f}'.format(x) for x in np.linspace(0, 1, 6)]
+        elif ptype == 1:
+            for i in range(len(ld2_abc)):
+                ax1.plot(xs, ld2_abc[i], color=GREEN, alpha=0.8, linestyle='dashdot')
+        else:
+            im = plotContour(fig, ax1, ld2_abc, '$1 / |\lambda_2|$', 24, None, None, cmap1)
+            fig.colorbar(im, ax=ax1, orientation="vertical")
 
     # Plot average |\lambda_{k+1}| / |\lambda_{k}
-    ax2 = plt.subplot2grid((2,1), (1,0), colspan=1, rowspan=1)
-    ax2.set_title('$\langle |\lambda_{k+1}| / |\lambda_{k}| \\rangle$', fontsize=24)
+    #ax2 = plt.subplot2grid((1,1), (0,0), colspan=1, rowspan=1)
+    fig, axs = plt.subplots(1, 1, figsize=(24, 6), squeeze=False)
+    axs = axs.ravel()
+    ax2 = axs[0]
+    #ax2.set_title('$\langle |\lambda_{k+1}| / |\lambda_{k}| \\rangle$', fontsize=24)
     if ptype == 0:
         #ax2.scatter3D(ld23[:, 0], ld23[:, 1], ld23[:, 2], cmap='Green', rasterized=True)
         im2 = ax2.imshow(ld23, origin='lower', vmin=vmin, vmax=vmax, extent=extent)
@@ -163,10 +170,10 @@ if __name__  == '__main__':
         for i in range(len(ld23_abc)):
             ax2.plot(xs, ld23_abc[i], color=BLUE, alpha=0.8, linestyle='dashdot')
     else:
-        im = plotContour(fig, ax2, ld23_abc, '$\langle |\lambda_{k+1}| / |\lambda_{k}| \\rangle$', 24, None, None, cmap2)
-        fig.colorbar(im, ax=ax2, orientation="vertical")
+        im = plotContour(fig, ax2, ld23_abc, '$\langle |\lambda_{k+1}| / |\lambda_{k}| \\rangle$', 16, None, None, cmap2)
+        fig.colorbar(im, ax=ax2, orientation="vertical", format='%.3f')
 
-    for ax in [ax1, ax2]:
+    for ax in [ax2]:
         ax.set_xlabel('$J/B$', fontsize=24)
         ax.set_ylabel('$\\alpha$', fontsize=24)
         if ptype == 0:
@@ -178,8 +185,8 @@ if __name__  == '__main__':
             ax.legend()
             ax.grid(which='major',color='black',linestyle='-', axis='x', linewidth=1.0, alpha=0.5)
         else:
-            yticks = range(1, nas, 2)
-            xticks = range(4, len(xs), 5)
+            yticks = range(4, nas, 5)
+            xticks = range(-1, len(xs), 5)
             ax.set_yticks(yticks)
             ax.set_yticklabels(labels=['{:.1f}'.format((t+1)/10) for t in yticks], fontsize=24)
             ax.set_xticks(xticks)

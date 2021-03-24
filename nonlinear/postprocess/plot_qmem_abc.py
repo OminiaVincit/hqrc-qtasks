@@ -75,17 +75,30 @@ if __name__  == '__main__':
     binfolder = os.path.join(folder, 'binary')
     
     cmap = plt.get_cmap("rainbow")
-    fig, axs = plt.subplots(2, 1, figsize=(20, 12), squeeze=False)
-    axs = axs.ravel()
+    #cmap = plt.get_cmap("gist_rainbow_r")
+    
+    
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')
-    plt.rcParams['font.size']=16
-
+    plt.rcParams["font.size"] = 20 # 全体のフォントサイズが変更されます
+    plt.rcParams['xtick.labelsize'] = 20 # 軸だけ変更されます
+    plt.rcParams['ytick.labelsize'] = 20 # 軸だけ変更されます
+    
     ntitle = '{}_nspins_{}_{}_tauB_{}_thres_{}_{}_tod_{}'.format(prefix, nspins, nenvs, tauB, args.thres, posfix, dmax)
     sprefix = '{}_{}_{}'.format(prefix, nspins, nenvs)
     
-    ax1, ax2 = axs[0], axs[1]
+    #fig = plt.figure(figsize=(30, 15), dpi=600)
+    fig, axs = plt.subplots(1, 1, figsize=(24, 6), squeeze=False)
+    #fig.suptitle(ntitle, fontsize=16, horizontalalignment='left')
+    axs = axs.ravel()
+    ax2 = axs[0]
+    #ax1, ax2 = axs[0], axs[1]
+    #ax1 = plt.subplot2grid((2,1), (0,0), colspan=1, rowspan=1)
+    #ax1.set_title('QMC', fontsize=24)
+    #ax2 = plt.subplot2grid((2,1), (1,0), colspan=1, rowspan=1)
+    #ax2.set_title('QMC', fontsize=24)
+    
     memarr = []
     dcl = 0
     for a in als:
@@ -117,39 +130,43 @@ if __name__  == '__main__':
         if a in [0.2, 0.5, 1.0, 2.0]:
             color = cycle[dcl]
             dcl += 1
-            ax1.fill_between(ts, mcs_avg - mcs_std, mcs_avg + mcs_std, facecolor=color, alpha=0.2)
-            ax1.plot(ts, mcs_avg, alpha=0.8, marker='o', markeredgecolor='k', color=color,\
-                markersize=0, linewidth=4, label='$\\alpha$={}'.format(a))
+            #ax1.fill_between(ts, mcs_avg - mcs_std, mcs_avg + mcs_std, facecolor=color, alpha=0.2)
+            #ax1.plot(ts, mcs_avg, alpha=0.8, marker='o', markeredgecolor='k', color=color,\
+            #    markersize=0, linewidth=4, label='$\\alpha$={}'.format(a))
         memarr.append(mcs_avg)
     
-    ax1.grid(axis='x')
-    ax1.legend()
-    ax1.set_title(ntitle)
-    xticks = np.linspace(bcmin, bcmax, nticks+1)
-    xticklabels = ['{:.1f}'.format(t) for t in xticks]
-    ax1.set_xticks(xticks)
-    ax1.set_xticklabels(labels=xticklabels)
-    ax1.set_xlim([ts[0], ts[-1]])
+    # ax1.grid(axis='x')
+    # ax1.legend()
+    # #ax1.set_title(ntitle)
+    # xticks = np.linspace(bcmin, bcmax, nticks+1)
+    # xticklabels = ['{:.1f}'.format(t) for t in xticks]
+    # ax1.set_xticks(xticks)
+    # ax1.set_xticklabels(labels=xticklabels)
+    # ax1.set_xlim([ts[0], ts[-1]])
 
     memarr = np.array(memarr)
-    
+    print('Memarr shape', memarr.shape)
     # Plot MC heatmap contour
     ymin, ymax = np.min(memarr), np.max(memarr)
     im = plotContour(fig, ax2, memarr, '{}'.format(ntitle), 16, ymin, ymax, cmap)
-    fig.colorbar(im, ax=ax2, orientation="horizontal")
-    xticks = np.linspace(1, nbcs-1, nticks)
+    fig.colorbar(im, ax=ax2, orientation="vertical", format='%.3f')
+    #xticks = np.linspace(1, nbcs-1, nticks)
+    xticks = range(-1, nbcs, 2)
+    
     xticklabels = ['{:.1f}'.format((t+1)/20) for t in xticks]
     yticks = range(4, nas, 5)
     yticklabels = ['{:.1f}'.format((t+1)/10) for t in yticks]
 
     ax2.set_xticks(xticks)
-    ax2.set_xticklabels(labels=xticklabels)
+    ax2.set_xticklabels(labels=xticklabels, fontsize=24)
     ax2.set_yticks(yticks)
-    ax2.set_yticklabels(labels=yticklabels)
+    ax2.set_yticklabels(labels=yticklabels, fontsize=24)
 
-    ax2.set_xlim([0, nbcs-1])
+    #ax2.set_xlim([0, nbcs-1])
     for bx in axs:
-        bx.tick_params('both', length=10, width=1.0, which='major', labelsize=20)
+        bx.set_xlabel('$J/B$', fontsize=24)
+        bx.set_ylabel('$\\alpha$', fontsize=24)
+        bx.tick_params('both', length=10, width=1.0, which='major')
         #bx.set_xlim([ts[0], ts[-1]])
 
     fig_folder = os.path.join(folder, 'figs')

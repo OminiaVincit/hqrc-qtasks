@@ -3,7 +3,7 @@
 export OMP_NUM_THREADS=1
 
 EXE=../source/runQTask.py
-TASKNAME=delay-depolar
+TASKNAME=sma-depolar
 DYNAMIC=ion_trap
 
 NPROC=125
@@ -20,6 +20,7 @@ VALEN=200
 NEV=1
 ORDER=10
 PLOT=1
+NREP=20
 
 for DELAY in 5
 do
@@ -29,11 +30,11 @@ for V in 1 5
 do
 for alpha in 1.0
 do
-for bc in 2.0
+for bc in 1.0
 do
 SAVE=/data/zoro/qrep/draw_a_$alpha\_bc_$bc\_$NSPINS\_$NEV\_od_$ORDER\_dl\_$DELAY\_$TASKNAME
 
-python $EXE --alpha $alpha --bcoef $bc --plot $PLOT --rho 1 --order $ORDER --taskname $TASKNAME --delay $DELAY --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
+python $EXE --nreps $NREP --alpha $alpha --bcoef $bc --plot $PLOT --rho 1 --order $ORDER --taskname $TASKNAME --delay $DELAY --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
 done
 done
 done

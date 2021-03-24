@@ -25,14 +25,14 @@ if __name__  == '__main__':
     parser.add_argument('--nenvs', type=int, default=1)
     parser.add_argument('--nticks', type=int, default=25, help='Number of xticks')
     parser.add_argument('--prefix', type=str, default='esp_ion_trap_nspins')
-    parser.add_argument('--posfix', type=str, default='V_1_len_50_ntrials_100')
+    parser.add_argument('--ntrials', type=int, default=100)
     args = parser.parse_args()
     print(args)
 
-    folder, prefix, posfix = args.folder, args.prefix, args.posfix
+    folder, prefix = args.folder, args.prefix
     valmin, valmax, nvals = args.valmin, args.valmax, args.nvals
     alpha, bc, tauB = args.alpha, args.bcoef, args.tauB
-    nspins, nenvs, nticks = args.nspins, args.nenvs, args.nticks
+    nspins, nenvs, nticks, ntrials = args.nspins, args.nenvs, args.nticks, args.ntrials
     vals = list(np.linspace(valmin, valmax, nvals + 1))
     vals = vals[1:]
     binfolder = os.path.join(folder, 'binary')
@@ -51,42 +51,52 @@ if __name__  == '__main__':
     else:
         exit(1)
     cmap = plt.get_cmap("twilight")
-    fig, axs = plt.subplots(1, 1, figsize=(20, 5), squeeze=False)
+    fig, axs = plt.subplots(1, 1, figsize=(24, 6), squeeze=False)
     axs = axs.ravel()
+    ax = axs[0]
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')
-    plt.rcParams['font.size']=16
+    plt.rcParams['font.size']=20
+    plt.rcParams['xtick.labelsize'] = 20 # 軸だけ変更されます
+    plt.rcParams['ytick.labelsize'] = 20 # 軸だけ変更されます
 
-    ntitle = '{}_nspins_{}_{}_a_{}_bc_{}_tauB_{}_{}'.format(prefix, nspins, nenvs, alpha, bc, tauB, posfix)
     sprefix = '{}_{}_{}'.format(prefix, nspins, nenvs)
+    Ls = range(10, 101, 10)
+    N = len(Ls)
+    colors = plt.cm.viridis(np.linspace(0, 1, N+5))
+    for i in range(N):
+        L, col = Ls[i], colors[i]
+        posfix = 'V_1_len_{}_ntrials_{}'.format(L, ntrials)
+        ntitle = '{}_nspins_{}_{}_a_{}_bc_{}_tauB_{}_{}'.format(prefix, nspins, nenvs, alpha, bc, tauB, posfix)
+        drate, ts = [], []
+        for val in vals:
+            if alpha == 0.0:
+                valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(sprefix, val, bc, tauB, posfix)
+            elif bc == 0.0:
+                valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(sprefix, alpha, val, tauB, posfix)
+            else:
+                valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(sprefix, alpha, bc, val, posfix)
 
-    drate, ts = [], []
-    for val in vals:
-        if alpha == 0.0:
-            valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(sprefix, val, bc, tauB, posfix)
-        elif bc == 0.0:
-            valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(sprefix, alpha, val, tauB, posfix)
-        else:
-            valbase = '{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_{}'.format(sprefix, alpha, bc, val, posfix)
+            memfile = os.path.join(binfolder, '{}.npy'.format(valbase))
+            if os.path.isfile(memfile) == False:
+                print('Not found {}'.format(memfile))
+                continue
+            arr = np.load(memfile)
+            print('read {} with shape'.format(memfile), arr.shape)
+            drate.append(arr)
+            ts.append(val)
 
-        memfile = os.path.join(binfolder, '{}.npy'.format(valbase))
-        if os.path.isfile(memfile) == False:
-            print('Not found {}'.format(memfile))
-            continue
-        arr = np.load(memfile)
-        print('read {} with shape'.format(memfile), arr.shape)
-        drate.append(arr)
-        ts.append(val)
+        drate = np.array(drate).T
+        if len(ts) > 0:
+            #for i in range(len(drate)):
+            #    ax.plot(ts, drate[i], color=GREEN, alpha=0.5, linestyle='dashdot')
+            ax.plot(ts, np.mean(drate, axis=0).ravel(), marker='o', markersize=0, alpha=0.8, color=col, label='Time steps = {}'.format(L), linewidth=5.0)
 
-    drate = np.array(drate).T
-    ax = axs[0]
-    for i in range(len(drate)):
-        ax.plot(ts, drate[i], color=GREEN, alpha=0.5, linestyle='dashdot')
-    ax.plot(ts, np.median(drate, axis=0).ravel(), color=VERMILLION, alpha=1.0, label='Median value', linewidth=3.0)
     ax.set_yscale('log')
     ax.grid(axis='x')
-    ax.legend()
+    ax.set_xlabel('$\\tau B$', fontsize=24)
+    #ax.legend()
     ax.set_title(ntitle)
 
     for bx in axs:
