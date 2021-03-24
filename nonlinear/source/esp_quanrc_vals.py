@@ -22,7 +22,7 @@ from utils import *
 
 def diff_states_compute(outfile, qparams, length, ranseed, state_trials, send_end):
     btime = int(time.time() * 1000.0)
-    dP = qrc.esp_states(qparams, length=length, ranseed=ranseed, state_trials=state_trials)
+    dP = qrc.esp_states(qparams, length=length, ranseed=ranseed, state_trials=state_trials, use_corr=0)
     np.save(outfile, dP)
 
     etime = int(time.time() * 1000.0)
@@ -33,8 +33,8 @@ def diff_states_compute(outfile, qparams, length, ranseed, state_trials, send_en
     
     diff_avg, diff_std = np.mean(dP), np.std(dP)
 
-    retstr = 'Finish job with alpha={},bcoef={},tauB={},length={},diff_avg={:.10f},diff_std={:.10f}'.format(\
-        alpha, bcoef, tauB, length, diff_avg, diff_std)
+    retstr = 'Finish job with shapeDP={} alpha={},bcoef={},tauB={},length={},diff_avg={:.10f},diff_std={:.10f}'.format(\
+        dP.shape, alpha, bcoef, tauB, length, diff_avg, diff_std)
     send_end.send(retstr)
 
 if __name__  == '__main__':
@@ -132,9 +132,9 @@ if __name__  == '__main__':
                         outfile = '{}_{}_nspins_{}_{}_a_{:.3f}_bc_{:.3f}_tauB_{:.3f}_V_{}_len_{}_ntrials_{}.npy'.format(\
                             bname, dynamic, n_spins, n_envs, alpha, bcoef, tauB, V, length, ntrials)
                         outfile = os.path.join(bindir, outfile)
-                        if os.path.isfile(outfile) == True:
-                            print('File existed {}'.format(outfile))
-                            continue
+                        #if os.path.isfile(outfile) == True:
+                        #    print('File existed {}'.format(outfile))
+                        #    continue
                         B = max_energy / bcoef
                         qparams = QRCParams(n_units=n_spins-n_envs, n_envs=n_envs, max_energy=max_energy, non_diag=bcoef, alpha=alpha,\
                             beta=beta, virtual_nodes=V, tau=tauB/B, init_rho=init_rho, dynamic=dynamic)
