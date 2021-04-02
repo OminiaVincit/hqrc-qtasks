@@ -10,21 +10,21 @@ BG=0
 ED=10
 
 TMIN=0.0
-TMAX=10.0
-NTAUS=100
+TMAX=12.5
+NTAUS=125
 
 MIND=0
-MAXD=20
+MAXD=10
 BUFFER=1000
 TRAINLEN=3000
-VALEN=100
-CORR=0
+VALEN=1000
+CORR=1
 
 vals=$(seq 0.02 0.02 2.2)
 #vals=$(seq 0.05 0.05 2.0)
-for NSPINS in 7 8
+for NSPINS in 6
 do
-for V in 1
+for V in 5 1
 do
 for als in 1.0
 do

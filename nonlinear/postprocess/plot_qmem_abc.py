@@ -42,7 +42,7 @@ if __name__  == '__main__':
     parser.add_argument('--bcmax', type=float, default=2.0, help='Maximum of bc')
     parser.add_argument('--nbcs', type=int, default=40, help='Number of bc')
 
-    parser.add_argument('--tauB', type=float, default=5.0)
+    parser.add_argument('--tauB', type=float, default=10.0)
     parser.add_argument('--thres', type=float, default=0.0)
     parser.add_argument('--V', type=int, default=1)
     parser.add_argument('--nspins', type=int, default=6)
@@ -89,11 +89,10 @@ if __name__  == '__main__':
     sprefix = '{}_{}_{}'.format(prefix, nspins, nenvs)
     
     #fig = plt.figure(figsize=(30, 15), dpi=600)
-    fig, axs = plt.subplots(1, 1, figsize=(24, 6), squeeze=False)
+    fig, axs = plt.subplots(2, 1, figsize=(24, 12), squeeze=False)
     #fig.suptitle(ntitle, fontsize=16, horizontalalignment='left')
     axs = axs.ravel()
-    ax2 = axs[0]
-    #ax1, ax2 = axs[0], axs[1]
+    ax1, ax2 = axs[0], axs[1]
     #ax1 = plt.subplot2grid((2,1), (0,0), colspan=1, rowspan=1)
     #ax1.set_title('QMC', fontsize=24)
     #ax2 = plt.subplot2grid((2,1), (1,0), colspan=1, rowspan=1)
@@ -127,12 +126,12 @@ if __name__  == '__main__':
             continue
         mcs_avg, mcs_std = np.array(mcs_avg), np.array(mcs_std)
         
-        if a in [0.2, 0.5, 1.0, 2.0]:
+        if a in [0.5, 1.0, 1.5, 2.0]:
             color = cycle[dcl]
             dcl += 1
-            #ax1.fill_between(ts, mcs_avg - mcs_std, mcs_avg + mcs_std, facecolor=color, alpha=0.2)
-            #ax1.plot(ts, mcs_avg, alpha=0.8, marker='o', markeredgecolor='k', color=color,\
-            #    markersize=0, linewidth=4, label='$\\alpha$={}'.format(a))
+            ax2.fill_between(ts, mcs_avg - mcs_std, mcs_avg + mcs_std, facecolor=color, alpha=0.2)
+            ax2.plot(ts, mcs_avg, alpha=0.8, marker='o', markeredgecolor='k', color=color,\
+                markersize=0, linewidth=4, label='$\\alpha$={}'.format(a))
         memarr.append(mcs_avg)
     
     # ax1.grid(axis='x')
@@ -148,8 +147,8 @@ if __name__  == '__main__':
     print('Memarr shape', memarr.shape)
     # Plot MC heatmap contour
     ymin, ymax = np.min(memarr), np.max(memarr)
-    im = plotContour(fig, ax2, memarr, '{}'.format(ntitle), 16, ymin, ymax, cmap)
-    fig.colorbar(im, ax=ax2, orientation="vertical", format='%.3f')
+    im = plotContour(fig, ax1, memarr, '{}'.format(ntitle), 16, ymin, ymax, cmap)
+    #fig.colorbar(im, ax=ax1, orientation="vertical", format='%.3f')
     #xticks = np.linspace(1, nbcs-1, nticks)
     xticks = range(-1, nbcs, 2)
     
@@ -157,16 +156,22 @@ if __name__  == '__main__':
     yticks = range(4, nas, 5)
     yticklabels = ['{:.1f}'.format((t+1)/10) for t in yticks]
 
-    ax2.set_xticks(xticks)
-    ax2.set_xticklabels(labels=xticklabels, fontsize=24)
-    ax2.set_yticks(yticks)
-    ax2.set_yticklabels(labels=yticklabels, fontsize=24)
+    ax1.set_xticks(xticks)
+    ax1.set_xticklabels(labels=xticklabels, fontsize=24)
+    ax1.set_yticks(yticks)
+    ax1.set_yticklabels(labels=yticklabels, fontsize=24)
+    
+    ax2.set_xlim([bcmin, bcmax])
+    x2ticks = np.linspace(bcmin, bcmax, nticks+1)
+    ax2.set_xticks(x2ticks)
+    ax2.legend()
+    ax2.grid(True, axis='x', which="major", ls="-", color='0.65')
 
     #ax2.set_xlim([0, nbcs-1])
     for bx in axs:
         bx.set_xlabel('$J/B$', fontsize=24)
         bx.set_ylabel('$\\alpha$', fontsize=24)
-        bx.tick_params('both', length=10, width=1.0, which='major')
+        bx.tick_params('both', length=10, width=1.0, which='major', labelsize=24)
         #bx.set_xlim([ts[0], ts[-1]])
 
     fig_folder = os.path.join(folder, 'figs')
