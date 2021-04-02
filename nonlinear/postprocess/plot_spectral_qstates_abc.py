@@ -5,29 +5,8 @@ import argparse
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-plt.set_cmap(cmap='nipy_spectral')
-from matplotlib.patches import Circle
-from matplotlib.collections import PatchCollection
 import pickle
-
-BLUE= [x/255.0 for x in [0, 114, 178]]
-VERMILLION= [x/255.0 for x in [213, 94, 0]]
-GREEN= [x/255.0 for x in [0, 158, 115]]
-BROWN = [x/255.0 for x in [72, 55, 55]]
-
-def plotContour(fig, ax, data, title, fontsize, vmin, vmax, cmap):
-    ax.set_title(title, fontsize=fontsize)
-    t, s = np.meshgrid(np.arange(data.shape[0]), np.arange(data.shape[1]))
-    if vmin == None:
-        vmin = np.min(data)
-    if vmax == None:
-        vmax = np.max(data)
-
-    mp = ax.contourf(s, t, np.transpose(data), 15, cmap=cmap, levels=np.linspace(vmin, vmax, 60), extend="both", zorder=-20)
-    #fig.colorbar(mp, ax=ax)
-    ax.set_rasterization_zorder(-10)
-    #ax.set_xlabel(r"Time", fontsize=fontsize)
-    return mp
+import plotutils as putils
 
 if __name__  == '__main__':
     # Check for command line arguments
@@ -44,6 +23,7 @@ if __name__  == '__main__':
     parser.add_argument('--amin', type=float, default=0.0, help='Minimum a')
     parser.add_argument('--nas', type=int, default=20, help='Number of a')
 
+    parser.add_argument('--nticks', type=int, default=20, help='Number of xticks')
     parser.add_argument('--prefix', type=str, default='spec')
     parser.add_argument('--tauB', type=float, default=10.0)
     parser.add_argument('--posfix', type=str, default='eig_id_124')
@@ -53,7 +33,7 @@ if __name__  == '__main__':
     print(args)
     folder, prefix, posfix, ptype = args.folder, args.prefix, args.posfix, args.ptype
     Nspins, Nenvs, tauB = args.nspins, args.nenvs, args.tauB
-    bcmin, bcmax, nas, nbcs = args.bcmin, args.bcmax, args.nas, args.nbcs
+    bcmin, bcmax, nas, nbcs, nticks = args.bcmin, args.bcmax, args.nas, args.nbcs, args.nticks
     als = list(np.linspace(args.amin, args.amax, nas + 1))
     als = als[1:]
     #als.extend([3.0, 4.0, 5.0, 10.0])
@@ -64,9 +44,12 @@ if __name__  == '__main__':
     cmap2 = plt.get_cmap("RdBu")
     cmap2 = plt.get_cmap("rainbow")
     cmap2 = plt.get_cmap("CMRmap")
-    
     cmap1 = plt.get_cmap("PRGn")
 
+    fig, axs = plt.subplots(2, 1, figsize=(24, 12), squeeze=False)
+    axs = axs.ravel()
+    ax1, ax2 = axs[0], axs[1]
+    dcl = 0
     for alpha in als:
         afolder = os.path.join(folder, 'eig_a_{:.1f}_tauB_{}_{}_{}'.format(alpha, tauB, Nspins, Nenvs))
         binfolder = os.path.join(afolder, 'binary')
@@ -117,21 +100,29 @@ if __name__  == '__main__':
             ild2.append(t1)
             ld23.append(t2)
     
-        ild2 = np.mean(np.array(ild2), axis=0)
-        ld23 = np.mean(np.array(ld23), axis=0)
-        print(alpha, ild2.shape, ld23.shape)
-        ld2_abc.append(ild2)
-        ld23_abc.append(ld23)
+        ild2_avg, ild2_std  = np.mean(np.array(ild2), axis=0), np.std(np.array(ild2), axis=0)
+        ld23_avg, ild23_std = np.mean(np.array(ld23), axis=0), np.std(np.array(ld23), axis=0)
+        print(alpha, ild2_avg.shape, ld23_avg.shape)
+
+        if alpha in [0.5, 1.0, 1.5, 2.0]:
+            color = putils.cycle[dcl]
+            dcl += 1
+            ax2.fill_between(xs, ld23_avg - ild23_std, ld23_avg + ild23_std, facecolor=color, alpha=0.2)
+            ax2.plot(xs, ld23_avg, alpha=0.8, marker='o', markeredgecolor='k', color=color,\
+                markersize=0, linewidth=4, label='$\\alpha$={}'.format(alpha))
+
+        ld2_abc.append(ild2_avg)
+        ld23_abc.append(ld23_avg)
     ld2_abc = np.array(ld2_abc)
     ld23_abc = np.array(ld23_abc)
 
     # Plot file
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')
-    plt.rcParams["font.size"] = 20 # 全体のフォントサイズが変更されます
-    plt.rcParams['xtick.labelsize'] = 20 # 軸だけ変更されます
-    plt.rcParams['ytick.labelsize'] = 20 # 軸だけ変更されます
-    #fig = plt.figure(figsize=(24, 6), dpi=600)
+    plt.rcParams["font.size"] = 24 # 全体のフォントサイズが変更されます
+    plt.rcParams['xtick.labelsize'] = 24 # 軸だけ変更されます
+    plt.rcParams['ytick.labelsize'] = 24 # 軸だけ変更されます
+
     #vmin, vmax = 1.0, np.max(ild2)
     vmin, vmax = 1.0, 1.7
     extent = [lo, hi, 0, 4]
@@ -156,42 +147,40 @@ if __name__  == '__main__':
 
     # Plot average |\lambda_{k+1}| / |\lambda_{k}
     #ax2 = plt.subplot2grid((1,1), (0,0), colspan=1, rowspan=1)
-    fig, axs = plt.subplots(1, 1, figsize=(24, 6), squeeze=False)
-    axs = axs.ravel()
-    ax2 = axs[0]
     #ax2.set_title('$\langle |\lambda_{k+1}| / |\lambda_{k}| \\rangle$', fontsize=24)
-    if ptype == 0:
-        #ax2.scatter3D(ld23[:, 0], ld23[:, 1], ld23[:, 2], cmap='Green', rasterized=True)
-        im2 = ax2.imshow(ld23, origin='lower', vmin=vmin, vmax=vmax, extent=extent)
-        ax2.set_ylabel('$u$', fontsize=16)
-        ax2.set_xticks(list(range(extent[0], extent[1] + 1)))
-        fig.colorbar(im1, ax=[ax1, ax2])
-    elif ptype == 1:
-        for i in range(len(ld23_abc)):
-            ax2.plot(xs, ld23_abc[i], color=BLUE, alpha=0.8, linestyle='dashdot')
-    else:
-        im = plotContour(fig, ax2, ld23_abc, '$\langle |\lambda_{k+1}| / |\lambda_{k}| \\rangle$', 16, None, None, cmap2)
-        fig.colorbar(im, ax=ax2, orientation="vertical", format='%.3f')
+    # if ptype == 0:
+    #     #ax2.scatter3D(ld23[:, 0], ld23[:, 1], ld23[:, 2], cmap='Green', rasterized=True)
+    #     im2 = ax2.imshow(ld23, origin='lower', vmin=vmin, vmax=vmax, extent=extent)
+    #     ax2.set_ylabel('$u$', fontsize=16)
+    #     ax2.set_xticks(list(range(extent[0], extent[1] + 1)))
+    #     fig.colorbar(im1, ax=[ax1, ax2])
+    # elif ptype == 1:
+    #     for i in range(len(ld23_abc)):
+    #         ax2.plot(xs, ld23_abc[i], color=BLUE, alpha=0.8, linestyle='dashdot')
+    # else:
+    
+    im = putils.plotContour(fig, ax1, ld23_abc, '$\langle |\lambda_{k+1}| / |\lambda_{k}| \\rangle$', 16, None, None, cmap2)
+    fig.colorbar(im, ax=ax1, orientation="vertical", format='%.3f')
 
-    for ax in [ax2]:
+    
+    ax1.set_ylabel('$\\alpha$', fontsize=24)
+    yticks = range(4, nas, 5)
+    xticks = range(-1, len(xs), 5)
+    ax1.set_yticks(yticks)
+    ax1.set_yticklabels(labels=['{:.1f}'.format((t+1)/10) for t in yticks], fontsize=24)
+    ax1.set_xticks(xticks)
+    ax1.set_xticklabels(labels=['{:.1f}'.format((t+1)/50) for t in xticks], fontsize=24)
+    
+    ax2.set_xlim([lo, hi])
+    x2ticks = np.linspace(lo, hi, nticks+1)
+    ax2.set_xticks(x2ticks)
+    ax2.legend()
+    ax2.grid(True, axis='x', which="major", ls="-", color='0.65')
+
+    for ax in axs:
+        ax.tick_params('both', length=10, width=1.0, which='major', direction='out', labelsize=24)
         ax.set_xlabel('$J/B$', fontsize=24)
-        ax.set_ylabel('$\\alpha$', fontsize=24)
-        if ptype == 0:
-            ax.set_yticks(urange)
-            ax.set_yticklabels(vrange)
-        elif ptype == 1:
-            ax.set_xlim([lo, hi])
-            ax.set_xticks(np.linspace(lo, hi, 26))
-            ax.legend()
-            ax.grid(which='major',color='black',linestyle='-', axis='x', linewidth=1.0, alpha=0.5)
-        else:
-            yticks = range(4, nas, 5)
-            xticks = range(-1, len(xs), 5)
-            ax.set_yticks(yticks)
-            ax.set_yticklabels(labels=['{:.1f}'.format((t+1)/10) for t in yticks], fontsize=24)
-            ax.set_xticks(xticks)
-            ax.set_xticklabels(labels=['{:.1f}'.format((t+1)/50) for t in xticks], fontsize=24)
-            ax.tick_params('both', length=10, width=1.0, which='major', direction='out')
+    
     plt.tight_layout()
     # call subplot adjust after tight_layout
     #plt.subplots_adjust(hspace=0.0)

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 #plt.set_cmap(cmap='nipy_spectral')
 import re
 import colorcet as cc
-
+import plotutils as putils
 
 if __name__  == '__main__':
     # Check for command line arguments
@@ -18,7 +18,7 @@ if __name__  == '__main__':
     parser.add_argument('--taskname', type=str, default='delay_tasks2')
     parser.add_argument('--prefix', type=str, default='eig')
     parser.add_argument('--posfix', type=str, default='od_10_dl_1_delay-depolar')
-    parser.add_argument('--V', type=int, default=5)
+    parser.add_argument('--Vs', type=str, default='1,5')
     
     parser.add_argument('--valmax', type=float, default=10.0, help='Maximum val')
     parser.add_argument('--valmin', type=float, default=0.0, help='Minimum val')
@@ -38,23 +38,29 @@ if __name__  == '__main__':
 
     folder, prefix, posfix, taskname = args.folder, args.prefix, args.posfix, args.taskname
     valmin, valmax, nvals, nticks = args.valmin, args.valmax, args.nvals, args.Nticks
-    V, alpha, bc = args.V, args.alpha, args.bc
+    alpha, bc = args.alpha, args.bc
 
     tauBs = list(np.linspace(valmin, valmax, nvals + 1))
     tauBs = tauBs[1:]
+
+    Vs = [int(x) for x in args.Vs.split(',')]
+    
     Nms = [int(x) for x in args.Nms.split(',')]
     Nenvs = [int(x) for x in args.Nenvs.split(',')]
 
     ymin, ymax = args.ymin, args.ymax
 
-    fig, axs = plt.subplots(1, 1, figsize=(20, 7), squeeze=False)
+    fig, axs = plt.subplots(1, 1, figsize=(20, 6), squeeze=False)
     axs = np.array(axs).ravel()
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')
-    plt.rcParams['font.size']=20
+    plt.rcParams['font.size']=24
 
-    ntitle = 'taus_{}_a_{}_bc_{}_V_{}_{}'.format(prefix, alpha, bc, V, posfix)
+    ntitle = 'taus_{}_a_{}_bc_{}_Vs_{}_Nenvs_{}_Nms_{}_{}'.format(prefix, alpha, bc, \
+        '_'.join([str(v) for v in Vs]), \
+        '_'.join([str(v) for v in Nenvs]), \
+        '_'.join([str(v) for v in Nms]), posfix)
 
     ax = axs[0]
     ax.set_xlabel('$\\tau B$', fontsize=24)
@@ -65,37 +71,48 @@ if __name__  == '__main__':
     ax.set_title('{}'.format(ntitle), fontsize=16)
     ax.grid(True, which="major", ls="-", color='0.65')
 
+    dcl = 0
     for Nenv in Nenvs:
         for Nm in Nms:
             Nspin = Nenv + Nm
-            xs, ys, zs = [], [], []
-            subfolder = os.path.join(folder, taskname)
-            subfolder = os.path.join(subfolder, '{}_a_{}_bc_{}_{}_{}_{}'.format(prefix, alpha, bc, Nspin, Nenv, posfix))
-            subfolder = os.path.join(subfolder, 'log')
-            print(subfolder)
-            if os.path.isdir(subfolder) == False:
-                continue
-            for rfile in glob.glob('{}/qtasks_*_nspins_{}_{}_*_Vs_{}_*.log'.format(subfolder, Nspin, Nenv, V)):
-                print(rfile)
+            for V in Vs:
                 xs, ys, zs = [], [], []
-                with open(rfile, mode='r') as rf:
-                    lines = rf.readlines()
-                    for line in lines:
-                        if 'INFO' in line and 'Average RMSF' in line and 'avg-' in line:
-                            tauB = float(re.search(r"tauB=([0-9.]+)", line).group(1))
-                            avg_val_fid = float(re.search(r"avg-val=([0-9.]+)", line).group(1))
-                            std_val_fid = float(re.search(r"std-val=([0-9.]+)", line).group(1))
-                            xs.append(tauB)
-                            ys.append(avg_val_fid)
-                            zs.append(std_val_fid)
-                xs, ys, zs = np.array(xs), np.array(ys), np.array(zs)
-                sids = np.argsort(xs)
-                xs, ys, zs = xs[sids], ys[sids], zs[sids]
-                # Plot
-                ax.plot(xs, 1.0 - ys, alpha = 0.8, marker='o', markeredgecolor='k', \
-                    linewidth=6, markersize=10, \
-                    label='$N_e={}, N_m={}$'.format(Nenv, Nm))
-                #ax.fill_between(xs, ys - zs, ys + zs, facecolor='gray', alpha=0.5)
+                subfolder = os.path.join(folder, taskname)
+                subfolder = os.path.join(subfolder, '{}_a_{}_bc_{}_{}_{}_{}'.format(prefix, alpha, bc, Nspin, Nenv, posfix))
+                subfolder = os.path.join(subfolder, 'log')
+                print(subfolder)
+                if os.path.isdir(subfolder) == False:
+                    continue
+                for rfile in sorted(glob.glob('{}/qtasks_*_nspins_{}_{}_*_Vs_{}_*.log'.format(subfolder, Nspin, Nenv, V)), key=os.path.basename):
+                    print(rfile)
+                    if 'corr_0' in rfile:
+                        K = Nm
+                    elif 'corr' in rfile:
+                        K = int(Nm*(Nm+1) / 2)
+                    else:
+                        K = Nm
+                    xs, ys, zs = [], [], []
+                    with open(rfile, mode='r') as rf:
+                        lines = rf.readlines()
+                        for line in lines:
+                            if 'INFO' in line and 'Average RMSF' in line and 'avg-' in line:
+                                tauB = float(re.search(r"tauB=([0-9.]+)", line).group(1))
+                                avg_val_fid = float(re.search(r"avg-val=([0-9.]+)", line).group(1))
+                                std_val_fid = float(re.search(r"std-val=([0-9.]+)", line).group(1))
+                                xs.append(tauB)
+                                ys.append(1.0 - avg_val_fid)
+                                zs.append(std_val_fid)
+                    xs, ys, zs = np.array(xs), np.array(ys), np.array(zs)
+                    sids = np.argsort(xs)
+                    xs, ys, zs = xs[sids], ys[sids], zs[sids]
+                    # Plot
+                    if len(xs) > 0:
+                        ax.plot(xs, ys, alpha = 0.8, marker='o', markeredgecolor='k', \
+                            linewidth=4, markersize=0, color=putils.cycle[dcl],\
+                            label='$(N_e,N_m)=({}, {}), (M,K)=({},{})$'.format(Nenv, Nm, V, K))
+                        bg = 0
+                        ax.fill_between(xs[bg:], ys[bg:] - zs[bg:], ys[bg:] + zs[bg:], facecolor=putils.cycle[dcl], alpha=0.2)
+                        dcl = (dcl+1) % len(putils.cycle)
     ax.set_yscale('log')
     ax.legend()
     ax.tick_params('both', length=10, width=1, which='both', labelsize=20)

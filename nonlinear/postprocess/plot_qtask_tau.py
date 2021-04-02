@@ -50,8 +50,10 @@ if __name__  == '__main__':
         cmap = plt.get_cmap("RdBu")
     elif Nenv == 2:
         cmap = plt.get_cmap("nipy_spectral")
-    else:
+    elif Nenv == 3:
         cmap = plt.get_cmap("PRGn")
+    else:
+        cmap = plt.get_cmap("BrBG")
     fig, axs = plt.subplots(M, 1, figsize=(20, 4*M), sharex=True)
     axs = np.array(axs).ravel()
     #plt.style.use('seaborn-colorblind')
@@ -145,7 +147,7 @@ if __name__  == '__main__':
     plt.tight_layout()
 
     if ptype == 0:
-        fig.colorbar(im, ax=axs, orientation="vertical", format='%.2f')
+        fig.colorbar(im, ax=axs, orientation="vertical", format='%.3f')
     
     for ftype in ['png', 'svg', 'pdf']:
         transparent = True

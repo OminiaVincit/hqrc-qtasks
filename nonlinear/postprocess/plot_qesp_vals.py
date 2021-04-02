@@ -6,11 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import plotutils as plu
 
-BLUE= [x/255.0 for x in [0, 114, 178]]
-VERMILLION= [x/255.0 for x in [213, 94, 0]]
-GREEN= [x/255.0 for x in [0, 158, 115]]
-BROWN = [x/255.0 for x in [72, 55, 55]]
-
 if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
@@ -21,8 +16,8 @@ if __name__  == '__main__':
     parser.add_argument('--alpha', type=float, default=1.0)
     parser.add_argument('--bcoef', type=float, default=1.0)
     parser.add_argument('--tauB', type=float, default=0.0)
-    parser.add_argument('--nspins', type=int, default=5)
-    parser.add_argument('--nenvs', type=int, default=1)
+    parser.add_argument('--nspins', type=int, default=6)
+    parser.add_argument('--nenvs', type=int, default=2)
     parser.add_argument('--nticks', type=int, default=25, help='Number of xticks')
     parser.add_argument('--prefix', type=str, default='esp_ion_trap_nspins')
     parser.add_argument('--ntrials', type=int, default=100)
@@ -51,9 +46,9 @@ if __name__  == '__main__':
     else:
         exit(1)
     cmap = plt.get_cmap("twilight")
-    fig, axs = plt.subplots(1, 1, figsize=(24, 6), squeeze=False)
+    fig, axs = plt.subplots(2, 1, figsize=(24, 14), squeeze=False)
     axs = axs.ravel()
-    ax = axs[0]
+    ax1, ax2 = axs[0], axs[1]
     #plt.style.use('seaborn-colorblind')
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')
@@ -62,9 +57,11 @@ if __name__  == '__main__':
     plt.rcParams['ytick.labelsize'] = 20 # 軸だけ変更されます
 
     sprefix = '{}_{}_{}'.format(prefix, nspins, nenvs)
-    Ls = range(10, 101, 10)
+    Ls = range(10, 101, 5)
+    Ls = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
     N = len(Ls)
     colors = plt.cm.viridis(np.linspace(0, 1, N+5))
+    esparr = []
     for i in range(N):
         L, col = Ls[i], colors[i]
         posfix = 'V_1_len_{}_ntrials_{}'.format(L, ntrials)
@@ -91,24 +88,46 @@ if __name__  == '__main__':
         if len(ts) > 0:
             #for i in range(len(drate)):
             #    ax.plot(ts, drate[i], color=GREEN, alpha=0.5, linestyle='dashdot')
-            ax.plot(ts, np.mean(drate, axis=0).ravel(), marker='o', markersize=0, alpha=0.8, color=col, label='Time steps = {}'.format(L), linewidth=5.0)
+            ax1.plot(ts, np.mean(drate, axis=0).ravel(), marker='o', markersize=0, alpha=0.8, color=col, label='Time steps = {}'.format(L), linewidth=5.0)
+            esparr.append(np.mean(drate, axis=0).ravel())
+    esparr = np.array(esparr)
 
-    ax.set_yscale('log')
-    ax.grid(axis='x')
-    ax.set_xlabel('$\\tau B$', fontsize=24)
+    ax1.set_yscale('log')
+    ax1.grid(axis='x')
     #ax.legend()
-    ax.set_title(ntitle)
+    ax1.set_title(ntitle)
 
-    for bx in axs:
-        xticks = np.linspace(valmin, valmax, nticks+1)
-        xticklabels = ['{:.1f}'.format(t) for t in xticks]
-        bx.set_xticks(xticks)
-        bx.set_xticklabels(labels=xticklabels)
+    cmap1 = plt.get_cmap("RdBu_r")
+    cmap2 = plt.get_cmap("rainbow")
+    cmap3 = plt.get_cmap("CMRmap")
+    cmap4 = plt.get_cmap("PRGn")
+    
+
+    im = plu.plotContour(fig, ax2, np.log10(esparr), 'Rate', 24, None, None, cmap1)
+    fig.colorbar(im, ax=ax2, orientation="horizontal", format='%d')
+
+    xticks = np.linspace(valmin, valmax, nticks+1)
+    xticklabels = ['{:.1f}'.format(t) for t in xticks]
+    ax1.set_xticks(xticks)
+    ax1.set_xticklabels(labels=xticklabels)
+    ax1.set_xlim([valmin, valmax])
+    
+    #ax2.set_yscale('log')
+    yticks = range(1, N, 2)
+    ax2.set_yticks(yticks)
+    ax2.set_yticklabels(labels=['{:d}'.format(Ls[t]) for t in yticks], fontsize=24)
+    
+    xticks = range(-1, len(vals), 5)
+    ax2.set_xticks(xticks)
+    ax2.set_xticklabels(labels=['{:.1f}'.format((t+1)/10) for t in xticks], fontsize=24)
+    
+
+    for bx in axs:   
         #bx.tick_params(axis='both', which='major', labelsize=16)
         #bx.tick_params(axis='both', which='minor', labelsize=12)
         bx.tick_params('both', length=10, width=1.0, which='major', labelsize=20)
-        bx.set_xlim([valmin, valmax])
-
+        bx.set_xlabel('$\\tau B$', fontsize=24)
+    
     fig_folder = os.path.join(folder, 'figs')
     if os.path.isdir(fig_folder) == False:
         os.mkdir(fig_folder)

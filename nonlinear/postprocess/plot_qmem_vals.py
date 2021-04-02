@@ -33,7 +33,7 @@ if __name__  == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder', type=str, default=MEM_FUNC_DATA)
     parser.add_argument('--ymin', type=float, default='0.0')
-    parser.add_argument('--ymax', type=float, default='1.0')
+    parser.add_argument('--ymax', type=float, default='0.0')
     parser.add_argument('--valmin', type=float, default=0.0, help='Minimum of val')
     parser.add_argument('--valmax', type=float, default=25.0, help='Maximum of val')
     parser.add_argument('--nvals', type=int, default=125, help='Number of vals')
@@ -165,6 +165,8 @@ if __name__  == '__main__':
         #bx.tick_params(axis='both', which='minor', labelsize=12)
         bx.tick_params('both', length=10, width=1.0, which='major', labelsize=24)
         bx.set_xlim([valmin, valmax])
+        if ymax > ymin:
+            bx.set_ylim([ymin, ymax])
 
     fig_folder = os.path.join(folder, 'figs')
     if os.path.isdir(fig_folder) == False:
