@@ -13,7 +13,7 @@ DEG=7
 DELAYS='0,100,50,50,20,20,10,10'
 #DELAYS='0,20,20,20,20,20,10,10'
 
-V='1'
+V='5'
 BG=-7.0
 ED=7.1
 INTV=0.2
@@ -22,7 +22,7 @@ THRES=0.0
 
 
 BIN=../postprocess/plot_IPC.py
-P=V_1_qrc_IPC_full_random_seed_2_mdeg_7_mvar_7_thres_0.0_delays_$DELAYS$TS
+P=V_5_qrc_IPC_full_random_seed_2_mdeg_7_mvar_7_thres_0.0_delays_$DELAYS$TS
 #P=V_1_qrc_IPC_ion_trap_mdeg_7_mvar_7_thres_0.0_delays_$DELAYS$TS
 #python $BIN --folder $SAVE --posfix $P
 
