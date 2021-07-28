@@ -66,7 +66,7 @@ class HQRC(object):
         if nqrc > 1:
             for i in range(0, nqrc):
                 smat = scipy.sparse.random(n_nodes, 1, density = self.sparsity).data
-                smat *= (self.sigma_input / n_nodes) * (smat * 2.0 - 1.0)
+                smat = (self.sigma_input / n_nodes) * (smat * 2.0 - 1.0)
                 W_feed[:, i] = smat.ravel()
         self.W_feed = W_feed
 
