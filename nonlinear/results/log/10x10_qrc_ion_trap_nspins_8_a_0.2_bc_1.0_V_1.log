@@ -1,0 +1,2 @@
+2021-01-21 12:17:15,384 - __main__ - INFO - results/log/10x10_qrc_ion_trap_nspins_8_a_0.2_bc_1.0_V_1.log
+2021-01-21 12:17:15,490 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)

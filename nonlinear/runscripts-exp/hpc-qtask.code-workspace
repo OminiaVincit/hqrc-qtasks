@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../../../../../../data/zoro/qrep"
+		},
+		{
+			"path": "../../../qcir-dynamics"
 		}
 	],
 	"settings": {}

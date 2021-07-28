@@ -7,7 +7,7 @@ SAVE=/data/zoro/qrep/esp_states
 
 LEN=100
 N=100
-for LEN in 15 25 35 45 55 65 75 85 95
+for LEN in 2 4 8 16 32 64 128 256 512 1024
 do
 for NSPINS in 6
 do

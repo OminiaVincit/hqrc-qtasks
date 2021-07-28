@@ -17,16 +17,17 @@ BUFFER=1000
 TRAINLEN=3000
 VALEN=1000
 
-NEV=2
+NEV=4
 ORDER=10
 PLOT=0
-CORR=0
 
+for CORR in 1
+do
 for DELAY in 1
 do
-for V in 1 5
+for V in 5
 do
-for NSPINS in 8 9 10
+for NSPINS in 8 9
 do
 for alpha in 1.0
 do
@@ -35,6 +36,7 @@ do
 SAVE=/data/zoro/qrep/delay_tasks2/eig_a_$alpha\_bc_$bc\_$NSPINS\_$NEV\_od_$ORDER\_dl\_$DELAY\_$TASKNAME
 
 python $EXE --usecorr $CORR --alpha $alpha --bcoef $bc --plot $PLOT --rho 1 --order $ORDER --taskname $TASKNAME --delay $DELAY --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
+done
 done
 done
 done

@@ -1,0 +1,174 @@
+2021-01-21 10:31:41,610 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 10:31:42,395 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 10:31:43,661 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 1047)
+2021-01-21 10:31:45,811 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 10:31:45,870 - __main__ - INFO - Train acc=0.85638
+2021-01-21 10:31:46,143 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 10:31:46,156 - __main__ - INFO - Test acc=0.8609
+2021-01-21 10:31:47,575 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 1047)
+2021-01-21 10:31:49,432 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 10:31:49,488 - __main__ - INFO - Train acc=0.85646
+2021-01-21 10:31:49,785 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 10:31:49,820 - __main__ - INFO - Test acc=0.8619
+2021-01-21 10:32:22,819 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 10:32:23,587 - __main__ - INFO - shape y_train=(10052, 2),  y_test=(1968, 2)
+2021-01-21 10:32:24,901 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(10052, 1047)
+2021-01-21 10:32:26,450 - __main__ - INFO - Wout shape=(1047, 2)
+2021-01-21 10:32:26,459 - __main__ - INFO - Train acc=0.9946279347393554
+2021-01-21 10:32:26,737 - __main__ - INFO - V=1, tau=22.0, X_test shape = (1968, 1047)
+2021-01-21 10:32:26,738 - __main__ - INFO - Test acc=0.9949186991869918
+2021-01-21 10:32:28,041 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(10052, 1047)
+2021-01-21 10:32:29,626 - __main__ - INFO - Wout shape=(1047, 2)
+2021-01-21 10:32:29,632 - __main__ - INFO - Train acc=0.9947274174293673
+2021-01-21 10:32:29,921 - __main__ - INFO - V=1, tau=22.0, X_test shape = (1968, 1047)
+2021-01-21 10:32:29,927 - __main__ - INFO - Test acc=0.994410569105691
+2021-01-21 10:53:37,308 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 10:53:38,087 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 10:53:39,367 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 1047)
+2021-01-21 10:53:39,983 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 10:53:40,018 - __main__ - INFO - Train acc=0.85638
+2021-01-21 10:53:40,281 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 10:53:40,289 - __main__ - INFO - Test acc=0.8609
+2021-01-21 10:53:41,581 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 1047)
+2021-01-21 10:53:42,241 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 10:53:42,283 - __main__ - INFO - Train acc=0.85646
+2021-01-21 10:53:42,545 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 10:53:42,556 - __main__ - INFO - Test acc=0.8619
+2021-01-21 10:58:43,278 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 10:58:44,060 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 10:58:45,344 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 1047)
+2021-01-21 10:58:45,893 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 10:58:45,928 - __main__ - INFO - Train acc=0.85638
+2021-01-21 10:58:46,189 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 10:58:46,196 - __main__ - INFO - Test acc=0.8609
+2021-01-21 10:58:47,479 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 1047)
+2021-01-21 10:58:48,150 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 10:58:48,204 - __main__ - INFO - Train acc=0.85646
+2021-01-21 10:58:48,469 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 10:58:48,479 - __main__ - INFO - Test acc=0.8619
+2021-01-21 11:05:21,825 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:05:22,605 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 11:05:23,884 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 1047)
+2021-01-21 11:05:24,684 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 11:05:24,722 - __main__ - INFO - Train acc=0.85638
+2021-01-21 11:05:25,007 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 11:05:25,015 - __main__ - INFO - Test acc=0.8609
+2021-01-21 11:05:26,301 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 1047)
+2021-01-21 11:05:26,988 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 11:05:27,032 - __main__ - INFO - Train acc=0.85646
+2021-01-21 11:05:27,294 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 11:05:27,304 - __main__ - INFO - Test acc=0.8619
+2021-01-21 11:06:19,148 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:06:19,927 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 11:06:19,983 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 785)
+2021-01-21 11:06:20,488 - __main__ - INFO - Wout shape=(785, 10)
+2021-01-21 11:06:20,520 - __main__ - INFO - Train acc=0.85654
+2021-01-21 11:06:20,533 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 785)
+2021-01-21 11:06:20,539 - __main__ - INFO - Test acc=0.8609
+2021-01-21 11:06:20,624 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 785)
+2021-01-21 11:06:21,023 - __main__ - INFO - Wout shape=(785, 10)
+2021-01-21 11:06:21,061 - __main__ - INFO - Train acc=0.85654
+2021-01-21 11:06:21,073 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 785)
+2021-01-21 11:06:21,080 - __main__ - INFO - Test acc=0.8609
+2021-01-21 11:06:59,535 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:07:00,334 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 11:07:00,392 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 785)
+2021-01-21 11:07:00,866 - __main__ - INFO - Wout shape=(785, 10)
+2021-01-21 11:07:00,899 - __main__ - INFO - Train acc=0.85654
+2021-01-21 11:07:00,911 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 785)
+2021-01-21 11:07:00,918 - __main__ - INFO - Test acc=0.8609
+2021-01-21 11:07:01,005 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 785)
+2021-01-21 11:07:01,394 - __main__ - INFO - Wout shape=(785, 10)
+2021-01-21 11:07:01,443 - __main__ - INFO - Train acc=0.85654
+2021-01-21 11:07:01,457 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 785)
+2021-01-21 11:07:01,465 - __main__ - INFO - Test acc=0.8609
+2021-01-21 11:07:04,046 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:07:04,851 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 11:07:06,133 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 1047)
+2021-01-21 11:07:06,864 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 11:07:06,903 - __main__ - INFO - Train acc=0.85638
+2021-01-21 11:07:07,162 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 11:07:07,171 - __main__ - INFO - Test acc=0.8609
+2021-01-21 11:07:08,447 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 1047)
+2021-01-21 11:07:09,184 - __main__ - INFO - Wout shape=(1047, 10)
+2021-01-21 11:07:09,247 - __main__ - INFO - Train acc=0.85646
+2021-01-21 11:07:09,507 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 11:07:09,521 - __main__ - INFO - Test acc=0.8619
+2021-01-21 11:09:01,531 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:09:02,301 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 11:09:03,238 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 3137)
+2021-01-21 11:09:07,598 - __main__ - INFO - Wout shape=(3137, 10)
+2021-01-21 11:09:07,703 - __main__ - INFO - Train acc=0.85646
+2021-01-21 11:09:07,959 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 1047)
+2021-01-21 11:09:30,040 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:09:30,820 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 11:09:31,763 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 3137)
+2021-01-21 11:09:35,828 - __main__ - INFO - Wout shape=(3137, 10)
+2021-01-21 11:09:35,933 - __main__ - INFO - Train acc=0.85646
+2021-01-21 11:09:36,148 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 3137)
+2021-01-21 11:09:36,170 - __main__ - INFO - Test acc=0.8614
+2021-01-21 11:09:37,144 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 3137)
+2021-01-21 11:09:42,081 - __main__ - INFO - Wout shape=(3137, 10)
+2021-01-21 11:09:42,185 - __main__ - INFO - Train acc=0.85642
+2021-01-21 11:09:42,401 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 3137)
+2021-01-21 11:09:42,423 - __main__ - INFO - Test acc=0.8615
+2021-01-21 11:09:50,329 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:09:51,122 - __main__ - INFO - shape y_train=(10052, 2),  y_test=(1968, 2)
+2021-01-21 11:09:51,970 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(10052, 3137)
+2021-01-21 11:09:55,459 - __main__ - INFO - Wout shape=(3137, 2)
+2021-01-21 11:09:55,470 - __main__ - INFO - Train acc=0.9947274174293673
+2021-01-21 11:09:55,689 - __main__ - INFO - V=1, tau=22.0, X_test shape = (1968, 3137)
+2021-01-21 11:09:55,691 - __main__ - INFO - Test acc=0.9949186991869918
+2021-01-21 11:09:56,557 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(10052, 3137)
+2021-01-21 11:10:00,921 - __main__ - INFO - Wout shape=(3137, 2)
+2021-01-21 11:10:00,932 - __main__ - INFO - Train acc=0.9947274174293673
+2021-01-21 11:10:01,131 - __main__ - INFO - V=1, tau=22.0, X_test shape = (1968, 3137)
+2021-01-21 11:10:01,135 - __main__ - INFO - Test acc=0.9949186991869918
+2021-01-21 11:10:07,024 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:10:07,827 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 11:10:07,894 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 785)
+2021-01-21 11:10:08,379 - __main__ - INFO - Wout shape=(785, 10)
+2021-01-21 11:10:08,419 - __main__ - INFO - Train acc=0.85654
+2021-01-21 11:10:08,432 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 785)
+2021-01-21 11:10:08,439 - __main__ - INFO - Test acc=0.8609
+2021-01-21 11:10:08,535 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 785)
+2021-01-21 11:10:09,053 - __main__ - INFO - Wout shape=(785, 10)
+2021-01-21 11:10:09,105 - __main__ - INFO - Train acc=0.85654
+2021-01-21 11:10:09,119 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 785)
+2021-01-21 11:10:09,127 - __main__ - INFO - Test acc=0.8609
+2021-01-21 11:10:15,698 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 11:10:16,497 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 11:10:17,470 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 3137)
+2021-01-21 11:10:22,054 - __main__ - INFO - Wout shape=(3137, 10)
+2021-01-21 11:10:22,155 - __main__ - INFO - Train acc=0.85646
+2021-01-21 11:10:22,370 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 3137)
+2021-01-21 11:10:22,398 - __main__ - INFO - Test acc=0.8614
+2021-01-21 11:10:23,380 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 3137)
+2021-01-21 11:10:27,987 - __main__ - INFO - Wout shape=(3137, 10)
+2021-01-21 11:10:28,088 - __main__ - INFO - Train acc=0.85642
+2021-01-21 11:10:28,304 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 3137)
+2021-01-21 11:10:28,329 - __main__ - INFO - Test acc=0.8615
+2021-01-21 12:18:31,932 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 12:18:32,686 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 12:18:32,742 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 785)
+2021-01-21 12:18:33,165 - __main__ - INFO - Wout shape=(785, 10)
+2021-01-21 12:18:33,195 - __main__ - INFO - Train acc=0.85654
+2021-01-21 12:18:33,207 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 785)
+2021-01-21 12:18:33,214 - __main__ - INFO - Test acc=0.8609
+2021-01-21 12:18:33,300 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 785)
+2021-01-21 12:18:33,771 - __main__ - INFO - Wout shape=(785, 10)
+2021-01-21 12:18:33,817 - __main__ - INFO - Train acc=0.85654
+2021-01-21 12:18:33,830 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 785)
+2021-01-21 12:18:33,837 - __main__ - INFO - Test acc=0.8609
+2021-01-21 12:18:50,164 - __main__ - INFO - results/log/28x28_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 12:18:50,943 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 12:18:51,922 - __main__ - INFO - V=1, tauB=22.0, flip=True, X_train shape=(50000, 3137)
+2021-01-21 12:18:56,246 - __main__ - INFO - Wout shape=(3137, 10)
+2021-01-21 12:18:56,344 - __main__ - INFO - Train acc=0.85646
+2021-01-21 12:18:56,556 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 3137)
+2021-01-21 12:18:56,578 - __main__ - INFO - Test acc=0.8614
+2021-01-21 12:18:57,566 - __main__ - INFO - V=1, tauB=22.0, flip=False, X_train shape=(50000, 3137)
+2021-01-21 12:19:02,516 - __main__ - INFO - Wout shape=(3137, 10)
+2021-01-21 12:19:02,620 - __main__ - INFO - Train acc=0.85642
+2021-01-21 12:19:02,838 - __main__ - INFO - V=1, tau=22.0, X_test shape = (10000, 3137)
+2021-01-21 12:19:02,861 - __main__ - INFO - Test acc=0.8615

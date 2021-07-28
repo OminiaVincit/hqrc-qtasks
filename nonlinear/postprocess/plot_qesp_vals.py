@@ -53,8 +53,8 @@ if __name__  == '__main__':
     plt.rc('font', family='serif')
     plt.rc('mathtext', fontset='cm')
     plt.rcParams['font.size']=20
-    plt.rcParams['xtick.labelsize'] = 20 # 軸だけ変更されます
-    plt.rcParams['ytick.labelsize'] = 20 # 軸だけ変更されます
+    plt.rcParams['xtick.labelsize'] = 20
+    plt.rcParams['ytick.labelsize'] = 20
 
     sprefix = '{}_{}_{}'.format(prefix, nspins, nenvs)
     Ls = range(10, 101, 5)

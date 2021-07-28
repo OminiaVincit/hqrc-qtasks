@@ -1,0 +1,12 @@
+2021-01-21 00:44:09,532 - __main__ - INFO - results/log/20x20_qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_5.log
+2021-01-21 00:44:09,940 - __main__ - INFO - shape y_train=(50000, 10),  y_test=(10000, 10)
+2021-01-21 00:44:13,942 - __main__ - INFO - V=5, tauB=22.0, flip=True, X_train shape=(50000, 2671)
+2021-01-21 00:44:18,085 - __main__ - INFO - Wout shape=(2671, 10)
+2021-01-21 00:44:18,190 - __main__ - INFO - Train acc=0.85152
+2021-01-21 00:44:18,880 - __main__ - INFO - V=5, tau=22.0, X_test shape = (10000, 2671)
+2021-01-21 00:44:18,915 - __main__ - INFO - Test acc=0.8578
+2021-01-21 00:44:23,162 - __main__ - INFO - V=5, tauB=22.0, flip=False, X_train shape=(50000, 2671)
+2021-01-21 00:44:27,127 - __main__ - INFO - Wout shape=(2671, 10)
+2021-01-21 00:44:27,237 - __main__ - INFO - Train acc=0.85156
+2021-01-21 00:44:27,929 - __main__ - INFO - V=5, tau=22.0, X_test shape = (10000, 2671)
+2021-01-21 00:44:27,967 - __main__ - INFO - Test acc=0.8583

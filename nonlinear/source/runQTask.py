@@ -173,7 +173,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     plt.show()
 
 def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, \
-    B, tBs, delay, taskname, order, flagplot, use_corr, Nreps):
+    B, tBs, delay, taskname, order, flagplot, use_corr, Nreps, reservoir, postprocess):
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
     length = buffer + train_len + val_len
@@ -192,7 +192,7 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
 
             train_pred_seq, train_fidls, val_pred_seq, val_fidls = \
                 qrc.get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
-                    val_input_seq, val_output_seq, ranseed=n, use_corr=use_corr)
+                    val_input_seq, val_output_seq, ranseed=n, use_corr=use_corr, reservoir=reservoir, postprocess=postprocess)
             
             #train_fid_avg, train_fid_std = np.mean(train_fidls), np.std(train_fidls)
             #val_fid_avg, val_fid_std = np.mean(val_fidls), np.std(val_fidls)
@@ -250,6 +250,8 @@ if __name__  == '__main__':
     parser.add_argument('--ntaus', type=int, default=125, help='Number of tausB')
     parser.add_argument('--plot', type=int, default=0, help='Flag to plot')
     parser.add_argument('--usecorr', type=int, default=0, help='Use correlator operators')
+    parser.add_argument('--reservoir', type=int, default=1, help='Use quantum reservoir to predict')
+    parser.add_argument('--postprocess', type=int, default=1, help='Use quantum reservoir to predict')
 
     args = parser.parse_args()
     print(args)
@@ -257,6 +259,11 @@ if __name__  == '__main__':
     n_spins, n_envs, max_energy, beta, alpha, bcoef, init_rho = args.spins, args.envs, args.max_energy, args.beta, args.alpha, args.bcoef, args.rho
     tmin, tmax, ntaus, nreps = args.tmin, args.tmax, args.ntaus, args.nreps
     flagplot, usecorr = args.plot, args.usecorr
+    use_reservoir, use_postprocess = True, True
+    if args.reservoir == 0:
+        use_reservoir = False
+    if args.postprocess == 0:
+        use_postprocess = False
 
     dynamic = args.dynamic
     train_len, val_len, buffer, delay = args.trainlen, args.vallen, args.buffer, args.delay
@@ -273,8 +280,8 @@ if __name__  == '__main__':
     if os.path.isdir(logdir) == False:
         os.mkdir(logdir)
     
-    basename = '{}_{}_od_{}_{}_corr_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}_reps_{}'.format(\
-        basename, taskname, order, dynamic, usecorr, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
+    basename = 'qrc_{}_post_{}_{}_{}_od_{}_{}_corr_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}_reps_{}'.format(\
+        use_reservoir, use_postprocess, basename, taskname, order, dynamic, usecorr, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
         '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, delay, ntrials, nreps)
     
     log_filename = os.path.join(logdir, '{}.log'.format(basename))
@@ -303,7 +310,8 @@ if __name__  == '__main__':
                 qparams = QRCParams(n_units=n_spins-n_envs, n_envs=n_envs, max_energy=max_energy, non_diag=bcoef,alpha=alpha,\
                             beta=beta, virtual_nodes=V, tau=0.0, init_rho=init_rho, dynamic=dynamic)
                 p = multiprocessing.Process(target=fidelity_compute, \
-                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, taskname, order, flagplot, usecorr, nreps))
+                    args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, \
+                        taskname, order, flagplot, usecorr, nreps, use_reservoir, use_postprocess))
                 jobs.append(p)
                 #pipels.append(recv_end)
 

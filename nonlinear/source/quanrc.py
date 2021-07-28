@@ -178,7 +178,6 @@ class QRC(object):
     def feed_forward(self, input_seq, predict, use_lastrho):
         input_length = input_seq.shape[0]
         predict_seq = None
-
         local_rho = self.init_rho.copy()
         if use_lastrho == True :
             local_rho = self.last_rho.copy()
@@ -201,26 +200,28 @@ class QRC(object):
         return predict_seq, state_list
 
 
-    def __train(self, input_seq, output_seq, buffer, beta):
+    def __train(self, input_seq, output_seq, buffer, beta, reservoir=True):
         assert(input_seq.shape[0] == output_seq.shape[0])
         
-        _, state_list = self.feed_forward(input_seq, predict=False, use_lastrho=False)
+        if reservoir == True:
+            _, state_list = self.feed_forward(input_seq, predict=False, use_lastrho=False)
 
-        state_list = np.array(state_list)
-        state_list = state_list[buffer:, :]
+            state_list = np.array(state_list)
+            state_list = state_list[buffer:, :]
 
-        # Discard the transitient state for training
-        X = np.reshape(state_list, [-1, self.__get_comput_nodes()])
+            # Discard the transitient state for training
+            X = np.reshape(state_list, [-1, self.__get_comput_nodes()])
+        else:
+            X = convert_density_to_features(input_seq[buffer:, :])
         #print('shape', X.shape, state_list.shape)
-        X = np.hstack( [state_list, np.ones([X.shape[0], 1]) ] )
+        X = np.hstack( [X, np.ones([X.shape[0], 1]) ] )
 
         discard_output = output_seq[buffer:, :]
-
         # Create vector from density matrix
         Y = convert_density_to_features(discard_output)
         #print('shape X Y', X.shape, Y.shape)
         Nout = len(Y)
-        self.W_out = np.random.rand(self.__get_comput_nodes() + 1, Nout)
+        self.W_out = np.random.rand(X.shape[1], Nout)
 
         if self.solver == LINEAR_PINV:
             self.W_out = np.linalg.pinv(X, rcond = beta) @ Y
@@ -238,19 +239,24 @@ class QRC(object):
             else:
                 raise ValueError('Undefined solver')
 
-    def train_to_predict(self, input_seq, output_seq, buffer, qparams, ranseed):
+    def train_to_predict(self, input_seq, output_seq, buffer, qparams, ranseed, reservoir=True):
         self.__init_reservoir(qparams, ranseed)
-        self.__train(input_seq, output_seq, buffer, qparams.beta)
+        self.__train(input_seq, output_seq, buffer, qparams.beta, reservoir)
 
-    def predict(self, input_seq, output_seq, buffer, use_lastrho):
+    def predict(self, input_seq, output_seq, buffer, use_lastrho, reservoir=True, postprocess=True):
         out_mats  = output_seq[buffer:, :]
         Nmats = out_mats.shape[0]
+        if reservoir == True:
+            prediction_seq, _ = self.feed_forward(input_seq, predict=True, use_lastrho=use_lastrho)
+        else:
+            X = convert_density_to_features(input_seq)
+            X = np.hstack( [X, np.ones([X.shape[0], 1]) ] )
+            prediction_seq = X @ self.W_out
 
-        prediction_seq, _ = self.feed_forward(input_seq, predict=True, use_lastrho=use_lastrho)
         pred_vec = prediction_seq[buffer:, :]
 
         # Convert vector to density matrix
-        pred_mats = convert_features_to_density(pred_vec)
+        pred_mats = convert_features_to_density(pred_vec, postprocess)
 
         # Calculate the fidelity
         fidls = []
@@ -268,21 +274,21 @@ class QRC(object):
         return state_list
 
 def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
-    val_input_seq, val_output_seq, ranseed, use_corr):
+    val_input_seq, val_output_seq, ranseed, use_corr, reservoir=True, postprocess=True):
     model = QRC(use_corr)
 
     train_input_seq = np.array(train_input_seq)
     train_output_seq = np.array(train_output_seq)
     
-    model.train_to_predict(train_input_seq, train_output_seq, buffer, qparams, ranseed)
+    model.train_to_predict(train_input_seq, train_output_seq, buffer, qparams, ranseed, reservoir=reservoir)
 
-    train_pred_seq, train_fidls = model.predict(train_input_seq, train_output_seq, buffer=buffer, use_lastrho=False)
+    train_pred_seq, train_fidls = model.predict(train_input_seq, train_output_seq, buffer=buffer, use_lastrho=False, reservoir=reservoir, postprocess=postprocess)
     #print("train_loss={}, shape".format(train_loss), train_pred_seq_ls.shape)
     
     # Test phase
     val_input_seq = np.array(val_input_seq)
     val_output_seq = np.array(val_output_seq)
-    val_pred_seq, val_fidls = model.predict(val_input_seq, val_output_seq, buffer=0, use_lastrho=True)
+    val_pred_seq, val_fidls = model.predict(val_input_seq, val_output_seq, buffer=0, use_lastrho=True, reservoir=reservoir, postprocess=postprocess)
     #print("val_loss={}, shape".format(val_loss), val_pred_seq_ls.shape)
 
     return train_pred_seq, train_fidls, val_pred_seq, val_fidls

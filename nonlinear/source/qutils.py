@@ -241,7 +241,7 @@ def convert_density_to_features(rho_ls):
     fevec = np.array(fevec)
     return fevec
 
-def convert_features_to_density(fevec):
+def convert_features_to_density(fevec, postprocess=True):
     Nbase_sq = int(fevec.shape[1] / 2)
     Nbase    = int(np.sqrt(Nbase_sq))
     rho_ls = []
@@ -249,7 +249,8 @@ def convert_features_to_density(fevec):
         real_rho = np.array(local_vec[:Nbase_sq]).reshape(Nbase, Nbase)
         imag_rho = np.array(local_vec[Nbase_sq:]).reshape(Nbase, Nbase)
         full_rho = real_rho + imag_rho * 1j
-        full_rho = nearest_psd(full_rho, method='eig')
+        if postprocess == True:
+            full_rho = nearest_psd(full_rho, method='eig')
         #full_rho = proj_spectrahedron(full_rho)
         rho_ls.append(full_rho)
     rho_ls = np.array(rho_ls)

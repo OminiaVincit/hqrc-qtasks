@@ -1,0 +1,7 @@
+2021-01-21 00:12:42,614 - __main__ - INFO - results/log/qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 00:21:26,593 - __main__ - INFO - results/log/qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 00:21:26,698 - __main__ - INFO - shape y_train=(10052, 2),  y_test=(1968, 2)
+2021-01-21 00:22:07,521 - __main__ - INFO - results/log/qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 00:22:07,624 - __main__ - INFO - shape y_train=(10052, 2),  y_test=(1968, 2)
+2021-01-21 00:33:45,067 - __main__ - INFO - results/log/qrc_ion_trap_nspins_5_a_0.2_bc_1.0_V_1.log
+2021-01-21 00:33:45,171 - __main__ - INFO - shape y_train=(10052, 2),  y_test=(1968, 2)
