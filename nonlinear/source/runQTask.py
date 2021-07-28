@@ -21,7 +21,6 @@ from utils import *
 from qutils import *
 from qutip import *
 from IPC import IPCParams
-import colorcet as cc
 
 def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order, Nreps=1):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
