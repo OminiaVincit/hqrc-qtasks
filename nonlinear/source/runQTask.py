@@ -106,7 +106,7 @@ def convert_seq(input_seq):
     return np.hstack((ma, mb)).transpose()
 
 def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_input_seq, val_output_seq, \
-    train_pred_seq, val_pred_seq, train_fidls, val_fidls):
+    train_pred_seq, val_pred_seq, train_fidls, val_fidls, pred_state_list):
     # input_seq = np.vstack((train_input_seq, val_input_seq))
     # output_seq = np.vstack((train_output_seq, val_output_seq))
     # pred_seq = np.vstack((train_pred_seq, val_pred_seq))
@@ -135,7 +135,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     plt.rcParams['font.size']=10
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     #print('\n'.join(color for color in colors))  
-    fig, axs = plt.subplots(4, 1, figsize=(20, 12), sharey=True)
+    fig, axs = plt.subplots(5, 1, figsize=(20, 15), sharex=True)
     fig.subplots_adjust(hspace=0.4, wspace = 0.4)
     # Plotting the contour plot
     fsize = 14
@@ -164,6 +164,10 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     bx.set_ylabel('Fidelity', color=nicered, fontsize=fsize)
     bx.set_ylim([0.8, 1.01])
 
+    ax = axs[4]
+    for i in range(pred_state_list.shape[1]):
+        ax.plot(pred_state_list[:, i], alpha=0.8)
+
     for ftype in ['png', 'svg']:
         transparent = True
         if ftype == 'png':
@@ -189,7 +193,7 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
             val_output_seq = np.array(output_data[(buffer + train_len) : length])
             fig_path = '{}_tauB_{:.3f}_{}'.format(basename, tauB, n)
 
-            train_pred_seq, train_fidls, val_pred_seq, val_fidls = \
+            train_pred_seq, train_fidls, val_pred_seq, val_fidls, pred_state_list = \
                 qrc.get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
                     val_input_seq, val_output_seq, ranseed=n, use_corr=use_corr, reservoir=reservoir, postprocess=postprocess)
             
@@ -205,7 +209,7 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
             if flagplot > 0 and n == 0:
                 plot_result(fig_path, res_title, train_input_seq[buffer:], train_output_seq[buffer:], \
                     val_input_seq, val_output_seq, train_pred_seq, val_pred_seq,\
-                    train_fidls, val_fidls)
+                    train_fidls, val_fidls, pred_state_list)
         
         avg_train, avg_val = np.mean(train_rmean_ls), np.mean(val_rmean_ls)
         std_train, std_val = np.std(train_rmean_ls), np.std(val_rmean_ls)

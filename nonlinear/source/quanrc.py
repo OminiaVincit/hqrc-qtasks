@@ -246,8 +246,9 @@ class QRC(object):
     def predict(self, input_seq, output_seq, buffer, use_lastrho, reservoir=True, postprocess=True):
         out_mats  = output_seq[buffer:, :]
         Nmats = out_mats.shape[0]
+        state_list = None
         if reservoir == True:
-            prediction_seq, _ = self.feed_forward(input_seq, predict=True, use_lastrho=use_lastrho)
+            prediction_seq, state_list = self.feed_forward(input_seq, predict=True, use_lastrho=use_lastrho)
         else:
             X = convert_density_to_features(input_seq)
             X = np.hstack( [X, np.ones([X.shape[0], 1]) ] )
@@ -264,7 +265,7 @@ class QRC(object):
             fidval = cal_fidelity_two_mats(out_mats[n], pred_mats[n])
             #print(n, fidval, out_mats[n].shape, pred_mats[n].shape)
             fidls.append(fidval)
-        return pred_mats, fidls
+        return pred_mats, fidls, state_list
     
     def init_forward(self, qparams, input_seq, init_rs, ranseed):
         self.__reset_states()
@@ -282,16 +283,16 @@ def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
     
     model.train_to_predict(train_input_seq, train_output_seq, buffer, qparams, ranseed, reservoir=reservoir)
 
-    train_pred_seq, train_fidls = model.predict(train_input_seq, train_output_seq, buffer=buffer, use_lastrho=False, reservoir=reservoir, postprocess=postprocess)
+    train_pred_seq, train_fidls, _ = model.predict(train_input_seq, train_output_seq, buffer=buffer, use_lastrho=False, reservoir=reservoir, postprocess=postprocess)
     #print("train_loss={}, shape".format(train_loss), train_pred_seq_ls.shape)
     
     # Test phase
     val_input_seq = np.array(val_input_seq)
     val_output_seq = np.array(val_output_seq)
-    val_pred_seq, val_fidls = model.predict(val_input_seq, val_output_seq, buffer=0, use_lastrho=True, reservoir=reservoir, postprocess=postprocess)
+    val_pred_seq, val_fidls, state_list = model.predict(val_input_seq, val_output_seq, buffer=0, use_lastrho=True, reservoir=reservoir, postprocess=postprocess)
     #print("val_loss={}, shape".format(val_loss), val_pred_seq_ls.shape)
 
-    return train_pred_seq, train_fidls, val_pred_seq, val_fidls
+    return train_pred_seq, train_fidls, val_pred_seq, val_fidls, state_list
 
 def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials, usecorr):
 
@@ -330,7 +331,7 @@ def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials
             if ranseed >= 0:
                 ranseed_net = (ranseed + 10000) * (n + 1)
             # Use the same ranseed the same trial
-            train_pred_seq, train_fidls, val_pred_seq, val_fidls = \
+            train_pred_seq, train_fidls, val_pred_seq, val_fidls, _ = \
                 get_fidelity(qparams, buffer, train_input_seq, train_output_seq, val_input_seq, val_output_seq, ranseed_net, usecorr)
             
             train_rmean_square_fid = np.sqrt(np.mean(np.array(train_fidls)**2))
