@@ -20,7 +20,6 @@ from loginit import get_module_logger
 from utils import *
 from qutils import *
 from qutip import *
-from IPC import IPCParams
 
 def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order, Nreps=1):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
@@ -216,7 +215,6 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
         logger.info('Average RMSF with ntrials={}, tauB={:.3f}, avg-train={:.6f}, avg-val={:.6f}, std-train={:.6f}, std-val={:.6f}'.format(\
             ntrials, tauB, avg_train, avg_val, std_train, std_val))
             
-    
 if __name__  == '__main__':
     # Check for command line arguments
     parser = argparse.ArgumentParser()
@@ -251,6 +249,7 @@ if __name__  == '__main__':
     parser.add_argument('--tmax', type=float, default=25, help='Maximum of tauB')
     parser.add_argument('--tmin', type=float, default=0, help='Minimum of tauB')
     parser.add_argument('--ntaus', type=int, default=125, help='Number of tausB')
+
     parser.add_argument('--plot', type=int, default=0, help='Flag to plot')
     parser.add_argument('--usecorr', type=int, default=0, help='Use correlator operators')
     parser.add_argument('--reservoir', type=int, default=1, help='Use quantum reservoir to predict')
