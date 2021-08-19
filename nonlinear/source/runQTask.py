@@ -85,6 +85,23 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order, Nreps
                 else:
                     outstate = coeffs[d] * mstate
                 output_data[n] = outstate
+    elif (taskname == 'sma-dephase' or taskname == 'wma-dephase' or taskname == 'delay-dephase') and n_envs == 1:
+        print('Make NARMA data for Z-dephase (phase-flip) task {}'.format(taskname))
+        Z = [[1,0],[0,-1]]
+        _, data_noise = make_data_for_narma(length=length, orders=[order])
+        pnoise = data_noise[:, 0].ravel()
+        idmat = np.eye(D)
+        for n in range(delay, length):
+            outstate = None
+            for d in range(delay+1):
+                rho = input_data[n - d] @ Z
+                rho = Z @ rho
+                mstate = pnoise[n-d] * rho + (1.0 - pnoise[n-d]) * input_data[n - d]
+                if outstate is not None:
+                    outstate += coeffs[d] * mstate
+                else:
+                    outstate = coeffs[d] * mstate
+                output_data[n] = outstate
     elif taskname == 'delay-id':
         print('Task {}'.format(taskname))
         output_data[delay:] = input_data[:(length-delay)]

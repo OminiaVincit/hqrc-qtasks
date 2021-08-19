@@ -3,7 +3,8 @@
 export OMP_NUM_THREADS=1
 
 EXE=../source/runQTask.py
-TASKNAME=delay-depolar
+#TASKNAME=delay-depolar
+TASKNAME=delay-dephase
 DYNAMIC=ion_trap
 
 NPROC=125
