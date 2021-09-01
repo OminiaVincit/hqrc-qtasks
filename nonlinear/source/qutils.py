@@ -2,6 +2,24 @@ from qutip import *
 import numpy as np
 import scipy
 
+def dephase_channel(rho, Nspins, p, flipPauli='X'):
+    if flipPauli == 'X':
+        single_pauli = sigmax()
+    elif flipPauli == 'Y':
+        single_pauli = sigmay()
+    elif flipPauli == 'Z':
+        single_pauli = sigmaz()
+    else:
+        single_pauli = identity(2)
+    rs_rho = rho.copy()
+    for i in range(Nspins):
+        spauli = getSci(single_pauli, i, Nspins).data
+        tmp = rs_rho @ spauli
+        rs_rho = p * (spauli @ tmp) + (1.0-p) * rs_rho
+        
+    rs_rho = np.array(rs_rho)
+    return rs_rho
+
 def getNormCoef(Nspins, alpha):
     Nalpha = 0
     for i in range(Nspins):
@@ -94,19 +112,33 @@ def generate_one_qubit_states(ranseed, Nitems, Nreps=1):
             rhos.append(rho)
     return rhos
 
+def GHZ_state(N, phase):
+    state = (tensor([basis(2) for k in range(N)]) + \
+             np.exp(1j*phase) * tensor([basis(2, 1) for k in range(N)]))
+    state = state / np.sqrt(2)
+    return state
+
 def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform', add=None):
     np.random.seed(seed=ranseed)
     rhos = []
-    density_arrs = np.random.uniform(size=Nitems)
     D = 2**Nbase
-    pertur_mat = np.eye(D) / D
-    for n in range(Nitems):
-        rho = np.array(rand_dm(D, density=density_arrs[n]))
-        if add == 'sin':
-            beta = np.sin(n)**2
-            rho = beta * pertur_mat + (1.0 - beta) * rho
-        #print(n, rho)
-        rhos.append(rho)
+    if add == 'GHZ':
+        phase_angles = np.random.uniform(low=0.0, high=np.pi, size=Nitems)
+        for n in range(Nitems):
+            state = ket2dm(GHZ_state(Nbase, phase_angles[n]))
+            rho = np.array(state)
+            rhos.append(rho)
+    else:
+        density_arrs = np.random.uniform(size=Nitems)
+        pertur_mat = np.eye(D) / D
+        for n in range(Nitems):
+            rho = np.array(rand_dm(D, density=density_arrs[n]))
+            if add == 'sin':
+                beta = np.sin(n)**2
+                rho = beta * pertur_mat + (1.0 - beta) * rho
+            #print(n, rho)
+            rhos.append(rho)
+        
     return rhos
 
 def is_positive_semi(mat, tol=1e-10):

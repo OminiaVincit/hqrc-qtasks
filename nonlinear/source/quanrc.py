@@ -275,7 +275,7 @@ class QRC(object):
         return state_list
 
 def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
-    val_input_seq, val_output_seq, ranseed, use_corr, reservoir=True, postprocess=True):
+    val_input_seq, val_output_seq, ranseed, use_corr, reservoir=True, postprocess=True, test_lastrho=True):
     model = QRC(use_corr)
 
     train_input_seq = np.array(train_input_seq)
@@ -289,7 +289,7 @@ def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
     # Test phase
     val_input_seq = np.array(val_input_seq)
     val_output_seq = np.array(val_output_seq)
-    val_pred_seq, val_fidls, state_list = model.predict(val_input_seq, val_output_seq, buffer=0, use_lastrho=True, reservoir=reservoir, postprocess=postprocess)
+    val_pred_seq, val_fidls, state_list = model.predict(val_input_seq, val_output_seq, buffer=0, use_lastrho=test_lastrho, reservoir=reservoir, postprocess=postprocess)
     #print("val_loss={}, shape".format(val_loss), val_pred_seq_ls.shape)
 
     return train_pred_seq, train_fidls, val_pred_seq, val_fidls, state_list
