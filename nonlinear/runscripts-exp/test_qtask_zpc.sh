@@ -17,16 +17,16 @@ BUFFER=1000
 TRAINLEN=3000
 VALEN=1000
 
-NSPINS=5
 ORDER=10
 PLOT=0
 NREP=1
 CORR=1
-
+NSPINS=5
 for DELAY in 1
 do
 for NEV in 1 2 3 4 5 6
 do
+NSPINS=$((NSPINS+1))
 for V in 5
 do
 for alpha in 1.0

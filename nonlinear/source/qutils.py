@@ -2,12 +2,98 @@ from qutip import *
 import numpy as np
 import scipy
 
-def dephase_channel(rho, Nspins, p, flipPauli='X'):
-    if flipPauli == 'X':
+def make_adj_matrix(Nbase):
+    A = np.zeros((Nbase, Nbase), dtype=np.int32)
+    for i in range(Nbase):
+        for j in range(i+1, Nbase):
+            A[i, j] = np.random.randint(0, 2)
+            A[j, i] = A[i, j]
+    return A
+
+def psi_cluster_state(A):
+    # Create cluster state from adjacency matrix
+    # psi: m-qubit cluster state with adjacency matrix A \in {0,1}^(m x m),
+    # sum_{a \in {0,1}^m} (-1)^(a^T*A*a/2) |a>,
+    # 0 in a corresponds to [1,0], 1 to [0,1], 
+    # joint eigenstates of K_j with eigenvalue 1,
+    # K_j: sigma_x on jth qubit, sigma_z on neighbors, in the tensor product basis
+    Nbase = A.shape[0] # number of qubits
+    D = 2**Nbase
+
+    # binary basis (rows)
+    # 0 ~ [1,0], 1 ~ [0,1] 
+    # ordered according to tensor product basis
+    bin_rep = []
+    for d in range(D):
+        bin_rep.extend(list(np.binary_repr(d, width = Nbase)))
+    bin_rep = [int(x) for x in bin_rep]
+    bin_rep = np.array(bin_rep).reshape((D, Nbase))
+    sgn = np.diag(bin_rep @ A @ bin_rep.T) / 2
+    psi = (-1)**sgn
+    return psi/np.sqrt(D)
+
+    
+
+def Brownian_circuit(dim, n, dt):
+    # BrownianCircuit(dim,n,dt) creates a random unitary matrix by multiplying
+    # exp(i H_1 dt) exp(i H_2 dt) ... exp(i H_n dt)
+    # for random normal distributed hermitian dim-dimensional matricies
+    #  \{ H_i \}_{i=1}^{n} standard deviation 1/2.
+    U = np.eye(dim)
+    for i in range(n):
+        Re = np.random.normal(size = (dim, dim))
+        Im = 1.0j*np.random.normal(size = (dim, dim))
+        C = Re + Im
+        H = (C + C.T.conj())/4
+        U = U @ scipy.linalg.expm(1.j * H * dt)
+    return U
+
+def random_unitary1(dim, t, n):
+    # Creates a dim-dimensional unitary close to identiry.
+    # For t=0 the answer is identity
+    # (for practical purposes, t~1) 
+    # the answer is a unitary sampled from Haar distribution.
+    # The error to Texp(\int_0^t i \pi H(t) dt ) with random H(t) scales as 1/sqrt(n).
+
+    U = Brownian_circuit(dim, n, np.sqrt(1/(n*dim))*2*np.pi*t)
+    return U
+
+def unitary_noise(rho, t, num_gates, ranseed=0):
+    # rho: noiseless state.
+    # t: noise strength, "time" during which noise acts, around t=1 the noise \
+    # is so strong the distribution is essentially uniform.
+    # num_gates: number of noisy gates for approximation
+    np.random.seed(seed=ranseed)
+    
+    dim = int(rho.shape[0])
+    Uop = random_unitary1(dim, t, num_gates)
+    rs_rho = Uop @ rho @ Uop.T.conj()
+    return rs_rho
+
+def Pauli_collective(rho, Nspins, p, Pauli='Z'):
+    if Pauli == 'X':
         single_pauli = sigmax()
-    elif flipPauli == 'Y':
+    elif Pauli == 'Y':
         single_pauli = sigmay()
-    elif flipPauli == 'Z':
+    elif Pauli == 'Z':
+        single_pauli = sigmaz()
+    else:
+        single_pauli = identity(2)
+    sp_op = single_pauli
+    for j in range(1, Nspins):
+        sp_op = tensor(sp_op, single_pauli)
+    spauli = sp_op.data
+    rs_rho = rho.copy()
+    tmp = rs_rho @ spauli
+    rs_rho = p * (spauli @ tmp) + (1.0 - p) * rs_rho
+    return rs_rho
+
+def Pauli_channel(rho, Nspins, p, Pauli='X'):
+    if Pauli == 'X':
+        single_pauli = sigmax()
+    elif Pauli == 'Y':
+        single_pauli = sigmay()
+    elif Pauli == 'Z':
         single_pauli = sigmaz()
     else:
         single_pauli = identity(2)
@@ -16,6 +102,20 @@ def dephase_channel(rho, Nspins, p, flipPauli='X'):
         spauli = getSci(single_pauli, i, Nspins).data
         tmp = rs_rho @ spauli
         rs_rho = p * (spauli @ tmp) + (1.0-p) * rs_rho
+        
+    rs_rho = np.array(rs_rho)
+    return rs_rho
+
+def depolar_channel(rho, Nspins, p):
+    rs_rho = rho.copy()
+
+    for i in range(Nspins):
+        spauli_x = getSci(sigmax(), i, Nspins).data
+        spauli_y = getSci(sigmay(), i, Nspins).data
+        spauli_z = getSci(sigmaz(), i, Nspins).data
+        
+        rs_rho = 0.25 * p * (spauli_x @ rs_rho @ spauli_x + spauli_y @ rs_rho @ spauli_y + spauli_z @ rs_rho @ spauli_z) \
+            + (1.0 - 0.75 * p) * rs_rho
         
     rs_rho = np.array(rs_rho)
     return rs_rho
@@ -127,6 +227,18 @@ def generate_random_states(ranseed, Nbase, Nitems, distribution='uniform', add=N
         for n in range(Nitems):
             state = ket2dm(GHZ_state(Nbase, phase_angles[n]))
             rho = np.array(state)
+            rhos.append(rho)
+    elif add == 'Wstate':
+        rho = np.array(ket2dm(w_state(Nbase)))
+        rhos = [rho] * Nitems
+    elif add == 'Cluster':
+        for n in range(Nitems):
+            # Make adj matrix
+            A = make_adj_matrix(Nbase)
+            psi = psi_cluster_state(A)
+            psi = psi.reshape(len(psi), 1)
+            rho = psi @ psi.T.conj()
+            
             rhos.append(rho)
     else:
         density_arrs = np.random.uniform(size=Nitems)

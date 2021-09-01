@@ -29,7 +29,8 @@ def minmax_norm(arr):
         arr = arr / (maxval - minval)
     return arr
 
-def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order, Nreps=1, buffer_train=0, dat_label=None):
+def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
+    order, Nreps=1, buffer_train=0, dat_label=None, noise_level=0.3):
     #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
     np.random.seed(seed=ranseed + 1987)
     D = 2**n_envs
@@ -57,7 +58,7 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order, Nreps
     coeffs = coeffs.astype(complex)
     Nitems = int(length / Nreps)
     if n_envs == 1:
-        if dat_label == 'GHZ':
+        if dat_label != 'rand':
             input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length, add=dat_label)
         else:
             input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=Nitems, Nreps=Nreps)
@@ -121,69 +122,53 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, order, Nreps
             mstate = Qobj(input_data[n - delay])
             mstate = operator_to_vector(mstate)
             mstate = sup_ops[delay] * mstate
-            output_data[n] = np.array(vector_to_operator(mstate))    
-    elif taskname == 'denoise-depolar':
-        output_data = input_data.copy()
-        _, noise1 = make_data_for_narma(length=length, orders=[20])
-        _, noise2 = make_data_for_narma(length=length, orders=[10])
+            output_data[n] = np.array(vector_to_operator(mstate))
+    elif 'noise' in taskname:
+        output_data[delay:] = input_data[:(length-delay)].copy()
+
+        _, noise1 = make_data_for_narma(length=length, orders=[order])
+        _, noise2 = make_data_for_narma(length=length, orders=[20])
         #print(np.min(noise1), np.min(noise2), np.max(noise1), np.max(noise2))
         pnoise1 = noise1.ravel()
         pnoise2 = noise2.ravel()
-        pnoise1, pnoise2 = minmax_norm(pnoise1), minmax_norm(pnoise2)
-        pnoise1 = pnoise1 * 0.9
-        pnoise2 = pnoise2 * 0.9
+        pnoise1 = minmax_norm(pnoise1) * noise_level
+        pnoise2 = minmax_norm(pnoise2) * noise_level
+        # Note that 'Spin-flip probability per qubit greater than 0.5 is unphysical.'
+
         idmat = np.eye(D)
+        Z = [[1,0],[0,-1]]
         # Add noise1 to input_data and noise2 to output data in the training part
         if buffer_train == 0:
             buffer_train = length
-        for n in range(length):
-            input_data[n] = pnoise1[n] * idmat / D + (1.0 - pnoise1[n]) * input_data[n]
-            #output_data[n] = pnoise1[n] * idmat / D + (1.0 - pnoise1[n]) * output_data[n]
-        for n in range(buffer_train):
-           #output_data[n] = pnoise2[n] * idmat / D + (1.0 - pnoise2[n]) * output_data[n]
-           output_data[n] = idmat / D
-    elif taskname == 'denoise-dephase':
-        output_data = input_data.copy()
-        #_, data_noise = make_data_for_narma(length=length, orders=[10, 20])
-        #pnoise1 = data_noise[:,0].ravel()
-        #pnoise2 = data_noise[:,1].ravel()
-        _, noise1 = make_data_for_narma(length=length, orders=[20])
-        _, noise2 = make_data_for_narma(length=length, orders=[10])
-        pnoise1 = noise1.ravel()
-        pnoise2 = noise2.ravel() * 0.0
-        #print(np.min(pnoise2), np.max(pnoise2))
-        
-        idmat = np.eye(D)
-        Z = [[1,0],[0,-1]]
-        for n in range(length):
-            # rho = input_data[n] @ Z
-            # rho = Z @ rho
-            # rho = pnoise1[n] * rho + (1.0 - pnoise1[n]) * input_data[n]
-            input_data[n] = dephase_channel(input_data[n], Nspins=n_envs, p=pnoise1[n], flipPauli='X')
 
-        for n in range(buffer_train):
-            # rho = output_data[n] @ Z
-            # rho = Z @ rho
-            # output_data[n] = pnoise2[n] * rho + (1.0 - pnoise2[n]) * output_data[n]
-            output_data[n] = dephase_channel(output_data[n], Nspins=n_envs, p=pnoise2[n], flipPauli='X')
-
-    elif taskname == 'denoise-depolar-dephase':
-        output_data = input_data.copy()
-        _, noise1 = make_data_for_narma(length=length, orders=[10])
-        _, noise2 = make_data_for_narma(length=length, orders=[20])
-        pnoise1 = noise1.ravel() 
-        pnoise2 = noise2.ravel() 
-        # pnoise1, pnoise2 = minmax_norm(pnoise1), minmax_norm(pnoise2)
-        # pnoise1 = pnoise1 * 0.9
-        # pnoise2 = pnoise2 * 0.9
-        
-        idmat = np.eye(D)
-        Z = [[1,0],[0,-1]]
         for n in range(length):
-            input_data[n] = pnoise1[n] * idmat / D + (1.0 - pnoise1[n]) * input_data[n]
+            if taskname == 'denoise-depolar':
+                #input_data[n] = pnoise1[n] * idmat / D + (1.0 - pnoise1[n]) * input_data[n]
+                input_data[n] = depolar_channel(input_data[n], Nspins=n_envs, p=pnoise1[n])
+            elif taskname == 'denoise-dephase-per':
+                input_data[n] = Pauli_channel(input_data[n], Nspins=n_envs, p=pnoise1[n], Pauli='Z')
+            elif taskname == 'denoise-dephase-col':
+                input_data[n] = Pauli_collective(input_data[n], Nspins=n_envs, p=pnoise1[n], Pauli='Z')
+            elif taskname == 'denoise-flip':
+                input_data[n] = Pauli_channel(input_data[n], Nspins=n_envs, p=pnoise1[n], Pauli='X')
+            elif taskname == 'denoise-unitary':
+                input_data[n] = unitary_noise(input_data[n], t = pnoise1[n], num_gates=20, ranseed=ranseed+2022)
             #output_data[n] = pnoise1[n] * idmat / D + (1.0 - pnoise1[n]) * output_data[n]
-        for n in range(buffer_train):
-            output_data[n] = dephase_channel(output_data[n], Nspins=n_envs, p=pnoise2[n], flipPauli='X')
+        if False:
+            for n in range(buffer_train):
+                if taskname == 'denoise-depolar':
+                    #input_data[n] = pnoise1[n] * idmat / D + (1.0 - pnoise2[n]) * input_data[n]
+                    output_data[n] = depolar_channel(output_data[n], Nspins=n_envs, p=pnoise2[n])
+                elif taskname == 'denoise-dephase-per':
+                    output_data[n] = Pauli_channel(output_data[n], Nspins=n_envs, p=pnoise2[n], Pauli='Z')
+                    #output_data[n] = unitary_noise(output_data[n], t = pnoise2[n], num_gates=20, ranseed=ranseed+2022)
+                elif taskname == 'denoise-dephase-col':
+                    output_data[n] = Pauli_collective(output_data[n], Nspins=n_envs, p=pnoise2[n], Pauli='Z')
+                elif taskname == 'denoise-flip':
+                    output_data[n] = Pauli_channel(output_data[n], Nspins=n_envs, p=pnoise2[n], Pauli='X')
+                    #output_data[n] = unitary_noise(output_data[n], t = pnoise2[n], num_gates=20, ranseed=ranseed+2022)
+                elif taskname == 'denoise-unitary':
+                    output_data[n] = unitary_noise(output_data[n], t = pnoise2[n], num_gates=20, ranseed=ranseed+2022)
     else:
         output_data = input_data
     
@@ -253,9 +238,10 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     bx.set_ylabel('Fidelity', color=nicered, fontsize=fsize)
     bx.set_ylim([0.8, 1.01])
 
-    ax = axs[4]
-    for i in range(pred_state_list.shape[1]):
-        ax.plot(pred_state_list[:, i], alpha=0.8)
+    if pred_state_list is not None:
+        ax = axs[4]
+        for i in range(pred_state_list.shape[1]):
+            ax.plot(pred_state_list[:, i], alpha=0.8)
 
     for ftype in ['png']:
         transparent = True
@@ -274,7 +260,8 @@ def fidelity_two_seqs(in_mats, out_mats):
     return fidls
 
 def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, \
-    B, tBs, delay, taskname, order, flagplot, use_corr, Nreps, reservoir, postprocess, test_lastrho, dat_label):
+    B, tBs, delay, taskname, order, flagplot, use_corr, \
+    Nreps, reservoir, postprocess, test_lastrho, dat_label, noise_level):
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
     length = buffer + train_len + val_len
@@ -285,14 +272,18 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
         train_intar_ls, val_intar_ls = [], []
         for n in range(ntrials):
             input_data, output_data = generate_qtasks_delay(qparams.n_envs, ranseed=n, length=length, \
-                delay=delay, taskname=taskname, order=order, Nreps=Nreps, buffer_train=buffer + train_len, dat_label=dat_label)
+                delay=delay, taskname=taskname, order=order, Nreps=Nreps, buffer_train=buffer + train_len, dat_label=dat_label, noise_level=noise_level)
             train_input_seq = np.array(input_data[  : (buffer + train_len)])
             train_output_seq = np.array(output_data[  : (buffer + train_len)])
-            train_intar_fidls = fidelity_two_seqs(train_input_seq, train_output_seq)
+            
+            train_intar_fidls = fidelity_two_seqs(np.array(output_data[  buffer : (buffer + train_len)]), \
+                np.array(input_data[ (buffer-delay) : (buffer + train_len - delay)]))
 
             val_input_seq   = np.array(input_data[(buffer + train_len) : length])
             val_output_seq = np.array(output_data[(buffer + train_len) : length])
-            val_intar_fidls = fidelity_two_seqs(val_input_seq, val_output_seq)
+            
+            val_intar_fidls = fidelity_two_seqs(np.array(output_data[(buffer + train_len) : length]), \
+                np.array(input_data[(buffer + train_len - delay) : (length - delay)]))
 
             fig_path = '{}_tauB_{:.3f}_{}'.format(basename, tauB, n)
 
@@ -376,6 +367,7 @@ if __name__  == '__main__':
     parser.add_argument('--lastrho', type=int, default=1, help='Use last rho in test phase')
 
     parser.add_argument('--data', type=str, default='rand')
+    parser.add_argument('--noise_level', type=float, default=0.3, help='Noise level')
     args = parser.parse_args()
     print(args)
 
@@ -389,6 +381,8 @@ if __name__  == '__main__':
         use_postprocess = False
     if args.lastrho == 0:
         test_lastrho = False
+    noise_level = args.noise_level
+
     dynamic = args.dynamic
     train_len, val_len, buffer, delay = args.trainlen, args.vallen, args.buffer, args.delay
     ntrials, basename, savedir, taskname, order = args.ntrials, args.basename, args.savedir, args.taskname, args.order
@@ -408,9 +402,9 @@ if __name__  == '__main__':
     if os.path.isdir(logdir) == False:
         os.mkdir(logdir)
     
-    basename = 'qrc_{}_{}_post_{}_lastr_{}_{}_{}_od_{}_{}_corr_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}_reps_{}'.format(\
-        args.data, args.reservoir, args.postprocess, args.lastrho,\
-        basename, taskname, order, dynamic, usecorr, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
+    basename = 'qrc_{}_{}_post_{}_lastr_{}_{}_{}_od_{}_noise_{}_{}_corr_{}_nspins_{}_{}_a_{}_bc_{}_tmax_{}_tmin_{}_ntaus_{}_Vs_{}_len_{}_{}_{}_d_{}_trials_{}_reps_{}'.format(\
+        args.reservoir, args.data, args.postprocess, args.lastrho,\
+        basename, taskname, order, noise_level, dynamic, usecorr, n_spins, n_envs, alpha, bcoef, tmax, tmin, ntaus, \
         '_'.join([str(v) for v in virtuals]), buffer, train_len, val_len, delay, ntrials, nreps)
     
     log_filename = os.path.join(logdir, '{}.log'.format(basename))
@@ -440,7 +434,7 @@ if __name__  == '__main__':
                             beta=beta, virtual_nodes=V, tau=0.0, init_rho=init_rho, dynamic=dynamic)
                 p = multiprocessing.Process(target=fidelity_compute, \
                     args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, \
-                        taskname, order, flagplot, usecorr, nreps, use_reservoir, use_postprocess, test_lastrho, dat_label))
+                        taskname, order, flagplot, usecorr, nreps, use_reservoir, use_postprocess, test_lastrho, dat_label, noise_level))
                 jobs.append(p)
                 #pipels.append(recv_end)
 
