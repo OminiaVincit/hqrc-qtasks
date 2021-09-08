@@ -66,7 +66,12 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
         input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length, add=dat_label)
     #input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
     
-    idrho = np.zeros((D, D)).astype(complex)
+    n_out_qubits = n_envs
+    if taskname == 'delay-entangle':
+        n_out_qubits = 2*n_envs
+        
+    Dout = 2**n_out_qubits
+    idrho = np.zeros((Dout, Dout)).astype(complex)
     idrho[0, 0] = 1
     output_data = [idrho] * length
     if taskname == 'sma-rand' or taskname == 'wma-rand':
@@ -123,6 +128,12 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
             mstate = operator_to_vector(mstate)
             mstate = sup_ops[delay] * mstate
             output_data[n] = np.array(vector_to_operator(mstate))
+    elif taskname == 'delay-entangle':
+        Uop = get_transverse_unitary(Nspins=2*n_envs, B=2, dt=10.0)
+        for n in range(delay, length):
+            rho = np.kron(input_data[n], input_data[n - delay])
+            rho = Uop @ rho @ Uop.T.conj()
+            output_data[n] = rho
     elif 'noise' in taskname:
         output_data[delay:] = input_data[:(length-delay)].copy()
 
@@ -180,7 +191,7 @@ def convert_seq(input_seq):
     return np.hstack((ma, mb)).transpose()
 
 def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_input_seq, val_output_seq, \
-    train_pred_seq, val_pred_seq, train_fidls, val_fidls, pred_state_list):
+    train_pred_seq, val_pred_seq, train_fidls, val_fidls, pred_state_list, out_neg_vals, pred_neg_vals):
     # input_seq = np.vstack((train_input_seq, val_input_seq))
     # output_seq = np.vstack((train_output_seq, val_output_seq))
     # pred_seq = np.vstack((train_pred_seq, val_pred_seq))
@@ -209,7 +220,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     plt.rcParams['font.size']=10
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     #print('\n'.join(color for color in colors))  
-    fig, axs = plt.subplots(5, 1, figsize=(20, 15), sharex=True)
+    fig, axs = plt.subplots(6, 1, figsize=(20, 20), sharex=True)
     fig.subplots_adjust(hspace=0.4, wspace = 0.4)
     # Plotting the contour plot
     fsize = 14
@@ -224,25 +235,34 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     vmin_error, vmax_error = 0.0, 0.4
     #print(vmin, vmax)
     axs = axs.ravel()
-    for ax in axs:
+    for ax in axs[:4]:
         ax.set_ylabel('Index', fontsize=fsize)
+    for ax in axs:
         ax.set_xlabel('Time', fontsize=fsize)
-        
-    mp0 = plotContour(fig, axs[0], input_seq, "Input", fsize, vmin, vmax, cmap)
-    mp1 = plotContour(fig, axs[1], output_seq, "Target", fsize, vmin, vmax, cmap)
-    mp2 = plotContour(fig, axs[2], pred_seq, "Prediction", fsize, vmin, vmax, cmap)
-    mp3 = plotContour(fig, axs[3], err_seq, "Diff. and {}".format(res_title), fsize, vmin_error, vmax_error, ecmap)
+    
+    clbar = False
+    mp0 = plotContour(fig, axs[0], input_seq, "Input", fsize, vmin, vmax, cmap, colorbar=clbar)
+    mp1 = plotContour(fig, axs[1], output_seq, "Target", fsize, vmin, vmax, cmap, colorbar=clbar)
+    mp2 = plotContour(fig, axs[2], pred_seq, "Prediction", fsize, vmin, vmax, cmap, colorbar=clbar)
+    mp3 = plotContour(fig, axs[3], err_seq, "Diff. and {}".format(res_title), fsize, vmin_error, vmax_error, ecmap, colorbar=clbar)
     bx = axs[3].twinx()
     nicered = (0.769, 0.306, 0.322)
     bx.plot(fidls, linestyle ='-', linewidth=2, marker='o', color=nicered, alpha=0.8)
     bx.set_ylabel('Fidelity', color=nicered, fontsize=fsize)
     bx.set_ylim([0.8, 1.01])
 
+    # Plot negativity
+    ax = axs[4]
+    ax.plot(out_neg_vals, label='Target neg')
+    ax.plot(pred_neg_vals, label='Predict neg')
+    ax.legend()
+    ax.set_ylabel('Negativity', fontsize=fsize)
+
     if pred_state_list is not None:
-        ax = axs[4]
+        ax = axs[5]
         for i in range(pred_state_list.shape[1]):
             ax.plot(pred_state_list[:, i], alpha=0.8)
-
+    plt.tight_layout()
     for ftype in ['png']:
         transparent = True
         if ftype == 'png':
@@ -259,6 +279,17 @@ def fidelity_two_seqs(in_mats, out_mats):
         fidls.append(fidval)
     return fidls
 
+def negativity_compute(seq_states):
+    # Calculate the negativity of the sequence of states
+    neg_vals = []
+    for state in seq_states:
+        rho = Qobj(state)
+        Ndim = int(np.log2(rho.shape[0]))
+        rho.dims = [[2]*Ndim, [2]*Ndim]
+        nval = negativity(rho, subsys=0, logarithmic=False)
+        neg_vals.append(nval)
+    return neg_vals
+
 def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, \
     B, tBs, delay, taskname, order, flagplot, use_corr, \
     Nreps, reservoir, postprocess, test_lastrho, dat_label, noise_level):
@@ -269,21 +300,21 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
     for tauB in tBs:
         qparams.tau = tauB / B
         train_rmean_ls, val_rmean_ls = [], []
-        train_intar_ls, val_intar_ls = [], []
+        #train_intar_ls, val_intar_ls = [], []
         for n in range(ntrials):
             input_data, output_data = generate_qtasks_delay(qparams.n_envs, ranseed=n, length=length, \
                 delay=delay, taskname=taskname, order=order, Nreps=Nreps, buffer_train=buffer + train_len, dat_label=dat_label, noise_level=noise_level)
             train_input_seq = np.array(input_data[  : (buffer + train_len)])
             train_output_seq = np.array(output_data[  : (buffer + train_len)])
             
-            train_intar_fidls = fidelity_two_seqs(np.array(output_data[  buffer : (buffer + train_len)]), \
-                np.array(input_data[ (buffer-delay) : (buffer + train_len - delay)]))
+            #train_intar_fidls = fidelity_two_seqs(np.array(output_data[  buffer : (buffer + train_len)]), \
+            #    np.array(input_data[ (buffer-delay) : (buffer + train_len - delay)]))
 
             val_input_seq   = np.array(input_data[(buffer + train_len) : length])
             val_output_seq = np.array(output_data[(buffer + train_len) : length])
             
-            val_intar_fidls = fidelity_two_seqs(np.array(output_data[(buffer + train_len) : length]), \
-                np.array(input_data[(buffer + train_len - delay) : (length - delay)]))
+            #val_intar_fidls = fidelity_two_seqs(np.array(output_data[(buffer + train_len) : length]), \
+            #    np.array(input_data[(buffer + train_len - delay) : (length - delay)]))
 
             fig_path = '{}_tauB_{:.3f}_{}'.format(basename, tauB, n)
 
@@ -297,33 +328,36 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
             train_rmean_square_fid = np.sqrt(np.mean(np.array(train_fidls)**2))
             val_rmean_square_fid = np.sqrt(np.mean(np.array(val_fidls)**2))
             
-            train_rs_intar_fid = np.sqrt(np.mean(np.array(train_intar_fidls)**2))
-            val_rs_intar_fid = np.sqrt(np.mean(np.array(val_intar_fidls)**2))
+            #train_rs_intar_fid = np.sqrt(np.mean(np.array(train_intar_fidls)**2))
+            #val_rs_intar_fid = np.sqrt(np.mean(np.array(val_intar_fidls)**2))
             
-            res_title = 'Root mean square Fidelity at n={}, tauB={:.3f}, train={:.6f}, val={:.6f}, tr-intar={:.6f}, val-intar={:6f}'.format(\
-                n, tauB, train_rmean_square_fid, val_rmean_square_fid, train_rs_intar_fid, val_rs_intar_fid)
+            res_title = 'Root mean square Fidelity at n={}, tauB={:.3f}, train={:.6f}, val={:.6f}'.format(\
+                n, tauB, train_rmean_square_fid, val_rmean_square_fid)
             logger.debug(res_title)
             
             train_rmean_ls.append(train_rmean_square_fid)
             val_rmean_ls.append(val_rmean_square_fid)
-            train_intar_ls.append(train_rs_intar_fid)
-            val_intar_ls.append(val_rs_intar_fid)
+            #train_intar_ls.append(train_rs_intar_fid)
+            #val_intar_ls.append(val_rs_intar_fid)
             
             if flagplot > 0 and n == 0:
+                out_neg_vals = negativity_compute(val_output_seq)
+                pred_neg_vals = negativity_compute(val_pred_seq)
+                
                 plot_result(fig_path, res_title, train_input_seq[buffer:], train_output_seq[buffer:], \
                     val_input_seq, val_output_seq, train_pred_seq, val_pred_seq,\
-                    train_fidls, val_fidls, pred_state_list)
+                    train_fidls, val_fidls, pred_state_list, out_neg_vals, pred_neg_vals)
         
         avg_train, avg_val = np.mean(train_rmean_ls), np.mean(val_rmean_ls)
         std_train, std_val = np.std(train_rmean_ls), np.std(val_rmean_ls)
 
-        avg_intar_train, avg_intar_val = np.mean(train_intar_ls), np.mean(val_intar_ls)
-        std_intar_train, std_intar_val = np.std(train_intar_ls), np.std(val_intar_ls)
+        #avg_intar_train, avg_intar_val = np.mean(train_intar_ls), np.mean(val_intar_ls)
+        #std_intar_train, std_intar_val = np.std(train_intar_ls), np.std(val_intar_ls)
 
         logger.info('Average RMSF with ntrials={}, tauB={:.3f}, avg-train={:.6f}, avg-val={:.6f}, std-train={:.6f}, std-val={:.6f}'.format(\
             ntrials, tauB, avg_train, avg_val, std_train, std_val))
-        logger.debug('intar RMSF with ntrials={}, tauB={:.3f},  avg-train={:.6f}, avg-val={:.6f}, std-train={:.6f}, std-val={:.6f}'.format(\
-            ntrials, tauB, avg_intar_train, avg_intar_val, std_intar_train, std_intar_val))
+        #logger.debug('intar RMSF with ntrials={}, tauB={:.3f},  avg-train={:.6f}, avg-val={:.6f}, std-train={:.6f}, std-val={:.6f}'.format(\
+        #    ntrials, tauB, avg_intar_train, avg_intar_val, std_intar_train, std_intar_val))
 
 if __name__  == '__main__':
     # Check for command line arguments

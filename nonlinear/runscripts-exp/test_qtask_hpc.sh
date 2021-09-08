@@ -4,7 +4,7 @@ export OMP_NUM_THREADS=1
 
 EXE=../source/runQTask.py
 #TASKNAME=delay-depolar
-TASKNAME=delay-dephase
+TASKNAME=delay-entangle
 DYNAMIC=ion_trap
 
 NPROC=125
@@ -26,7 +26,7 @@ CORR=0
 
 for DELAY in 5
 do
-for NSPINS in 5
+for NSPINS in 6
 do
 for V in 5
 do

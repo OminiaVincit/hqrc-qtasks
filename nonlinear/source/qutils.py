@@ -191,6 +191,40 @@ def getLiouv_IsingOpen(Nspins, alpha, B, nobs, J=1.0):
     L = liouvillian(H, [])
     return L, Mx, My, Mz
 
+def get_transverse_unitary(Nspins, B=2, J=1.0, alpha=0.0, ranseed=0, dt=1.0):
+    np.random.seed(seed=ranseed)
+    X = sigmax()
+    Y = sigmay()
+    Z = sigmaz()
+    I = identity(2)
+
+    # Create Hamiltonian
+    H0 = getSci(I, 0, Nspins) * 0.0
+    H1 = getSci(I, 0, Nspins) * 0.0
+    Sxs, Sys, Szs = [], [], []
+    for i in range(Nspins):
+        Sxi = getSci(X, i, Nspins)
+        Syi = getSci(Y, i, Nspins)
+        Szi = getSci(Z, i, Nspins)
+        Sxs.append(Sxi)
+        Sys.append(Syi)
+        Szs.append(Szi)
+    
+    for i in range(Nspins):
+        gi = J * (np.random.rand() - 0.5)
+        H0 = H0 - (B + gi) * Szs[i] # Hamiltonian for the magnetic field
+        for j in range(i+1, Nspins):
+            if alpha > 0:
+                hij = J * np.abs(i-j)**(-alpha) / Nalpha
+            else:
+                hij = J * (np.random.rand() - 0.5)
+            H1 = H1 - hij * Sxs[i] * Sxs[j] # Interaction Hamiltonian
+
+    H = H0 + H1 # Total Hamiltonian
+    H = np.array(H)
+    U = scipy.linalg.expm(1.j * H * dt)
+    return U
+
 def generate_one_qubit_states(ranseed, Nitems, Nreps=1):
     np.random.seed(seed=ranseed)
 

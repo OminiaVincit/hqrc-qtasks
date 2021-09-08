@@ -24,11 +24,12 @@ DYNAMIC_FULL_CONST_TRANS = 'full_const_trans'
 DYNAMIC_FULL_CONST_COEFF = 'full_const_coeff'
 DYNAMIC_ION_TRAP = 'ion_trap'
 
-def plotContour(fig, ax, data, title, fontsize, vmin, vmax, cmap):
+def plotContour(fig, ax, data, title, fontsize, vmin, vmax, cmap, colorbar=True):
     ax.set_title(title, fontsize=fontsize)
     t, s = np.meshgrid(np.arange(data.shape[0]), np.arange(data.shape[1]))
     mp = ax.contourf(s, t, np.transpose(data), 15, cmap=cmap, levels=np.linspace(vmin, vmax, 60), extend="both", zorder=-20)
-    fig.colorbar(mp, ax=ax)
+    if colorbar == True:
+        fig.colorbar(mp, ax=ax)
     ax.set_rasterization_zorder(-10)
     #ax.set_xlabel(r"Time", fontsize=fontsize)
     return mp
