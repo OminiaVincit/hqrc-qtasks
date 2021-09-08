@@ -275,7 +275,8 @@ class QRC(object):
         return state_list
 
 def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
-    val_input_seq, val_output_seq, ranseed, use_corr, reservoir=True, postprocess=True, test_lastrho=True):
+    val_input_seq, val_output_seq, ranseed, use_corr, \
+    reservoir=True, postprocess=True, test_lastrho=True, self_loop=False):
     model = QRC(use_corr)
 
     train_input_seq = np.array(train_input_seq)
@@ -286,13 +287,30 @@ def get_fidelity(qparams, buffer, train_input_seq, train_output_seq, \
     train_pred_seq, train_fidls, _ = model.predict(train_input_seq, train_output_seq, buffer=buffer, use_lastrho=False, reservoir=reservoir, postprocess=postprocess)
     #print("train_loss={}, shape".format(train_loss), train_pred_seq_ls.shape)
     
+    val_pred_seq, val_fidls, state_list = [], [], []
     # Test phase
-    val_input_seq = np.array(val_input_seq)
-    val_output_seq = np.array(val_output_seq)
-    val_pred_seq, val_fidls, state_list = model.predict(val_input_seq, val_output_seq, buffer=0, use_lastrho=test_lastrho, reservoir=reservoir, postprocess=postprocess)
+    if self_loop == True:
+        length = len(val_output_seq)
+        current_input = train_pred_seq[-1]
+        for n in range(length):
+            local_rho = model.last_rho.copy()
+            model.last_rho = model.step_forward(local_rho, current_input)
+            state = np.array(model.cur_states, dtype=np.float64)
+            state_list.append(state)
+            stacked_state = np.hstack( [state, np.ones([1, 1])])
+            out_state = convert_vec_to_density(stacked_state @ model.W_out, postprocess=postprocess)
+            fidval = cal_fidelity_two_mats(out_state, val_output_seq[n])
+            val_pred_seq.append(out_state)
+            val_fidls.append(fidval)
+            current_input = out_state.copy()
+    else:
+        val_input_seq = np.array(val_input_seq)
+        val_output_seq = np.array(val_output_seq)
+        val_pred_seq, val_fidls, state_list = model.predict(val_input_seq, val_output_seq, buffer=0, use_lastrho=test_lastrho, reservoir=reservoir, postprocess=postprocess)
     #print("val_loss={}, shape".format(val_loss), val_pred_seq_ls.shape)
 
     return train_pred_seq, train_fidls, val_pred_seq, val_fidls, state_list
+
 
 def memory_function(qparams, train_len, val_len, buffer, dlist, ranseed, Ntrials, usecorr):
 
