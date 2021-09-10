@@ -34,18 +34,6 @@ def plotContour(fig, ax, data, title, fontsize, vmin, vmax, cmap, colorbar=True)
     #ax.set_xlabel(r"Time", fontsize=fontsize)
     return mp
 
-def getSci(sc, i, Nspins):
-    iop = identity(2)
-    sci = iop
-    if i == 0:
-        sci = sc
-    for j in range(1, Nspins):
-        tmp = iop
-        if j == i:
-            tmp = sc
-        sci = tensor(sci, tmp)
-    return sci
-
 class QRCParams():
     def __init__(self, n_units, n_envs, max_energy, non_diag, alpha, beta, virtual_nodes, tau, init_rho, \
         solver=LINEAR_PINV, dynamic=DYNAMIC_FULL_CONST_TRANS):

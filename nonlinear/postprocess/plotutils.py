@@ -13,8 +13,46 @@ cycle = [
 '#4daf4a',
 '#984ea3',
 '#ff7f00',
-'#ffff33'
+'#ffd92f'
 ]
+
+d_colors = [
+'#777777',
+'#2166ac',
+'#fee090',
+'#fdbb84',
+'#fc8d59',
+'#e34a33',
+'#b30000',
+'#00706c'
+]
+
+# import matplotlib.pyplot as plt 
+# import matplotlib.ticker
+
+# plt.rc( 'text', usetex=True ) 
+# plt.rc('font',family = 'sans-serif',  size=20)
+
+# fig , ax = plt.subplots(figsize=(5,3))
+
+# ax.set_xlabel( r'\textit{x} in a.u.' )
+# ax.set_ylabel( r'\textit{y} in a.u.' )
+
+# fmt = matplotlib.ticker.StrMethodFormatter("{x}")
+# ax.xaxis.set_major_formatter(fmt)
+# ax.yaxis.set_major_formatter(fmt)
+
+# plt.tight_layout()
+# plt.show()
+
+def setPlot(fontsize=24, labelsize=24):
+    plt.rc('font', family='sans-serif')
+    plt.rc('mathtext', fontset='cm')
+    #plt.rc( 'text', usetex=True ) 
+    plt.rcParams["font.size"] = fontsize # 全体のフォントサイズが変更されます
+    plt.rcParams['xtick.labelsize'] = labelsize # 軸だけ変更されます
+    plt.rcParams['ytick.labelsize'] = labelsize # 軸だけ変更されます
+    
 
 def plotContour(fig, ax, data, title, fontsize, vmin, vmax, cmap):
     ax.set_title(title, fontsize=fontsize)
