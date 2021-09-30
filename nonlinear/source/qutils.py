@@ -1,6 +1,17 @@
 from qutip import *
 import numpy as np
 import scipy
+import utils as utils
+
+Hadamard = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
+UCNOT = np.array([\
+    [1, 0, 0, 0], [0, 1, 0, 0], \
+    [0, 0, 0, 1], [0, 0, 1, 0], \
+    ])
+SigmaI = np.array([[1, 0], [0, 1]])
+SigmaX = np.array([[0, 1], [1, 0]])
+SigmaY = np.array([[0, -1j], [1j, 0]])
+SigmaZ = np.array([[1, 0], [0, -1]])
 
 def make_adj_matrix(Nbase):
     A = np.zeros((Nbase, Nbase), dtype=np.int32)
@@ -29,14 +40,20 @@ def generate_delay_tensor(n_envs, delay1, delay2, length, ranseed, dat_label):
     output_data = [idrho] * length
 
     max_delay = max(delay1, delay2)
-    input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length, add=dat_label)
-    for n in range(max_delay, length):
-        output_data[n] = np.kron(input_data[n-delay1], input_data[n-delay2])
+    if dat_label == 'Bell' and n_envs == 1:
+        input_data = generate_one_qubit_pure(ranseed=ranseed, Nitems=length)
+        for n in range(max_delay, length):
+            rho = np.kron(Hadamard @ input_data[n-delay1] @ Hadamard.T.conj(), input_data[n-delay2])
+            rho = UCNOT @ rho @ UCNOT.T.conj()
+            output_data[n] = rho
+    else:
+        input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length, add=dat_label)
+        for n in range(max_delay, length):
+            output_data[n] = np.kron(input_data[n-delay1], input_data[n-delay2])
     return input_data, output_data
 
 def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
     order, Nreps=1, buffer_train=0, dat_label=None, noise_level=0.3):
-    #input_data = generate_one_qubit_states(ranseed=ranseed, Nitems=length)
     np.random.seed(seed=ranseed + 1987)
     D = 2**n_envs
     # Returns a superoperator acting on vectorized dim × dim density operators, 
@@ -72,13 +89,17 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
     #input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
     
     n_out_qubits = n_envs
-    if taskname == 'delay-entangle':
+    if taskname == 'delay-entangle' or taskname == 'delay-Bell' \
+        or taskname == 'channel-super-depolar' or taskname == 'delay-entangle-channel':
         n_out_qubits = 2*n_envs
         
     Dout = 2**n_out_qubits
     idrho = np.zeros((Dout, Dout)).astype(complex)
     idrho[0, 0] = 1
     output_data = [idrho] * length
+    idmat = np.eye(D)
+    Z = [[1,0],[0,-1]]
+
     if taskname == 'sma-rand' or taskname == 'wma-rand':
         print('Task {}'.format(taskname))
         for n in range(delay, length):
@@ -95,9 +116,8 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
             output_data[n] = np.array(vector_to_operator(outstate))
     elif taskname == 'sma-depolar' or taskname == 'wma-depolar' or taskname == 'delay-depolar':
         print('Make NARMA data for depolar task {}'.format(taskname))
-        _, data_noise = make_data_for_narma(length=length, orders=[order])
+        _, data_noise = utils.make_data_for_narma(length=length, orders=[order])
         pnoise = data_noise[:, 0].ravel()
-        idmat = np.eye(D)
         for n in range(delay, length):
             outstate = None
             for d in range(delay+1):
@@ -106,13 +126,11 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
                     outstate += coeffs[d] * mstate
                 else:
                     outstate = coeffs[d] * mstate
-                output_data[n] = outstate
+            output_data[n] = outstate
     elif (taskname == 'sma-dephase' or taskname == 'wma-dephase' or taskname == 'delay-dephase') and n_envs == 1:
         print('Make NARMA data for Z-dephase (phase-flip) task {}'.format(taskname))
-        Z = [[1,0],[0,-1]]
-        _, data_noise = make_data_for_narma(length=length, orders=[order])
+        _, data_noise = utils.make_data_for_narma(length=length, orders=[order])
         pnoise = data_noise[:, 0].ravel()
-        idmat = np.eye(D)
         for n in range(delay, length):
             outstate = None
             for d in range(delay+1):
@@ -123,7 +141,28 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
                     outstate += coeffs[d] * mstate
                 else:
                     outstate = coeffs[d] * mstate
-                output_data[n] = outstate
+            output_data[n] = outstate
+    elif (taskname == 'channel-super-depolar') and n_envs == 1:
+        #input_data = generate_one_qubit_mixed(ranseed=ranseed, Nitems=Nitems)
+        print('Make NARMA data for channel superposition depolar task {}'.format(taskname))
+        _, data_noise = utils.make_data_for_narma(length=length, orders=[order])
+        pnoise = data_noise[:, 0].ravel()
+        mat0 = np.array([[1, 0], [0, 0]])
+        mat1 = np.array([[0, 0], [0, 1]])
+        
+        for n in range(delay, length):
+            r0 = input_data[n][0, 0]
+
+            # control state in |0><0| part
+            mstate = pnoise[n - delay] * idmat / D + (1.0 - pnoise[n - delay]) * input_data[n - delay]
+            mstate = pnoise[n] * idmat / D + (1.0 - pnoise[n]) * mstate
+            outstate = r0 * np.kron(mstate, mat0)
+
+            # control state in |1><1| part
+            mstate = pnoise[n] * idmat / D + (1.0 - pnoise[n]) * input_data[n - delay]
+            mstate = pnoise[n-delay] * idmat / D + (1.0 - pnoise[n-delay]) * mstate
+            outstate += (1.0 - r0) * np.kron(mstate, mat1)
+            output_data[n] = outstate
     elif taskname == 'delay-id':
         print('Task {}'.format(taskname))
         output_data[delay:] = input_data[:(length-delay)]
@@ -139,19 +178,32 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
             rho = np.kron(input_data[n], input_data[n - delay])
             rho = Uop @ rho @ Uop.T.conj()
             output_data[n] = rho
+    elif taskname == 'delay-entangle-channel':
+        Uop = get_transverse_unitary(Nspins=2*n_envs, B=2, dt=10.0)
+        _, data_noise = utils.make_data_for_narma(length=length, orders=[order])
+        pnoise = data_noise[:, 0].ravel()
+        for n in range(delay, length):
+            mstate0 = pnoise[n] * idmat / D + (1.0 - pnoise[n]) * input_data[n]
+            mstate1 = pnoise[n - delay] * idmat / D + (1.0 - pnoise[n - delay]) * input_data[n - delay]
+            rho = np.kron(mstate0, mstate1)
+            rho = Uop @ rho @ Uop.T.conj()
+            output_data[n] = rho
+    elif taskname == 'delay-Bell' and n_envs == 1:
+        input_data = generate_one_qubit_pure(ranseed=ranseed, Nitems=Nitems)
+        for n in range(delay, length):
+            rho = np.kron(Hadamard @ input_data[n] @ Hadamard.T.conj(), input_data[n - delay])
+            rho = UCNOT @ rho @ UCNOT.T.conj()
+            output_data[n] = rho
     elif 'noise' in taskname:
         output_data[delay:] = input_data[:(length-delay)].copy()
-        _, noise1 = make_data_for_narma(length=length, orders=[order])
-        _, noise2 = make_data_for_narma(length=length, orders=[20])
+        _, noise1 = utils.make_data_for_narma(length=length, orders=[order])
+        _, noise2 = utils.make_data_for_narma(length=length, orders=[20])
         #print(np.min(noise1), np.min(noise2), np.max(noise1), np.max(noise2))
         pnoise1 = noise1.ravel()
         pnoise2 = noise2.ravel()
         pnoise1 = minmax_norm(pnoise1) * noise_level
         pnoise2 = minmax_norm(pnoise2) * noise_level
         # Note that 'Spin-flip probability per qubit greater than 0.5 is unphysical.'
-
-        idmat = np.eye(D)
-        Z = [[1,0],[0,-1]]
         # Add noise1 to input_data and noise2 to output data in the training part
         if buffer_train == 0:
             buffer_train = length
@@ -429,11 +481,6 @@ def get_transverse_unitary(Nspins, B=2, J=1.0, alpha=0.0, ranseed=0, dt=1.0):
 
 def generate_one_qubit_states(ranseed, Nitems, Nreps=1):
     np.random.seed(seed=ranseed)
-
-    I = np.array([[1, 0], [0, 1]])
-    SigmaX = np.array([[0, 1], [1, 0]])
-    SigmaY = np.array([[0, -1j], [1j, 0]])
-    SigmaZ = np.array([[1, 0], [0, -1]])
     rhos = []
     for n in range(Nitems):
         r = 2.0 * (np.random.rand() - 0.5)
@@ -442,10 +489,26 @@ def generate_one_qubit_states(ranseed, Nitems, Nreps=1):
         s1 = r * x
         s2 = r * np.sqrt(1-x**2) * y
         s3 = r * np.sqrt(1-x**2) * np.sqrt(1 - y**2)
-        rho = 0.5 * (I + s1 * SigmaX + s2 * SigmaY + s3 * SigmaZ)
+        rho = 0.5 * (SigmaI + s1 * SigmaX + s2 * SigmaY + s3 * SigmaZ)
         #rho = np.array(rand_dm(2, density=0.5))
         for i in range(Nreps):
             rhos.append(rho)
+    return rhos
+
+def generate_one_qubit_mixed(ranseed, Nitems):
+    np.random.seed(seed=ranseed)
+    rs = np.random.rand(size=Nitems)
+    rhos = []
+    for r in rs:
+        rhos.append(np.array([[r, 0], [0, 1.0 - r]]))
+    return rhos
+
+def generate_one_qubit_pure(ranseed, Nitems):
+    np.random.seed(seed=ranseed)
+    rs = np.random.randint(2, size=Nitems)
+    rhos = []
+    for r in rs:
+        rhos.append(np.array([[r, 0], [0, 1.0 - r]]))
     return rhos
 
 def GHZ_state(N, phase):

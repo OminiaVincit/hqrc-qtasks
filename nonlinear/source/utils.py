@@ -28,6 +28,8 @@ def plotContour(fig, ax, data, title, fontsize, vmin, vmax, cmap, colorbar=True)
     ax.set_title(title, fontsize=fontsize)
     t, s = np.meshgrid(np.arange(data.shape[0]), np.arange(data.shape[1]))
     mp = ax.contourf(s, t, np.transpose(data), 15, cmap=cmap, levels=np.linspace(vmin, vmax, 60), extend="both", zorder=-20)
+    #mp = ax.imshow(data, origin='lower', cmap=cmap, vmin=vmin, vmax=vmax, aspect='auto')
+                
     if colorbar == True:
         fig.colorbar(mp, ax=ax)
     ax.set_rasterization_zorder(-10)

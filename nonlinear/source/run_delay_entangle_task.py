@@ -27,9 +27,10 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
 
     for n in range(ntrials):
         input_data, output_data = generate_delay_tensor(qparams.n_envs, delay1, delay2, length=length, ranseed=n, dat_label=dat_label)
-        Uop = get_transverse_unitary(Nspins=2*qparams.n_envs, B=2, dt=10.0)
-        for k in range(len(output_data)):
-            output_data[k] = Uop @ output_data[k] @ Uop.T.conj()
+        if dat_label != 'Bell':
+            Uop = get_transverse_unitary(Nspins=2*qparams.n_envs, B=2, dt=10.0)
+            for k in range(len(output_data)):
+                output_data[k] = Uop @ output_data[k] @ Uop.T.conj()
                     
         train_input_seq = np.array(input_data[  : (buffer + train_len)])
         train_output_seq = np.array(output_data[  : (buffer + train_len)])

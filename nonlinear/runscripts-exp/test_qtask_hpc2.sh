@@ -3,7 +3,7 @@
 export OMP_NUM_THREADS=1
 
 EXE=../source/runQTask.py
-#TASKNAME=delay-depolar
+#TASKNAME=sma-depolar
 TASKNAME=delay-entangle
 DYNAMIC=ion_trap
 
@@ -22,14 +22,14 @@ NEV=1
 ORDER=10
 PLOT=1
 NREP=1
-CORR=0
-DAT='rand'
+CORR=1
+DAT='ent'
 
 for DELAY in 1
 do
 for NSPINS in 6
 do
-for V in 5
+for V in 10
 do
 for alpha in 1.0
 do

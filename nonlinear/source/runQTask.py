@@ -44,7 +44,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     #matplotlib.style.use('seaborn')
     #cmap = plt.get_cmap("RdBu")
     cmap = plt.get_cmap("twilight_shifted")
-    #cmap = plt.get_cmap("tab20c_r")
+    #cmap = plt.get_cmap("cividis")
     
     ecmap = plt.get_cmap("summer_r")
     plt.rc('font', family='serif')
@@ -55,7 +55,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     fig, axs = plt.subplots(6, 1, figsize=(20, 20), sharex=True)
     fig.subplots_adjust(hspace=0.4, wspace = 0.4)
     # Plotting the contour plot
-    fsize = 14
+    fsize = 20
     vmin, vmax = input_seq.min(), input_seq.max()
     vmin_error, vmax_error = err_seq.min(), err_seq.max()
     vmin = min(vmin, output_seq.min())
@@ -72,11 +72,11 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
     for ax in axs:
         ax.set_xlabel('Time', fontsize=fsize)
     
-    clbar = False
+    clbar = True
     mp0 = plotContour(fig, axs[0], input_seq, "Input", fsize, vmin, vmax, cmap, colorbar=clbar)
     mp1 = plotContour(fig, axs[1], output_seq, "Target", fsize, vmin, vmax, cmap, colorbar=clbar)
-    mp2 = plotContour(fig, axs[2], pred_seq, "Prediction", fsize, vmin, vmax, cmap, colorbar=clbar)
-    mp3 = plotContour(fig, axs[3], err_seq, "Diff. and {}".format(res_title), fsize, vmin_error, vmax_error, ecmap, colorbar=clbar)
+    mp2 = plotContour(fig, axs[2], pred_seq, "Predict", fsize, vmin, vmax, cmap, colorbar=clbar)
+    mp3 = plotContour(fig, axs[3], err_seq, "|Target - Predict| {}".format(res_title), fsize, vmin_error, vmax_error, ecmap, colorbar=clbar)
     bx = axs[3].twinx()
     nicered = (0.769, 0.306, 0.322)
     bx.plot(fidls, linestyle ='-', linewidth=2, marker='o', color=nicered, alpha=0.8)
@@ -85,17 +85,20 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
 
     # Plot negativity
     ax = axs[4]
-    ax.plot(out_neg_vals, label='Target neg')
-    ax.plot(pred_neg_vals, label='Predict neg')
-    ax.legend()
+    ax.plot(out_neg_vals, label='Target')
+    ax.plot(pred_neg_vals, label='Predict')
+    ax.legend(fontsize=fsize)
     ax.set_ylabel('Negativity', fontsize=fsize)
+
+    for ax in axs:
+        ax.tick_params('both', length=8, width=1.0, which='major', direction='out', labelsize=fsize)
 
     if pred_state_list is not None:
         ax = axs[5]
         for i in range(pred_state_list.shape[1]):
             ax.plot(pred_state_list[:, i], alpha=0.8)
     plt.tight_layout()
-    for ftype in ['png']:
+    for ftype in ['png', 'svg']:
         transparent = True
         if ftype == 'png':
             transparent = False
@@ -143,10 +146,10 @@ def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename,
             #train_rs_intar_fid = np.sqrt(np.mean(np.array(train_intar_fidls)**2))
             #val_rs_intar_fid = np.sqrt(np.mean(np.array(val_intar_fidls)**2))
             
-            res_title = 'Root mean square Fidelity at n={}, tauB={:.3f}, train={:.6f}, val={:.6f}'.format(\
+            res_log = 'Root mean square Fidelity at n={}, tauB={:.3f}, train={:.6f}, val={:.6f}'.format(\
                 n, tauB, train_rmean_square_fid, val_rmean_square_fid)
-            logger.debug(res_title)
-            
+            logger.debug(res_log)
+            res_title = '(Multiplex = {})   RMSF={:.3f}'.format(qparams.virtual_nodes, val_rmean_square_fid)
             train_rmean_ls.append(train_rmean_square_fid)
             val_rmean_ls.append(val_rmean_square_fid)
             #train_intar_ls.append(train_rs_intar_fid)
@@ -234,9 +237,7 @@ if __name__  == '__main__':
     ntrials, basename, savedir, taskname, order = args.ntrials, args.basename, args.savedir, args.taskname, args.order
     virtuals = [int(x) for x in args.virtuals.split(',')]
 
-    dat_label = None
-    if args.data != 'rand':
-        dat_label = args.data
+    dat_label = args.data
 
     if os.path.isfile(savedir) == False and os.path.isdir(savedir) == False:
         os.mkdir(savedir)

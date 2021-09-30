@@ -131,7 +131,7 @@ if __name__  == '__main__':
     #plt.suptitle(outbase, fontsize=12)
     plt.tight_layout()
     
-    for ftype in ['png']:
+    for ftype in ['png', 'svg']:
         transparent = True
         if ftype == 'png':
             transparent = False
