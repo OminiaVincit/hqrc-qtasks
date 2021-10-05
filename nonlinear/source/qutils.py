@@ -52,8 +52,65 @@ def generate_delay_tensor(n_envs, delay1, delay2, length, ranseed, dat_label):
             output_data[n] = np.kron(input_data[n-delay1], input_data[n-delay2])
     return input_data, output_data
 
+def generate_quantum_switch(delay1, delay2, length, ranseed, order):
+    n_envs = 1
+    D = 2**n_envs
+    ucs, data_noise = utils.make_data_for_narma(length=length, orders=[order], ranseed=ranseed)
+    pnoise = data_noise[:, 0].ravel()
+    mat00 = np.array([[1, 0], [0, 0]])
+    mat01 = np.array([[0, 1], [0, 0]])
+    mat10 = np.array([[0, 0], [1, 0]])
+    mat11 = np.array([[0, 0], [0, 1]])
+    # The input data is the superposition sqrt(uc)|0> + sqrt(1-uc)|1> where uc in ucs
+    input_data = []
+    for n in range(length):
+        uc = ucs[n]
+        instate = uc * mat00 + (1-uc) * mat11 + np.sqrt(uc*(1-uc)) * (mat01 + mat10)
+        input_data.append(instate)
+
+    # The output of quantum switch
+    n_out_qubits = 2*n_envs
+    Dout = 2**n_out_qubits
+    idrho = np.zeros((Dout, Dout)).astype(complex)
+    idrho[0, 0] = 1
+    output_data = [idrho] * length
+    idmat = np.eye(D)
+
+    max_delay = max(delay1, delay2)
+    for n in range(max_delay, length):
+        uc = ucs[n - delay1]
+        rstate = input_data[n - delay2]
+        q1, q2 = pnoise[n - delay1], pnoise[n - delay2]
+        
+        # control state (the current input) is in |0><0| part
+        mstate  = q1 * q2 * idmat / D             # A00
+        mstate += (1.0 - q1) * q2 * idmat / D    # B00
+        mstate += q1 * (1.0 - q2) * idmat / D    # C00
+        mstate += (1.0 - q1) * (1.0 - q2) * rstate # D00
+        outstate = uc * np.kron(mstate, mat00)
+
+        # control state (the current input) is in |1><1| part
+        mstate  =  q1 * q2 * idmat / D             # A11
+        mstate += (1.0 - q1) * q2 * idmat / D    # B11
+        mstate += q1 * (1.0 - q2) * idmat / D    # C11
+        mstate += (1.0 - q1) * (1.0 - q2) * rstate # D11
+        outstate += (1 - uc) * np.kron(mstate, mat11)
+
+        # control state (the current input) is in |0><1| part and |1><0| part
+        mstate = q1 * q2 * rstate / (D*D)        # A01, A10
+        mstate += q2 * (1.0 - q1) * idmat / D    # B01, B10
+        mstate += q1 * (1.0 - q2) * idmat / D    # C01, C10
+        mstate += (1.0 - q1) * (1.0 - q2) * rstate  # D01, D10
+        outstate += np.sqrt(uc*(1-uc)) * np.kron(mstate, mat01 + mat10)
+
+        output_data[n] = outstate
+        if check_density(outstate) == False:
+            print('Check density False at n={}, trace={}, hermit={}, semi_pos={}'.format(\
+                n, np.trace(outstate), is_hermitian(outstate), is_positive_semi(outstate)))
+    return input_data, output_data
+
 def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
-    order, Nreps=1, buffer_train=0, dat_label=None, noise_level=0.3):
+    order, Nreps=1, buffer_train=0, dat_label=None, noise_level=0.3, delay_control=0):
     np.random.seed(seed=ranseed + 1987)
     D = 2**n_envs
     # Returns a superoperator acting on vectorized dim × dim density operators, 
@@ -89,7 +146,7 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
     #input_data = generate_random_states(ranseed=ranseed, Nbase=n_envs, Nitems=length)
     
     n_out_qubits = n_envs
-    if taskname == 'delay-entangle' or taskname == 'delay-Bell' \
+    if taskname == 'delay-entangle' or taskname == 'delay-Bell' or taskname == 'quantum-switch' \
         or taskname == 'channel-super-depolar' or taskname == 'delay-entangle-channel':
         n_out_qubits = 2*n_envs
         
@@ -163,6 +220,9 @@ def generate_qtasks_delay(n_envs, ranseed, length, delay, taskname, \
             mstate = pnoise[n-delay] * idmat / D + (1.0 - pnoise[n-delay]) * mstate
             outstate += (1.0 - r0) * np.kron(mstate, mat1)
             output_data[n] = outstate
+    elif (taskname == 'quantum-switch') and n_envs == 1:
+        print('Make data for task {}'.format(taskname))
+        input_data, output_data = generate_quantum_switch(delay1=delay_control, delay2=delay, length=length, ranseed=ranseed, order=order)
     elif taskname == 'delay-id':
         print('Task {}'.format(taskname))
         output_data[delay:] = input_data[:(length-delay)]
@@ -703,9 +763,11 @@ def convert_features_to_density(fevec, postprocess=True):
     return rho_ls
 
 def cal_fidelity_two_mats(matA, matB):
-    if check_density(matA) == False or check_density(matB) == False:
-        print('Not density matrix')
-        fidval = 0.0
+    chA = check_density(matA)
+    chB = check_density(matB)
+    if chA == False or chB == False:
+        fidval = 0
+        print('Not density matrix, fidval={}, chA={}, chB={}'.format(fidval, chA, chB))
     else:
         stateA = Qobj(matA)
         stateB = Qobj(matB)

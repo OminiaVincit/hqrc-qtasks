@@ -107,7 +107,7 @@ def plot_result(fig_path, res_title, train_input_seq, train_output_seq, val_inpu
 
 def fidelity_compute(qparams, train_len, val_len, buffer, ntrials, log_filename, \
     B, tBs, delay, taskname, order, flagplot, use_corr, \
-    Nreps, reservoir, postprocess, test_lastrho, dat_label, noise_level):
+    Nreps, reservoir, postprocess, test_lastrho, dat_label, noise_level, delay_control):
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
     length = buffer + train_len + val_len
@@ -195,6 +195,7 @@ if __name__  == '__main__':
     parser.add_argument('--vallen', type=int, default=100)
     parser.add_argument('--buffer', type=int, default=100)
     parser.add_argument('--delay', type=int, default=5)
+    parser.add_argument('--delay_control', type=int, default=0)
     parser.add_argument('--nreps', type=int, default=1, help='The input signal jumps into new random states every nreps')
 
     parser.add_argument('--nproc', type=int, default=125)
@@ -233,7 +234,7 @@ if __name__  == '__main__':
     noise_level = args.noise_level
 
     dynamic = args.dynamic
-    train_len, val_len, buffer, delay = args.trainlen, args.vallen, args.buffer, args.delay
+    train_len, val_len, buffer, delay, delay_control = args.trainlen, args.vallen, args.buffer, args.delay, args.delay_control
     ntrials, basename, savedir, taskname, order = args.ntrials, args.basename, args.savedir, args.taskname, args.order
     virtuals = [int(x) for x in args.virtuals.split(',')]
 
@@ -257,6 +258,7 @@ if __name__  == '__main__':
     log_filename = os.path.join(logdir, '{}.log'.format(basename))
     logger = get_module_logger(__name__, log_filename)
     logger.info(log_filename)
+    logger.info(args)
 
     B = max_energy / bcoef
 
@@ -281,7 +283,7 @@ if __name__  == '__main__':
                             beta=beta, virtual_nodes=V, tau=0.0, init_rho=init_rho, dynamic=dynamic)
                 p = multiprocessing.Process(target=fidelity_compute, \
                     args=(qparams, train_len, val_len, buffer, ntrials, log_filename, B, tBs, delay, \
-                        taskname, order, flagplot, usecorr, nreps, use_reservoir, use_postprocess, test_lastrho, dat_label, noise_level))
+                        taskname, order, flagplot, usecorr, nreps, use_reservoir, use_postprocess, test_lastrho, dat_label, noise_level, delay_control))
                 jobs.append(p)
                 #pipels.append(recv_end)
 

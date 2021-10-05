@@ -3,8 +3,8 @@
 export OMP_NUM_THREADS=1
 
 EXE=../source/runQTask.py
-#TASKNAME=sma-depolar
-TASKNAME=delay-entangle
+#TASKNAME=channel-super-depolar
+TASKNAME=quantum-switch
 DYNAMIC=ion_trap
 
 NPROC=125
@@ -23,13 +23,14 @@ ORDER=10
 PLOT=1
 NREP=1
 CORR=1
-DAT='ent'
+CONTROL=2
+DAT='rand'
 
-for DELAY in 1
+for DELAY in 3
 do
 for NSPINS in 6
 do
-for V in 10
+for V in 5
 do
 for alpha in 1.0
 do
@@ -37,7 +38,7 @@ for bc in 1.0
 do
 SAVE=../../../data/hqrc-qtasks/draw_a_$alpha\_bc_$bc\_$NSPINS\_$NEV\_od_$ORDER\_dl\_$DELAY\_$TASKNAME
 
-python $EXE --data $DAT --usecorr $CORR --nreps $NREP --alpha $alpha --bcoef $bc --plot $PLOT --rho 1 --order $ORDER --taskname $TASKNAME --delay $DELAY --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
+python $EXE --delay_control $CONTROL --data $DAT --usecorr $CORR --nreps $NREP --alpha $alpha --bcoef $bc --plot $PLOT --rho 1 --order $ORDER --taskname $TASKNAME --delay $DELAY --ntrials $NTRIALS --savedir $SAVE --spins $NSPINS --envs $NEV --nproc $NPROC --tmin $TMIN --tmax $TMAX --ntaus $NTAUS --virtuals $V --dynamic $DYNAMIC --buffer $BUFFER --trainlen $TRAINLEN --vallen $VALEN 
 done
 done
 done
