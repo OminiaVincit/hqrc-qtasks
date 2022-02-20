@@ -10,9 +10,14 @@ https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.127.260401
 
 ### Press release:
 Japanese: https://www.i.u-tokyo.ac.jp/news/press/2021/202112231947.shtml
+
 (details): https://www.i.u-tokyo.ac.jp/news/files/IST_pressrelease_20211223_Nakajima.pdf
 
 English: https://www.u-tokyo.ac.jp/focus/en/press/z0508_00200.html
+
+### How to cite:
+Q. H. Tran and K. Nakajima, Learning Temporal Quantum Tomography, Physical Review Letters, vol. 127, 260401
+(2021)
 
 
 ## Code structures
