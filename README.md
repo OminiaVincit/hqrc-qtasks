@@ -2,14 +2,16 @@
 
 This repository is the official implementation of "Learning Temporal Quantum Tomography" paper. 
 
-Learning Temporal Quantum Tomography
+### Learning Temporal Quantum Tomography
 Quoc Hoan Tran and Kohei Nakajima
 Phys. Rev. Lett. 127, 260401 – Published 22 December 2021
+
 https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.127.260401
 
-Press release:
+### Press release:
 Japanese: https://www.i.u-tokyo.ac.jp/news/press/2021/202112231947.shtml
 (details): https://www.i.u-tokyo.ac.jp/news/files/IST_pressrelease_20211223_Nakajima.pdf
+
 English: https://www.u-tokyo.ac.jp/focus/en/press/z0508_00200.html
 
 
